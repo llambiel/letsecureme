@@ -1,4 +1,4 @@
-# State of the art of a secured web deployment using Let's Encrypt & Nginx
+# State of the art of a secure web deployment using Let's Encrypt & Nginx
 
 In this post we're going to outline how to secure a website using a Let's Encrypt certificate on top of Nginx, our webserver flavour of choice.
 
@@ -197,7 +197,7 @@ Let's reload nginx one more time:
 nginx -t &&  nginx -s reload
 ```
 
-Now Point your web browser to https://YOURDOMAINHERE
+Now point your web browser to https://YOURDOMAINHERE
 
 The homepage should display now over HTTPS \O/ 
 
@@ -215,7 +215,7 @@ fi
 service nginx reload
 ```
 
-This script can also be found [here](https://raw.githubusercontent.com/llambiel/letsecureme/master/renewCerts.sh)
+This script can also be downloaded [here](https://raw.githubusercontent.com/llambiel/letsecureme/master/renewCerts.sh)
 
 We add a daily cron that trigger our script:
 
@@ -226,7 +226,7 @@ ln /path/to/renewCerts.sh /etc/cron.daily/
 
 Now that our website is being served over HTTPS, let's check the grade we have using a default SSL configuration: https://www.ssllabs.com/ssltest/
 
-Hmmm not so good. Let's pimp a bit our Nginx config to remedy:
+Hmmm not so good. Let's pimp a bit our Nginx config to improve our rating:
 
 ## Nginx SSL hardening 
 
@@ -304,7 +304,7 @@ We enable OCSP stapling. OCSP stapling is well described in details [here](https
 add_header Strict-Transport-Security "max-age=31557600; includeSubDomains";
 ```
 
-Here we add a HTTP header instructing the client browser to force a HTTPS connection to our domain and __all our Subdomains__ for __1 year__. __Warning__ very be carefull here before applying it in production, you must ensure first that all your subdomains are being secured as well.
+Here we add a HTTP header instructing the client browser to force a HTTPS connection to our domain and __all our Subdomains__ for __1 year__. __Warning__ be very be carefull here before applying it in production, you must ensure first that all your subdomains are being secured as well.
 
 Let's re-test again our setup: https://www.ssllabs.com/ssltest/:
 
@@ -358,6 +358,8 @@ The report mode can be enabled using:
 ```
 Content-Security-Policy-Report-Only instead of Content-Security-Policy
 ```
+
+### Final Nginx configuration
 
 Our final Nginx configuration looks like:
 
