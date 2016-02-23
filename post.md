@@ -2,7 +2,7 @@
 
 In this post we're going to outline how to secure a website using a Let's Encrypt certificate on top of Nginx, our webserver flavour of choice here at [Exsocale](https://www.exoscale.ch).
 
-Let's Encrypt is a new Certificate authority which have the advantage to be free (!), open source and can be fully automated. Let's Encrypt root certificate is also trusted by most [browsers](https://community.letsencrypt.org/t/which-browsers-and-operating-systems-support-lets-encrypt/4394).
+Let's Encrypt is a new Certificate authority which provide free SSL certificates (!), is open source and can be fully automated. Let's Encrypt root certificate is also trusted by most [browsers](https://community.letsencrypt.org/t/which-browsers-and-operating-systems-support-lets-encrypt/4394).
 
 Before starting, below are a few caveats regarding Let's Encrypt for which not everybody may be comfortable with:
 
@@ -161,6 +161,8 @@ And finally our cert has been delivered !
 output text here
 ```
 
+Let's Encrypt configuration and certificates can be found under /etc/letsencrypt.
+
 We add the following minimal Nginx configuration block so our website get served over HTTPS:
 
 ```
@@ -186,10 +188,23 @@ The homepage should display over HTTPS \O/
 We need to ensure that our certificate, which is valid for 90 days only, get renewed automatically. We're going to use a small script and a crontab for this purpose:
 
 ```
-export DOMAINS="letsecure.me,www.letsecure.me"
-export DIR=/var/www/demo
-./letsencrypt-auto --renew certonly --server https://acme-v01.api.letsencrypt.org/directory -a webroot --webroot-path=$DIR -d $DOMAINS
+#!/bin/sh
+# This script renew all the Let's Encrypt certificates with a validity < 30 days
+
+if ! /opt/letsencrypt/letsencrypt-auto renew > /var/log/letsencrypt/renew.log 2>&1 ; then
+    echo Automated renewal failed:
+    cat /var/log/letsencrypt/renew.log
+    exit 1
+fi
 service nginx reload
+```
+
+This script can also be found [here](https://raw.githubusercontent.com/llambiel/letsecureme/master/renewCerts.sh)
+
+We add a daily cron that trigger our script:
+
+```
+ln -s /etc/cron.daily/ /path/to/renewCerts.sh
 ```
 
 One of the goal of this post is to get the best ranking with the Qualyss SSL test. So let's check it: https://www.ssllabs.com/ssltest/analyze.html
@@ -338,10 +353,10 @@ post here
 
 and can be downloaded directly from [here](link)
 
-** Summary
+## Summary
 
 Let's Encrypt can be easilly deployed and maintened on top of Nginx. Specific SSL and browser hardening must be deployed in order to ensure a modern and secure web deployement.
 
-** Try it yourelf!
+## Try it yourelf!
 
-Call to action 
+Want to try it by yourself ? just request a free trial at [Exoscale](https://www.exoscale.ch) 
