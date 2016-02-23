@@ -1,26 +1,26 @@
 # State of the art secured web deployment using Let's Encrypt & Nginx
 
-In this post we're going to outline how to secure a website using a Let's Encrypt certificate on top of Nginx, our webserver flavour of choice here at Exsocale.
+In this post we're going to outline how to secure a website using a Let's Encrypt certificate on top of Nginx, our webserver flavour of choice here at [Exsocale](https://www.exoscale.ch).
 
-Let's Encrypt is a new Certificate authority which have the advantage to be free (!), open source and can be fully automated. Let's Encrypt root certificate is also trusted by most [browsers](https://community.letsencrypt.org/t/which-browsers-and-operating-systems-support-lets-encrypt/4394). It's still in beta phase and thus the Nginx support isn't yet fully automated, which is not a real big deal.
+Let's Encrypt is a new Certificate authority which have the advantage to be free (!), open source and can be fully automated. Let's Encrypt root certificate is also trusted by most [browsers](https://community.letsencrypt.org/t/which-browsers-and-operating-systems-support-lets-encrypt/4394).
 
-Below are a few caveats regarding Let's Encrypt that may not suit to everybody:
+Before starting, below are a few caveats regarding Let's Encrypt for which not everybody may be comfortable with:
 
-* It's still in beta
+* It's still in beta phase
 * It requires root privileges
 * It installs a few dependencies (like [Augeas](http://augeas.net/), [gcc](https://gcc.gnu.org/), [Python](https://www.python.org/))
 * Throttling is enforced so you cannot request more than 5 certificates per week for a given domain
 * Certificate is valid for 90 days
 
-It's possible get get certificate using [alternative more lightweight clients](https://community.letsencrypt.org/t/list-of-client-implementations/2103) however we won't cover them in this post.
+It's possible get a certificate using [alternate and more lightweight clients](https://community.letsencrypt.org/t/list-of-client-implementations/2103) however we won't cover them in this post.
 
-Our ultimate goal is to get the best ranking (A+) on the famous [Qualys SSL test suite](https://www.ssllabs.com/ssltest/).
+Our main goal for today is to get the best ranking (A+) on the famous [Qualys SSL test suite](https://www.ssllabs.com/ssltest/).
 
 ## Initial setup
 
 First we begin by spawning a new instance within the [Exoscale portal](https://portal.exoscale.ch). We choose a standard Ubuntu 14.04 flavour. For our demo a micro instance (512mb RAM, 1 Vcpu & 10GB disk) will be more than enough.
 
-After a few seconds our instance is available and ready for setup:
+Within a few seconds our instance is available and ready for setup:
 
 ![alt text](images/instance1.png "Our instance detailed view")
 
@@ -43,11 +43,11 @@ We're done with the DNS, don't forget to update the nameservers of your domain w
 * ns1.exoscale.net
 * ns1.exoscale.io
 
-This change must be done from within your registrar administration console.
+This change must be done from within your domain registrar administration console.
 
 Let's go back to our instance. Before beginning with the setup, we're going to apply a few elementary security best practices:
 
-On the [firewall](https://portal.exoscale.ch/compute/firewalling) side (aka security groups), we allow only the required traffic by adding the below rules:
+On the [firewall](https://portal.exoscale.ch/compute/firewalling) side, we allow only the required traffic by adding the below rules:
 
 * 22 (SSH)
 * 80 (HTTP)
@@ -56,13 +56,13 @@ On the [firewall](https://portal.exoscale.ch/compute/firewalling) side (aka secu
 
 Our firewall is now configured, we can now we log on using the root account and our [SSH key](https://wiki.archlinux.org/index.php/SSH_keys). This isn't mandatory but highly recommended (did we said highly ?). Standard user / password is also supported.
 
-We immediately apply all the security (and non security) updates and reboot the instance with the following commands:
+The first thing we do is to apply all the security (and non security) updates and reboot the instance with the following commands:
 
 ```
 apt-get update && apt-get dist-upgrade -y && reboot
 ```
 
-We log back and enable the automatic security updates:
+We log back in and enable the automatic security updates:
 
 ```
 dpkg-reconfigure --priority=low unattended-upgrades
@@ -83,7 +83,7 @@ apt-get install -y fail2ban
 
 ## Nginx Setup
 
-Now we'll take care of Nginx. We're not going to install the package from the Ubuntu repository as we require features (like HTTTP2) that can be found only in the latest "mainline" release branch. We add then the Nginx official repository:
+Now we'll take care of Nginx. We're not going to install the package from the Ubuntu repository as we require features (like HTTTP2) that can only be found in the latest "mainline" release branch. We add then the Nginx official repository using:
 
 ```
 wget http://nginx.org/keys/nginx_signing.key && sudo apt-key add nginx_signing.key && rm nginx_signing.key
@@ -94,6 +94,7 @@ apt-get update && apt-get install -y nginx
 We create the target folder from where our wesite will be served:
 
 ````
+mkdir /var/www/
 wget tar from repo
 tar -xvf /var/www/
 chown -R www-data /var/www/
@@ -166,10 +167,9 @@ We add the following minimal Nginx configuration block so our website get served
 server {
     listen 443 ssl;
     server_name letsecure.me www.letsecure.me;
-
+    root /var/www/demo;
     ssl_certificate /etc/letsencrypt/live/letsecure.me/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/letsecure.me/privkey.pem;
-
 }
 ```
 
@@ -179,9 +179,9 @@ Let's reload nginx one more time:
 nginx -t &&  nginx -s reload
 ```
 
-Point your web browser to https://letsecure.me
+Now Point your web browser to https://YOURDOMAINHERE
 
-The homepage should display over https \O/ 
+The homepage should display over HTTPS \O/ 
 
 We need to ensure that our certificate, which is valid for 90 days only, get renewed automatically. We're going to use a small script and a crontab for this purpose:
 
@@ -192,7 +192,7 @@ export DIR=/var/www/demo
 service nginx reload
 ```
 
-One of the goal of this post is to get the best ranking with the Qualyss SSL test. So let's check it: https://www.ssllabs.com/ssltest/analyze.html?d=letsecure.me&latest
+One of the goal of this post is to get the best ranking with the Qualyss SSL test. So let's check it: https://www.ssllabs.com/ssltest/analyze.html
 
 Hmmm not so good. Let's pimp a bit our nginx config:
 
@@ -213,8 +213,8 @@ server {
  add_header Strict-Transport-Security "max-age=31557600; includeSubDomains";
  ssl_stapling on;
  ssl_stapling_verify on;
- resolver 8.8.4.4;
- root /var/www/letsecureme;
+ resolver 8.8.8.8;
+ root /var/www/demo;
  index index.html;
 
  location '/.well-known/acme-challenge' {
@@ -265,7 +265,7 @@ We enable OCSP stapling. OCSP stapling is well described in details [here](https
 add_header Strict-Transport-Security "max-age=31557600; includeSubDomains";
 ```
 
-Here we add a HTTP header instructing the client browser to force a HTTPS connection to our domain and all our Subdomains (!) for 1 year. __Warning__ be carefull here before applying it in production, you must ensure first that all your subdomains are being secured as well.
+Here we add a HTTP header instructing the client browser to force a HTTPS connection to our domain and __all our Subdomains__ for __1 year__. __Warning__ very be carefull here before applying it in production, you must ensure first that all your subdomains are being secured as well.
 
 Let's re-test again our setup: https://www.ssllabs.com/ssltest/analyze.html:
 
@@ -275,7 +275,7 @@ Hey, this looks much better now ! Our setup is now secured using an optimal SSL 
 
 Now, what about the content / behaviour of our website ? [Scott Helme](https://securityheaders.io/about/) did create a great HTTP response headers [analyser](https://securityheaders.io/).
 
-Let's get a step further and try to get a good ranking on this analyser as well. We try on our current setup and see that the result is not so good:
+Let's get a step further and try to get a good ranking on this analyser as well. We try on our current setup and see that the result is... not so good:
 
 ![alt text](images/securityheaders1.png "securityheaders.io first check")
 
@@ -326,11 +326,11 @@ And scan again our site using https://securityheaders.io/:
 
 _N.B ensure to test using HTTPS_
 
-![alt text](images/securityheaders1.png "securityheaders.io final check")
+![alt text](images/securityheaders2.png "securityheaders.io final check")
 
-"A" grade, much better ! Some of you may have noticied that we didn't enable HPKP (HTTP Public Key Pinning), which will allow to get the A+ grade. In fact we skipped that header as it could really screw your website if not planned carefully. This header will be covered in another detailed blog post.
+"A" grade, much better ! Some of you may have noticied that we didn't enable HPKP (HTTP Public Key Pinning), which will allow to get the A+ grade. In fact we skipped that header as it could really screw your website if the feature is not well understood and carefully planned. This header will be covered in another detailed blog post.
 
-Our final Nginx configuration looks like:
+So Our final Nginx configuration looks like:
 
 ```
 post here
