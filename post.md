@@ -2,7 +2,7 @@
 
 In this post we're going to outline how to secure a website using a Let's Encrypt certificate on top of Nginx, our webserver flavour of choice.
 
-The final goal is to get the best rating (A+) on the famous [Qualys SSL test suite](https://www.ssllabs.com/ssltest/), as well as securityheaders.io [analyser](https://securityheaders.io/).
+The final goal is to get the best rating (A+) on the famous [Qualys SSL test](https://www.ssllabs.com/ssltest/), as well as securityheaders.io [analyser](https://securityheaders.io/).
 
 ## Let's Encrypt overview
 
