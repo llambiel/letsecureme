@@ -1,8 +1,6 @@
 # State of the art of a secure web deployment using Let's Encrypt & Nginx
 
-In this post we're going to outline how to secure a website using a Let's Encrypt certificate on top of Nginx, our webserver flavour of choice.
-
-The final goal is to get the best rating (A+) on the famous [Qualys SSL test](https://www.ssllabs.com/ssltest/), as well as securityheaders.io [analyser](https://securityheaders.io/).
+In this post we're going to outline how to get the best rating (A+) on the famous [Qualys SSL test](https://www.ssllabs.com/ssltest/), as well as securityheaders.io [analyser](https://securityheaders.io/), using automated Let's Encrypt certificate on top of Nginx, our webserver flavour of choice.
 
 ## Let's Encrypt overview
 
@@ -416,8 +414,8 @@ _N.B ensure to test using HTTPS_
 
 ## Summary
 
-Let's Encrypt can be easilly deployed and maintened on top of Nginx. Specific SSL and browser hardening must be deployed in order to ensure a modern and secure web deployement.
+Let's Encrypt can be easilly deployed and maintened on top of Nginx. Specific SSL and browser headers hardening must be deployed in order to ensure a modern and secure web deployement.
 
 ## Try it yourelf!
 
-Want to try it by yourself ? just request a free trial at [Exoscale](https://www.exoscale.ch) 
+Want to try it by yourself ? just request a free trial at [Exoscale](https://www.exoscale.ch)
