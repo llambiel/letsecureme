@@ -1,10 +1,10 @@
 # State of the art of a secure web deployment using Let's Encrypt & Nginx
 
-In this post we're going to outline how to get the best rating (A+) on the famous [Qualys SSL test](https://www.ssllabs.com/ssltest/), as well as securityheaders.io [analyser](https://securityheaders.io/), using automated Let's Encrypt certificate on top of Nginx, our webserver flavour of choice.
+In this post we're going to outline how to get the best rating (A+) on the famous [Qualys SSL test](https://www.ssllabs.com/ssltest/) as well as securityheaders.io [analyser](https://securityheaders.io/), using automated Let's Encrypt certificate on top of Nginx, our webserver flavour of choice.
 
 ## Let's Encrypt overview
 
-Let's Encrypt is a new Certificate authority which provide free SSL certificates (!), is open source and can be fully automated. Let's Encrypt root certificate is also trusted by most [browsers](https://community.letsencrypt.org/t/which-browsers-and-operating-systems-support-lets-encrypt/4394).
+Let's Encrypt is a new open source, fully automated certificate authority that provides free SSL certificates. Let's Encrypt root certificate is also trusted by most [browsers](https://community.letsencrypt.org/t/which-browsers-and-operating-systems-support-lets-encrypt/4394).
 
 Before starting, below are a few caveats regarding Let's Encrypt for which not everybody may be comfortable with:
 
@@ -14,7 +14,7 @@ Before starting, below are a few caveats regarding Let's Encrypt for which not e
 * Throttling is enforced so you cannot request more than 5 certificates per week for a given domain
 * Certificate is valid for 90 days
 
-It's possible get a certificate using [alternate and more lightweight clients](https://community.letsencrypt.org/t/list-of-client-implementations/2103) however we won't cover them in this post.
+It's possible get a certificate using [alternate lightweight and less intrusive clients](https://community.letsencrypt.org/t/list-of-client-implementations/2103) however we won't cover them in this post.
 
 The official documentation can be found [here](http://letsencrypt.readthedocs.org/en/latest/intro.html)
 
@@ -26,7 +26,7 @@ Within a few seconds our instance is available and ready for use:
 
 ![alt text](images/instance1.png "Our instance detailed view")
 
-We take note of it's IP address so we can proceed with the DNS setup. Luckily DNS zone hosting is only a click away within the management portal:
+We take note of its IP address so we can proceed with the DNS setup. Luckily DNS zone hosting is only a click away within the management portal:
 
 ![alt text](images/dns1.png "DNS zone creation")
 
@@ -58,7 +58,7 @@ On the [firewall](https://portal.exoscale.ch/compute/firewalling) side, we allow
 * 443 (HTTPS)
 * ICMP ping (not mandatory but convenient)
 
-Our firewall is now configured, we can now we log on using the root account and our [SSH key](https://wiki.archlinux.org/index.php/SSH_keys). This isn't mandatory but highly recommended (did we said highly ?). Standard user / password is also supported.
+Our firewall is now configured, we can now we log on using the root account and our [SSH key](https://wiki.archlinux.org/index.php/SSH_keys). This isn't mandatory but highly recommended (did we said highly?). Standard user / password is also supported.
 
 The first thing we do is to apply all the security (and non security) updates and reboot the instance with the following commands:
 
@@ -111,7 +111,7 @@ rm /etc/nginx/conf.d/default.conf
 touch /etc/nginx/conf.d/default.conf
 ```
 
-And add the following Nginx configuration block in /etc/nginx/conf.d/default.conf, so Let's Encrypt client can create temporary files required to authenticate the domain for which we're requesting the certificate for :
+And add the following Nginx configuration block in /etc/nginx/conf.d/default.conf, so Let's Encrypt client can create temporary files required to authenticate the domain for which we're requesting the certificate for:
 
 
 ```
@@ -125,7 +125,7 @@ server {
 }
 ```
 
-and we reload Nginx to apply our configuration change:
+And we reload Nginx to apply our configuration change:
 
 ```
 nginx -t && nginx -s reload
@@ -133,7 +133,7 @@ nginx -t && nginx -s reload
 
 ## Let's Encrypt setup
 
-We're done with Nginx for the time being. Go for Let's Encrypt. We're going to clone it's [GIT](https://github.com/letsencrypt/letsencrypt) repository:
+We're done with Nginx for the time being. Go for Let's Encrypt. We're going to clone its [GIT](https://github.com/letsencrypt/letsencrypt) repository:
 
 ```
 apt-get install -y git
@@ -141,7 +141,7 @@ git clone https://github.com/letsencrypt/letsencrypt /opt/letsencrypt
 /opt/letsencrypt/letsencrypt-auto
 ```
 
-Note that all the required dependencies are being installed automatically by the setup script.
+Note that the setup script is installing all the required dependencies automatically.
 
 Now we can request our certificate. You'll get prompted to provide your email address for the expiring notifications and accept the Terms:
 
@@ -154,7 +154,7 @@ nginx -t && nginx -s reload
 
 _N.B Put your own domain in the DOMAINS list_
 
-Our cert has been issued and installed !
+Our cert has been issued and installed!
 
 ```
 IMPORTANT NOTES:
@@ -203,7 +203,7 @@ We need to ensure that our certificate, which is valid for 90 days only, get ren
 
 ```
 #!/bin/sh
-# This script renew all the Let's Encrypt certificates with a validity < 30 days
+# This script renews all the Let's Encrypt certificates with a validity < 30 days
 
 if ! /opt/letsencrypt/letsencrypt-auto renew > /var/log/letsencrypt/renew.log 2>&1 ; then
     echo Automated renewal failed:
@@ -302,7 +302,7 @@ We enable OCSP stapling. OCSP stapling is well described in details [here](https
 add_header Strict-Transport-Security "max-age=31557600; includeSubDomains";
 ```
 
-Here we add a HTTP header instructing the client browser to force a HTTPS connection to our domain and __all our Subdomains__ for __1 year__. __Warning__ be very be carefull here before applying it in production, you must ensure first that all your subdomains are being secured as well.
+Here we add a HTTP header instructing the client browser to force a HTTPS connection to our domain and __all our Subdomains__ for __1 year__. __Warning__ be very be careful here before applying it in production, you must ensure first that all your subdomains are being secured as well.
 
 Let's re-test again our setup: https://www.ssllabs.com/ssltest/:
 
@@ -312,7 +312,7 @@ Hey, this looks much better now ! Our setup is now secured using an optimal SSL 
 
 ## Security headers hardening
 
-Now, what about the content / behaviour of our website ? [Scott Helme](https://securityheaders.io/about/) did create a great HTTP response headers [analyser](https://securityheaders.io/).
+Now, what about the content / behaviour of our website? [Scott Helme](https://securityheaders.io/about/) did create a great HTTP response headers [analyser](https://securityheaders.io/).
 
 Let's get a step further and try to get a good grade on this analyser as well. Let's try on our current setup and see that the result is... not so good:
 
@@ -345,7 +345,7 @@ The [X-Xss-Protection](https://scotthelme.co.uk/hardening-your-http-response-hea
 add_header Content-Security-Policy "default-src 'self'";
 ```
 
-The Content-Security-Policy header defines approved sources of content that the browser may load. It can be an effective countermeasure to Cross Site Scripting (XSS) attacks. __WARNING__ this header must be carefully planned before deploying it on production website as it could easily break stuff and prevent a website to load it's content ! Fortunately there is a "report mode" available which the browser to report any issue in the debug console but not actually block any content. This is very helpful to ensure a smooth deployement of this header:
+The Content-Security-Policy header defines approved sources of content that the browser may load. It can be an effective countermeasure to Cross Site Scripting (XSS) attacks. __WARNING__ this header must be carefully planned before deploying it on production website as it could easily break stuff and prevent a website to load it's content! Fortunately there is a "report mode" available which the browser to report any issue in the debug console but not actually block any content. This is very helpful to ensure a smooth deployment  of this header:
 
 ![alt text](images/reportmode.png "report mode")
 
@@ -396,7 +396,7 @@ server {
 }
 ```
 
-and can be downloaded directly from [here](https://raw.githubusercontent.com/llambiel/letsecureme/master/etc/nginx/conf.d/default.conf)
+And can be downloaded directly from [here](https://raw.githubusercontent.com/llambiel/letsecureme/master/etc/nginx/conf.d/default.conf)
 
 Let's reload Nginx one more time to apply our new headers:
 
@@ -410,12 +410,12 @@ _N.B ensure to test using HTTPS_
 
 ![alt text](images/securityheaders2.png "securityheaders.io final check")
 
-"A" grade, much better ! Some of you may have noticied that we didn't enable HPKP (HTTP Public Key Pinning), which would have allowed us to get the A+ grade. In fact we skipped that header as it could really screw your website if the feature is not well understood and carefully planned. This header will be covered in an upcoming detailed blog post.
+"A" grade, much better! Some of you may have noticied that we didn't enable HPKP (HTTP Public Key Pinning), which would have allowed us to get the A+ grade. In fact we skipped that header as it could really screw your website if the feature is not well understood and carefully planned. This header will be covered in an upcoming detailed blog post.
 
 ## Summary
 
-Let's Encrypt can be easilly deployed and maintened on top of Nginx. Specific SSL and browser headers hardening must be deployed in order to ensure a modern and secure web deployement.
+Let's Encrypt can be easily deployed and maintained on top of Nginx. Specific SSL and browser headers hardening must be deployed in order to ensure a modern and secure web deployment.
 
-## Try it yourelf!
+## Try it yourself!
 
 Want to try it by yourself ? just request a free trial at [Exoscale](https://www.exoscale.ch)
