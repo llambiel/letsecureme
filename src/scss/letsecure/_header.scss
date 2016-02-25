@@ -1,0 +1,22 @@
+.header {
+  background-color: #40d47e;
+  height: 40rem;
+  position: relative;
+  background-image: url('../images/crosses.svg');
+  background-position: center center;
+  background-repeat: repeat;
+
+  img {
+    width: 100px;
+    display: block;
+    margin: 0 auto;
+    position: relative;
+    top: 13rem;
+  }
+
+  h1 {
+    display: block;
+    position: relative;
+    top: 16rem;
+  }
+}

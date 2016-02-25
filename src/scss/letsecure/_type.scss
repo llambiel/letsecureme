@@ -1,0 +1,199 @@
+@import url(https://fonts.googleapis.com/css?family=Noto+Serif);
+
+body {
+  color: hsla(0, 0%, 15%, 1);
+  font-family: 'Noto Serif', serif;
+  font-size: 16px;
+  line-height: 1;
+}
+
+a,
+a:hover {
+  border-bottom: 1px solid;
+  padding-bottom: 1px;
+  text-decoration: none;
+}
+
+a {
+  color: #16a085;
+  transition: color ease 250ms 0s;
+
+  &:hover {
+    color: #f39c12;
+  }
+}
+
+p {
+  line-height: 1.7;
+}
+
+h1 {
+  color: #fff;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 4rem;
+  font-weight: 200;
+  margin: 0;
+  padding: 0;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #000;
+}
+
+h2 {
+  font-size: 2rem;
+  line-height: 2.2rem;
+}
+
+h3 {
+  font-size: 1.75rem;
+  line-height: 2rem;
+}
+
+h4 {
+  font-size: 1.5rem;
+  line-height: 1.75rem;
+}
+
+h5 {
+  font-size: 1.25rem;
+  line-height: 1.5rem;
+}
+
+h6 {
+  font-size: 1rem;
+  line-height: 1.25rem;
+}
+
+.markdown {
+  font-weight: 200;
+  line-height: 1.7;
+
+  * + * {
+    margin-top: 2rem;
+  }
+
+  h2,
+  h3,
+  h4,
+  h5,
+  h5 {
+
+    + p {
+      margin-top: 1rem;
+    }
+
+    + h2,
+    + h3,
+    + h4,
+    + h5,
+    + h5 {
+      margin-top: 1rem;
+    }
+  }
+
+  img {
+    border-radius: 5px;
+    border: 1px solid #78edd5;
+    display: block;
+    margin: 2rem auto;
+  }
+
+  p {
+    &:first-child img {
+      margin-top: 0;
+    }
+
+    + h2 {
+      margin-top: 5rem;
+    }
+
+    + h3 {
+      margin-top: 4rem;
+    }
+
+    + h4 {
+      margin-top: 3rem;
+    }
+
+    + h5 {
+      margin-top: 2rem;
+    }
+
+    + h6 {
+      margin-top: 1rem;
+    }
+  }
+
+  strong {
+    color: #000;
+    font-weight: 800;
+  }
+
+  blockquote {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 2rem;
+    font-style: italic;
+    line-height: 2.5rem;
+    padding: 0 1rem;
+  }
+
+  ul {
+    border-left: 5px solid #000;
+    margin-left: 1.5rem;
+    padding: 0 2.5rem 0 0;
+    width: auto;
+
+    li {
+      background-color: transparent;
+      border: 0;
+      line-height: inherit;
+      list-style-type: square;
+      margin: 0 0 1rem 1rem;
+      padding: 0;
+    }
+  }
+}
+
+code,
+pre {
+  background-color: #34495e;
+  color: #eee8d5;
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: 80%;
+}
+
+code {
+  border-radius: 2px;
+  padding: 2px 6px;
+}
+
+pre {
+  border-radius: 5px;
+  overflow: auto;
+  padding: 20px;
+  word-break: break-all;
+  word-wrap: break-word;
+
+  // Account for some code outputs that place code tags in pre tags
+  code {
+    background-color: transparent;
+    border-radius: 0;
+    color: inherit;
+    font-size: inherit;
+    padding: 0;
+    white-space: pre-wrap;
+  }
+}
+
+.lead {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 200;
+  color: #16a085;
+}
