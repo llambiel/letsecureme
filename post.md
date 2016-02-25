@@ -1,4 +1,8 @@
-# State of the art of a secure web deployment using Let's Encrypt & Nginx
+---
+title: State of the art of a secure web deployment using Let's Encrypt & Nginx
+html_title: State of the art of a secure web deployment using Let's Encrypt & Nginx
+meta_desc: State of the art of a secure web deployment using Let's Encrypt & Nginx
+---
 
 In this post we're going to outline how to get the best rating (A+) on the famous [Qualys SSL test](https://www.ssllabs.com/ssltest/) as well as securityheaders.io [analyser](https://securityheaders.io/), using automated Let's Encrypt certificate on top of Nginx, our webserver flavour of choice.
 
