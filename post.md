@@ -28,11 +28,11 @@ First we begin by spawning a new cloud instance. We're going to use [Exoscale](h
 
 Within a few seconds our instance is available and ready for use:
 
-![alt text](images/instance1.png "Our instance detailed view")
+![alt text](static/images/instance1.png "Our instance detailed view")
 
 We take note of its IP address so we can proceed with the DNS setup. Luckily DNS zone hosting is only a click away within the management portal:
 
-![alt text](images/dns1.png "DNS zone creation")
+![alt text](static/images/dns1.png "DNS zone creation")
 
 We create our zone "letsecure.me".
 
@@ -40,7 +40,7 @@ _N.B Put here your own zone name_
 
 Now we add a "A" record with the value of the ip address of our freshly spawned instance, as well as a "catch all" (wildcard) CNAME record:
 
-![alt text](images/dns2.png "DNS record creation")
+![alt text](static/images/dns2.png "DNS record creation")
 
 We're done with DNS records, don't forget to update the nameservers of your domain with the ones below:
 
@@ -310,7 +310,7 @@ Here we add a HTTP header instructing the client browser to force a HTTPS connec
 
 Let's re-test again our setup: https://www.ssllabs.com/ssltest/:
 
-![alt text](images/qualys2.png "Qualys SSL final check")
+![alt text](static/images/qualys2.png "Qualys SSL final check")
 
 Hey, this looks much better now ! Our setup is now secured using an optimal SSL configuration, our first objective is achieved.
 
@@ -320,7 +320,7 @@ Now, what about the content / behaviour of our website? [Scott Helme](https://se
 
 Let's get a step further and try to get a good grade on this analyser as well. Let's try on our current setup and see that the result is... not so good:
 
-![alt text](images/securityheaders1.png "securityheaders.io first check")
+![alt text](static/images/securityheaders1.png "securityheaders.io first check")
 
 _N.B ensure to test using HTTPS_
 
@@ -351,7 +351,7 @@ add_header Content-Security-Policy "default-src 'self'";
 
 The Content-Security-Policy header defines approved sources of content that the browser may load. It can be an effective countermeasure to Cross Site Scripting (XSS) attacks. __WARNING__ this header must be carefully planned before deploying it on production website as it could easily break stuff and prevent a website to load it's content! Fortunately there is a "report mode" available which the browser to report any issue in the debug console but not actually block any content. This is very helpful to ensure a smooth deployment  of this header:
 
-![alt text](images/reportmode.png "report mode")
+![alt text](static/images/reportmode.png "report mode")
 
 The configuration of this policy is well described [here](https://scotthelme.co.uk/content-security-policy-an-introduction/)
 
@@ -412,7 +412,7 @@ And scan again our site using https://securityheaders.io/:
 
 _N.B ensure to test using HTTPS_
 
-![alt text](images/securityheaders2.png "securityheaders.io final check")
+![alt text](static/images/securityheaders2.png "securityheaders.io final check")
 
 "A" grade, much better! Some of you may have noticied that we didn't enable HPKP (HTTP Public Key Pinning), which would have allowed us to get the A+ grade. In fact we skipped that header as it could really screw your website if the feature is not well understood and carefully planned. This header will be covered in an upcoming detailed blog post.
 
