@@ -261,7 +261,7 @@ We enable OCSP stapling. OCSP stapling is well described in details [here](https
 
     add_header Strict-Transport-Security "max-age=31557600; includeSubDomains";
 
-Here we add a HTTP header instructing the client browser to force a HTTPS connection to our domain and __all our Subdomains__ for __1 year__. __Warning__ be very be careful here before applying it in production, you must ensure first that all your subdomains are being secured as well.
+Here we add a HTTP header instructing the client browser to force a HTTPS connection to our domain and __all our Subdomains for 1 year__. __Warning__ be careful here before applying it in production, you must ensure first that all your subdomains are being secured as well.
 
 Let's re-test again our setup: https://www.ssllabs.com/ssltest/:
 
