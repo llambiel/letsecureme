@@ -4,7 +4,7 @@ html_title: State of the art of a secure web deployment using Let's Encrypt & Ng
 meta_desc: State of the art of a secure web deployment using Let's Encrypt & Nginx
 ---
 
-In this post we're going to demonstrate how to get the best rating (A+) on the famous [Qualys SSL analyser](https://www.ssllabs.com/ssltest/) and the securityheaders.io [analyser](https://securityheaders.io/) using automated Let's Encrypt certificate on top of Nginx, our webserver flavour of choice.
+This blog details the steps to get the best rating (A+) on the popular [Qualys SSL](https://www.ssllabs.com/ssltest/) and securityheaders.io [securityheaders.io] analysers, using an automated Let's Encrypt certificate. All backed by Nginx, our webserver of choice.
 
 ## Let's Encrypt overview
 
@@ -14,6 +14,7 @@ Before starting, below are a few caveats for which not everybody may be comforta
 
 * It's still in __beta__ phase
 * It requires root privileges
+* The client does not yet "officially" support Nginx (it works flawlessly)
 * It installs dependencies automatically (like [Augeas](http://augeas.net/), [gcc](https://gcc.gnu.org/), [Python](https://www.python.org/))
 * Throttling is enforced so you cannot request more than 5 certificates per week for a given domain
 * Certificate is valid for 90 days
