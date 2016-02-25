@@ -203,32 +203,32 @@ The result isn't so good. Let's pimp a bit our Nginx config to improve our ratin
 Remove the actual config in /etc/nginx/conf.d/default.conf and replace it by the block below:
 
     server {
-     listen 80;
-     listen 443 ssl http2;
-     server_name yourdomain.com www.yourdomain.com;
-     ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-     ssl_ciphers EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5;
-     ssl_prefer_server_ciphers On;
-     ssl_certificate /etc/letsencrypt/live/yourdomain.com/fullchain.pem;
-     ssl_certificate_key /etc/letsencrypt/live/yourdomain.com/privkey.pem;
-     ssl_session_cache shared:SSL:128m;
-     add_header Strict-Transport-Security "max-age=31557600; includeSubDomains";
-     ssl_stapling on;
-     ssl_stapling_verify on;
-     resolver 8.8.8.8;
-     root /var/www/demo;
-     index index.html;
+        listen 80;
+        listen 443 ssl http2;
+        server_name yourdomain.com www.yourdomain.com;
+         ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+         ssl_ciphers EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5;
+         ssl_prefer_server_ciphers On;
+         ssl_certificate /etc/letsencrypt/live/yourdomain.com/fullchain.pem;
+         ssl_certificate_key /etc/letsencrypt/live/yourdomain.com/privkey.pem;
+         ssl_session_cache shared:SSL:128m;
+         add_header Strict-Transport-Security "max-age=31557600; includeSubDomains";
+         ssl_stapling on;
+         ssl_stapling_verify on;
+         resolver 8.8.8.8;
+         root /var/www/demo;
+         index index.html;
 
-     location '/.well-known/acme-challenge' {
-      default_type "text/plain";
-        root        /var/www/demo;
-      }
+         location '/.well-known/acme-challenge' {
+          default_type "text/plain";
+            root        /var/www/demo;
+          }
 
-     location / {
-              if ($scheme = http) {
-                return 301 https://$server_name$request_uri;
-              }
-     }
+         location / {
+                  if ($scheme = http) {
+                    return 301 https://$server_name$request_uri;
+                  }
+         }
     }
 
 _N.B replace the server_name and ssl_certificate paths with your domain_
@@ -309,36 +309,36 @@ The report mode can be enabled using:
 Our final Nginx configuration looks like:
 
     server {
-     listen 80;
-     listen 443 ssl http2;
-     server_name mydomain.com www.mydomain.com;
-     ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-     ssl_ciphers EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5;
-     ssl_prefer_server_ciphers On;
-     ssl_certificate /etc/letsencrypt/live/mydomain.com/fullchain.pem;
-     ssl_certificate_key /etc/letsencrypt/live/mydomain.com/privkey.pem;
-     ssl_session_cache shared:SSL:128m;
-     add_header Strict-Transport-Security "max-age=31557600; includeSubDomains";
-     add_header X-Frame-Options "SAMEORIGIN" always;
-     add_header X-Content-Type-Options "nosniff" always;
-     add_header X-Xss-Protection "1";
-     add_header Content-Security-Policy "default-src 'self'";
-     ssl_stapling on;
-     ssl_stapling_verify on;
-     resolver 8.8.8.8;
-     root /var/www/demo;
-     index index.html;
+         listen 80;
+         listen 443 ssl http2;
+         server_name mydomain.com www.mydomain.com;
+         ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+         ssl_ciphers EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5;
+         ssl_prefer_server_ciphers On;
+         ssl_certificate /etc/letsencrypt/live/mydomain.com/fullchain.pem;
+         ssl_certificate_key /etc/letsencrypt/live/mydomain.com/privkey.pem;
+         ssl_session_cache shared:SSL:128m;
+         add_header Strict-Transport-Security "max-age=31557600; includeSubDomains";
+         add_header X-Frame-Options "SAMEORIGIN" always;
+         add_header X-Content-Type-Options "nosniff" always;
+         add_header X-Xss-Protection "1";
+         add_header Content-Security-Policy "default-src 'self'";
+         ssl_stapling on;
+         ssl_stapling_verify on;
+         resolver 8.8.8.8;
+         root /var/www/demo;
+         index index.html;
 
-     location '/.well-known/acme-challenge' {
-      default_type "text/plain";
-        root        /var/www/demo;
-      }
+         location '/.well-known/acme-challenge' {
+          default_type "text/plain";
+            root        /var/www/demo;
+          }
 
-     location / {
-              if ($scheme = http) {
-                return 301 https://$server_name$request_uri;
-              }
-     }
+         location / {
+                  if ($scheme = http) {
+                    return 301 https://$server_name$request_uri;
+                  }
+         }
     }
 
 And can be downloaded directly from [here](https://raw.githubusercontent.com/llambiel/letsecureme/master/etc/nginx/conf.d/default.conf)
