@@ -4,11 +4,11 @@ html_title: State of the art of a secure web deployment using Let's Encrypt & Ng
 meta_desc: State of the art of a secure web deployment using Let's Encrypt & Nginx
 ---
 
-In this post we're going to outline how to get the best rating (A+) on the famous [Qualys SSL test](https://www.ssllabs.com/ssltest/) as well as securityheaders.io [analyser](https://securityheaders.io/), using automated Let's Encrypt certificate on top of Nginx, our webserver flavour of choice.
+In this post we're going to demonstrate how to get the best rating (A+) on the famous [Qualys SSL analyser](https://www.ssllabs.com/ssltest/) and the securityheaders.io [analyser](https://securityheaders.io/) using automated Let's Encrypt certificate on top of Nginx, our webserver flavour of choice.
 
 ## Let's Encrypt overview
 
-Let's Encrypt is a new open source, fully automated certificate authority that provides free SSL certificates. Let's Encrypt root certificate is also trusted by most [browsers](https://community.letsencrypt.org/t/which-browsers-and-operating-systems-support-lets-encrypt/4394).
+Let's Encrypt is a new open source, fully automated certificate authority that provides free SSL certificates. Let's Encrypt root certificate is also well trusted by most [browsers](https://community.letsencrypt.org/t/which-browsers-and-operating-systems-support-lets-encrypt/4394).
 
 Before starting, below are a few caveats regarding Let's Encrypt for which not everybody may be comfortable with:
 
@@ -24,13 +24,13 @@ The official documentation can be found [here](http://letsencrypt.readthedocs.or
 
 ## Infrastructure setup
 
-First we begin by spawning a new cloud instance. We're going to use [Exoscale](https://www.exoscale.ch) for this purpose. Exoscale is the leading Swiss cloud provider. Within their [portal](https://portal.exoscale.ch), We select our favorite Linux Ubuntu 14.04 flavour. For our demo a micro instance (512mb RAM, 1 Vcpu & 10GB disk) will be more than enough.
+First we begin by spawning a new cloud instance. We're going to use [Exoscale](https://www.exoscale.ch) for this purpose. Exoscale is the leading Swiss cloud provider. Within their [portal](https://portal.exoscale.ch), we select our favorite Linux Ubuntu 14.04 flavour. For our demo a micro instance (512mb RAM, 1 Vcpu & 10GB disk) will be more than enough.
 
 Within a few seconds our instance is available and ready for use:
 
 ![alt text](static/images/instance1.png "Our instance detailed view")
 
-We take note of its IP address so we can proceed with the DNS setup. Luckily DNS zone hosting is only a click away within the management portal:
+We take note of its IP address so we can proceed with the DNS setup. Luckily DNS zone hosting is only one click away within the management portal:
 
 ![alt text](static/images/dns1.png "DNS zone creation")
 
@@ -51,11 +51,11 @@ We're done with DNS records, don't forget to update the nameservers of your doma
 
 This change must be done from within your domain registrar administration console.
 
-## Security best practices
+## Basic security hardening
 
 Let's go back to our instance. Before beginning with the setup, we're going to apply a few elementary security best practices:
 
-On the [firewall](https://portal.exoscale.ch/compute/firewalling) side, we allow only the required traffic by adding the below rules:
+On the [firewall](https://portal.exoscale.ch/compute/firewalling) side, we allow only the required traffic by adding the rules below:
 
 * 22 (SSH)
 * 80 (HTTP)
@@ -66,9 +66,7 @@ Our firewall is now configured, we can now we log on using the root account and 
 
 The first thing we do is to apply all the security (and non security) updates and reboot the instance with the following commands:
 
-```
-apt-get update && apt-get dist-upgrade -y && reboot
-```
+    apt-get update && apt-get dist-upgrade -y && reboot
 
 We log back in and enable the automatic security updates:
 
