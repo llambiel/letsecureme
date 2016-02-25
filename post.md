@@ -99,7 +99,7 @@ We create the target folder from where our wesite will be served:
 
 ````
 mkdir /var/www/
-wget tar from repo
+wget STE demo page from github repo
 tar -xvf /var/www/
 chown -R www-data /var/www/
 ````
@@ -218,13 +218,18 @@ This script can also be downloaded [here](https://raw.githubusercontent.com/llam
 We add a daily cron that trigger our script:
 
 ```
-chmod +x /path/to/renewCerts.sh
-ln /path/to/renewCerts.sh /etc/cron.daily/
+crontab -e
+```
+
+and add the following line:
+
+```
+@daily /path/to/renewCerts.sh
 ```
 
 Now that our website is being served over HTTPS, let's check the grade we have using a default SSL configuration: https://www.ssllabs.com/ssltest/
 
-Hmmm not so good. Let's pimp a bit our Nginx config to improve our rating:
+The result isn't so good. Let's pimp a bit our Nginx config to improve our rating:
 
 ## Nginx SSL hardening 
 
