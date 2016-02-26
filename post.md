@@ -4,7 +4,7 @@ html_title: State of the art of a secure web deployment using Let's Encrypt & Ng
 meta_desc: State of the art of a secure web deployment using Let's Encrypt & Nginx
 ---
 
-This blog details the steps to get the best rating (A+) on the popular [Qualys SSL](https://www.ssllabs.com/ssltest/) and securityheaders.io [securityheaders.io] analysers, using an automated Let's Encrypt certificate. All backed by Nginx, our webserver of choice.
+In this article, we will detail all the steps to get the best rating (A+) on the popular [Qualys SSL](https://www.ssllabs.com/ssltest/) and securityheaders.io [securityheaders.io] analysers using an automated Let's Encrypt certificate. All backed by Nginx, our open source webserver of choice.
 
 ## Let's Encrypt overview
 
@@ -63,9 +63,9 @@ On the [firewall](https://portal.exoscale.ch/compute/firewalling) side, we allow
 * 443 (HTTPS)
 * ICMP ping (not mandatory but convenient)
 
-Our firewall is now configured, we can now we log on using the root account and our [SSH key](https://wiki.archlinux.org/index.php/SSH_keys). This isn't mandatory but highly recommended (did we said highly?). Standard user / password is also supported.
+Our firewall is now configured, we can now we log on using the root account and our [SSH key](https://community.exoscale.ch/documentation/compute/ssh-keypairs/). This isn't mandatory but highly recommended (did we said highly?). Standard user / password is also supported.
 
-The first thing we do is to apply all the security (and non security) updates and reboot the instance with the following commands:
+The first thing we do is to apply all the software updates and reboot the instance with the following commands:
 
     apt-get update && apt-get dist-upgrade -y && reboot
 
@@ -78,7 +78,7 @@ Looks good so far. If you're using SSH key authentication, __and only if so !__,
     sed -i 's|PasswordAuthentication yes|PasswordAuthentication no|g' /etc/ssh/sshd_config
     service ssh restart
 
-We suggest to install fail2ban to prevent brute force SSH attacks (specifically if you're using password authentication):
+We suggest to install [fail2ban](http://www.fail2ban.org/wiki/index.php/Main_Page) to prevent brute force SSH attacks (specifically if you're using password authentication):
 
     apt-get install -y fail2ban
 
@@ -183,7 +183,7 @@ We need to ensure that our certificate, which is valid for 90 days only, get ren
         cat /var/log/letsencrypt/renew.log
         exit 1
     fi
-    service nginx reload
+    nginx -t && nginx -s reload
 
 This script can also be downloaded [here](https://raw.githubusercontent.com/llambiel/letsecureme/master/renewCerts.sh)
 
