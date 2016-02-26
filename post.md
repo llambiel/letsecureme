@@ -4,7 +4,7 @@ html_title: State of the art of a secure web deployment using Let's Encrypt & Ng
 meta_desc: State of the art of a secure web deployment using Let's Encrypt & Nginx
 ---
 
-In this article, we will detail all the steps to get the best rating (A+) on the popular [Qualys SSL](https://www.ssllabs.com/ssltest/) and securityheaders.io [securityheaders.io] analysers using an automated Let's Encrypt certificate. All backed by Nginx, our open source webserver of choice.
+In this article, we will detail all the steps to get the best rating (A+) on the popular [Qualys SSL](https://www.ssllabs.com/ssltest/) and [securityheaders.io](securityheaders.io) analysers using an automated Let's Encrypt certificate. All backed by Nginx, our open source webserver of choice.
 
 ## Let's Encrypt overview
 
