@@ -12,16 +12,16 @@ Let's Encrypt is a new open source, fully automated certification authority that
 
 Before starting, below are a few caveats for which not everybody may be comfortable with:
 
-* It's still in __beta__ phase
-* It requires root privileges
-* The client does not yet "officially" support Nginx (it works flawlessly)
-* It installs dependencies automatically (like [Augeas](http://augeas.net/), [gcc](https://gcc.gnu.org/), [Python](https://www.python.org/))
-* Throttling is enforced so you cannot request more than 5 certificates per week for a given domain
-* Certificate is valid for 90 days
+* It's still in __beta__ phase.
+* It requires root privileges.
+* The client does not yet "officially" support Nginx (but it works flawlessly).
+* It installs dependencies automatically (like [Augeas](http://augeas.net/), [gcc](https://gcc.gnu.org/), [Python](https://www.python.org/)).
+* Throttling is enforced so you cannot request more than 5 certificates per week for a given domain.
+* Certificate is valid for 90 days.
 
 It's possible get a certificate using [alternate lightweight and less intrusive clients](https://community.letsencrypt.org/t/list-of-client-implementations/2103) however we won't cover them in this post.
 
-The official documentation can be found [here](http://letsencrypt.readthedocs.org/en/latest/intro.html)
+The official documentation can be found [here](http://letsencrypt.readthedocs.org/en/latest/intro.html).
 
 ## Infrastructure setup
 
@@ -37,7 +37,7 @@ We take note of its IP address so we can proceed with the DNS setup. Luckily DNS
 
 We create our zone "letsecure.me".
 
-_N.B Put here your own zone name_
+_N.B Put here your own zone name._
 
 Now we add a "A" record with the value of the ip address of our freshly spawned instance, as well as a "catch all" (wildcard) CNAME record:
 
@@ -45,10 +45,10 @@ Now we add a "A" record with the value of the ip address of our freshly spawned 
 
 We're done with DNS records, don't forget to update the nameservers of your domain with the ones below:
 
-* ns1.exoscale.com
-* ns1.exoscale.ch
-* ns1.exoscale.net
-* ns1.exoscale.io
+* `ns1.exoscale.com`
+* `ns1.exoscale.ch`
+* `ns1.exoscale.net`
+* `ns1.exoscale.io`
 
 This change must be done from within your domain registrar administration console.
 
@@ -63,7 +63,7 @@ On the [firewall](https://portal.exoscale.ch/compute/firewalling) side, we allow
 * 443 (HTTPS)
 * ICMP ping (not mandatory but convenient)
 
-Our firewall is now configured, we can now we log on using the root account and our [SSH key](https://community.exoscale.ch/documentation/compute/ssh-keypairs/). This isn't mandatory but highly recommended (did we said highly?). Standard user / password is also supported.
+Our firewall is now configured. We can now login using the root account and our [SSH key](https://community.exoscale.ch/documentation/compute/ssh-keypairs/). This isn't mandatory but highly recommended (did we said highly?). Standard authentication with password is also supported.
 
 The first thing we do is to apply all the software updates and reboot the instance with the following commands:
 
@@ -73,7 +73,7 @@ We log back in and enable the automatic security updates:
 
     dpkg-reconfigure --priority=low unattended-upgrades
 
-Looks good so far. If you're using SSH key authentication, __and only if so !__, you may also disable the SSH password authentication:
+Looks good so far. If you're using SSH key authentication, __and only if so__, you may also disable the SSH password authentication:
 
     sed -i 's|PasswordAuthentication yes|PasswordAuthentication no|g' /etc/ssh/sshd_config
     service ssh restart
@@ -84,9 +84,9 @@ We suggest to install [fail2ban](http://www.fail2ban.org/wiki/index.php/Main_Pag
 
 ## Nginx Setup
 
-Now we'll take care of Nginx. We're not going to install the package from the Ubuntu repository as we require features (like HTTTP2) that can only be found in the latest "mainline" release branch. We add then the Nginx official repository using:
+Now we'll take care of Nginx. We're not going to install the package from the Ubuntu repository as we require features (like HTTP/2) that can only be found in the latest "mainline" release branch. We add then the Nginx official repository using:
 
-    wget http://nginx.org/keys/nginx_signing.key && sudo apt-key add nginx_signing.key && rm nginx_signing.key
+    curl http://nginx.org/keys/nginx_signing.key | apt-key add -
     echo "deb http://nginx.org/packages/mainline/ubuntu/ trusty nginx" > /etc/apt/sources.list.d/nginx_org_packages_mainline_ubuntu.list
     apt-get update && apt-get install -y nginx
 
@@ -102,7 +102,7 @@ Remove Nginx default configuration:
     rm /etc/nginx/conf.d/default.conf
     touch /etc/nginx/conf.d/default.conf
 
-And add the following Nginx configuration block in /etc/nginx/conf.d/default.conf, so Let's Encrypt client can create temporary files required to authenticate the domain for which we're requesting the certificate for:
+And add the following Nginx configuration block in `/etc/nginx/conf.d/default.conf`, so Let's Encrypt client can create temporary files required to authenticate the domain for which we're requesting the certificate for:
 
     server {
         listen 80;
@@ -133,7 +133,7 @@ Now we can request our certificate. You'll get prompted to provide your email ad
     export DIR=/var/www/demo
     /opt/letsencrypt/letsencrypt-auto certonly --server https://acme-v01.api.letsencrypt.org/directory -a webroot --webroot-path=$DIR -d $DOMAINS
 
-_N.B Put your own domain in the DOMAINS list_
+_N.B Put your own domain in the DOMAINS list._
 
 Our cert has been issued and installed!
 
@@ -151,9 +151,9 @@ Our cert has been issued and installed!
 
     Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
 
-Let's Encrypt configuration and certificates can be found under /etc/letsencrypt.
+Let's Encrypt configuration and certificates can be found under `/etc/letsencrypt`.
 
-We add the following minimal Nginx configuration block in /etc/nginx/conf.d/default.conf so our website get served over HTTPS:
+We add the following minimal Nginx configuration block in `/etc/nginx/conf.d/default.conf` so our website get served over HTTPS:
 
     server {
         listen 443 ssl;
@@ -163,7 +163,7 @@ We add the following minimal Nginx configuration block in /etc/nginx/conf.d/defa
         ssl_certificate_key /etc/letsencrypt/live/letsecure.me/privkey.pem;
     }
 
-_N.B replace the server_name with your domain_
+_N.B replace the server name with your domain._
 
 Let's reload nginx one more time:
 
@@ -171,7 +171,7 @@ Let's reload nginx one more time:
 
 Now point your web browser to https://YOURDOMAINHERE
 
-The homepage should display now over HTTPS \O/ 
+The homepage should display now over HTTPS. \o/ 
 
 We need to ensure that our certificate, which is valid for 90 days only, get renewed automatically. We're going to use a small script and a crontab for this purpose:
 
@@ -185,7 +185,7 @@ We need to ensure that our certificate, which is valid for 90 days only, get ren
     fi
     nginx -t && nginx -s reload
 
-This script can also be downloaded [here](https://raw.githubusercontent.com/llambiel/letsecureme/master/renewCerts.sh)
+This script can also be downloaded [here](https://raw.githubusercontent.com/llambiel/letsecureme/master/renewCerts.sh).
 
 We add a daily cron that trigger our script:
 
@@ -201,7 +201,7 @@ The result isn't so good. Let's pimp a bit our Nginx config to improve our ratin
 
 ## Nginx SSL hardening 
 
-Remove the actual config in /etc/nginx/conf.d/default.conf and replace it by the block below:
+Remove the actual config in `/etc/nginx/conf.d/default.conf` and replace it by the block below:
 
     server {
         listen 80;
@@ -232,7 +232,7 @@ Remove the actual config in /etc/nginx/conf.d/default.conf and replace it by the
          }
     }
 
-_N.B replace the server_name and ssl_certificate paths with your domain_
+_N.B replace the server name and SSL certificate paths with your domain._
 
 And reload nginx:
 
@@ -242,11 +242,11 @@ Let's review some important config items that we've just added:
 
     listen 443 ssl http2;
 
-With this directive, we tell Nginx to listen over SSL and also support the connection over the new [HTTP2](https://en.wikipedia.org/wiki/HTTP/2) standard, if the client browser support / request it. Please also note that HTTP2 is SSL only
+With this directive, we tell Nginx to listen over SSL and also support the connection over the new [HTTP/2](https://en.wikipedia.org/wiki/HTTP/2) standard, if the client browser support / request it. Please also note that HTTP/2 is SSL only
 
     ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
 
-We disable old and weak SSLv2 & V3 protocols and allow only the TLS ones.
+We disable old and weak SSLv2/SSLv3 protocols and allow only the TLS ones.
 
     ssl_ciphers EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5;
     ssl_prefer_server_ciphers On;
@@ -257,13 +257,13 @@ This is the cipher list we support. This list is in our opinion one of the most 
     ssl_stapling on;
     ssl_stapling_verify on;
 
-We enable OCSP stapling. OCSP stapling is well described in details [here](https://www.maxcdn.com/one/visual-glossary/ocsp-stapling/)
+We enable OCSP stapling. OCSP stapling is well described in details [here](https://www.maxcdn.com/one/visual-glossary/ocsp-stapling/).
 
     add_header Strict-Transport-Security "max-age=31557600; includeSubDomains";
 
 Here we add a HTTP header instructing the client browser to force a HTTPS connection to our domain and __all our Subdomains for 1 year__. __Warning__ be careful here before applying it in production, you must ensure first that all your subdomains are being secured as well.
 
-Let's re-test again our setup: https://www.ssllabs.com/ssltest/:
+Let's re-test again our setup with [Qualys SSL](https://www.ssllabs.com/ssltest/):
 
 ![alt text](static/images/qualys2.png "Qualys SSL final check")
 
@@ -277,7 +277,7 @@ Let's get a step further and try to get a good grade on this analyser as well. L
 
 ![alt text](static/images/securityheaders1.png "securityheaders.io first check")
 
-_N.B ensure to test using HTTPS_
+_N.B ensure to test using HTTPS._
 
 Again let's tune a bit our configuration by adding a few HTTP headers:
 
@@ -295,7 +295,7 @@ The [X-Xss-Protection](https://scotthelme.co.uk/hardening-your-http-response-hea
 
     add_header Content-Security-Policy "default-src 'self'";
 
-The Content-Security-Policy header defines approved sources of content that the browser may load. It can be an effective countermeasure to Cross Site Scripting (XSS) attacks. __WARNING__ this header must be carefully planned before deploying it on production website as it could easily break stuff and prevent a website to load it's content! Fortunately there is a "report mode" available which the browser to report any issue in the debug console but not actually block any content. This is very helpful to ensure a smooth deployment  of this header:
+The Content-Security-Policy header defines approved sources of content that the browser may load. It can be an effective countermeasure to Cross Site Scripting (XSS) attacks. __WARNING__ This header must be carefully planned before deploying it on production website as it could easily break stuff and prevent a website to load it's content! Fortunately there is a "report mode" available which the browser to report any issue in the debug console but not actually block any content. This is very helpful to ensure a smooth deployment  of this header:
 
 ![alt text](static/images/reportmode.png "report mode")
 
@@ -342,15 +342,15 @@ Our final Nginx configuration looks like:
          }
     }
 
-And can be downloaded directly from [here](https://raw.githubusercontent.com/llambiel/letsecureme/master/etc/nginx/conf.d/default.conf)
+And can be downloaded directly from [here](https://raw.githubusercontent.com/llambiel/letsecureme/master/etc/nginx/conf.d/default.conf).
 
 Let's reload Nginx one more time to apply our new headers:
 
     nginx -t && nginx -s reload
 
-And scan again our site using https://securityheaders.io/:
+And scan again our site using [securityheaders.io](https://securityheaders.io/):
 
-_N.B ensure to test using HTTPS_
+_N.B ensure to test using HTTPS._
 
 ![alt text](static/images/securityheaders2.png "securityheaders.io final check")
 
