@@ -6,7 +6,7 @@ body {
 
 .container {
   margin: 0 auto;
-  max-width: 750px;
+  max-width: 800px;
   padding: 0 20px;
 }
 
@@ -18,20 +18,14 @@ body {
   margin-top: $padding-xl;
 }
 
+.presentation {
+  margin-bottom: 6rem;
+}
+
 .footer {
   margin-bottom: $padding-xl;
 }
 
 .row {
   @include break;
-}
-
-.col-lead {
-  @include span(2 of 3 .1);
-  @include first;
-}
-
-.col-logo {
-  @include span(1 of 3 .1);
-  @include last;
 }

@@ -29,7 +29,6 @@ p {
 
 h1 {
   color: #fff;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 4rem;
   font-weight: 200;
   margin: 0;
@@ -74,7 +73,7 @@ h6 {
   line-height: 1.7;
 
   * + * {
-    margin-top: 2rem;
+    margin-top: 1.7rem;
   }
 
   h2,
@@ -101,13 +100,18 @@ h6 {
     border: 1px solid #78edd5;
     display: block;
     margin: 2rem auto;
+    max-width: 100%;
   }
 
   p {
     &:first-child img {
       margin-top: 0;
     }
+  }
 
+  p,
+  pre,
+  ul {
     + h2 {
       margin-top: 5rem;
     }
@@ -143,7 +147,6 @@ h6 {
   }
 
   ul {
-    border-left: 5px solid #000;
     margin-left: 1.5rem;
     padding: 0 2.5rem 0 0;
     width: auto;
@@ -192,8 +195,8 @@ pre {
 
 .lead {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 1.5rem;
-  line-height: 2rem;
+  font-size: 1.8rem;
+  line-height: 2.4rem;
   font-weight: 200;
   color: #16a085;
 }
