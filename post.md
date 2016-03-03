@@ -2,9 +2,10 @@
 title: State of the art of a secure web deployment using Let's Encrypt & Nginx
 html_title: State of the art of a secure web deployment using Let's Encrypt & Nginx
 meta_desc: State of the art of a secure web deployment using Let's Encrypt & Nginx
+intro: Securing a website is hard this why you should do, it how to do it and blah blah.
 ---
 
-In this article, we will detail all the steps to get the best rating (A+) on the popular [Qualys SSL](https://www.ssllabs.com/ssltest/) and [securityheaders.io](securityheaders.io) analysers using an automated Let's Encrypt certificate. All backed by Nginx, our open source webserver of choice.
+We will detail all the steps to get the best rating (A+) on the popular [Qualys SSL](https://www.ssllabs.com/ssltest/) and [securityheaders.io](securityheaders.io) analysers using an automated Let's Encrypt certificate. All backed by Nginx, our open source webserver of choice.
 
 ## Let's Encrypt overview
 
@@ -37,7 +38,7 @@ We take note of its IP address so we can proceed with the DNS setup. Luckily DNS
 
 We create our zone "letsecure.me".
 
-_N.B Put here your own zone name._
+___N.B Put here your own zone name.___
 
 Now we add a "A" record with the value of the ip address of our freshly spawned instance, as well as a "catch all" (wildcard) CNAME record:
 
