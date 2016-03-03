@@ -31,14 +31,13 @@ gulp.task('imagemin', function() {
 });
 
 gulp.task('render', function() {
-    exec('node ./render.js', function() {
-        console.log(arguments);
-    });
+    exec('node ./render.js', function() {});
 });
 
 gulp.task('watch', function() {
     gulp.watch('./src/scss/**/*.scss', ['sass']);
-    gulp.watch('./src/post.md', ['render']);
+    gulp.watch('./post.md', ['render']);
+    gulp.watch(['./src/svg/*', './src/img/*'], ['imagemin']);
 });
 
 gulp.task('default', ['render', 'sass', 'imagemin']);
