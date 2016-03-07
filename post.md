@@ -64,44 +64,44 @@ On the [firewall](https://portal.exoscale.ch/compute/firewalling) side, we allow
 * 443 (HTTPS)
 * ICMP ping (not mandatory but convenient)
 
-Our firewall is now configured. We can now login using the root account and our [SSH key](https://community.exoscale.ch/documentation/compute/ssh-keypairs/). This isn't mandatory but highly recommended (did we said highly?). Standard authentication with password is also supported.
+Our firewall is now configured. We can now login using the _ubuntu_ user and our [SSH key](https://community.exoscale.ch/documentation/compute/ssh-keypairs/). This isn't mandatory but highly recommended (did we said highly?). Standard authentication with password is also supported.
 
 The first thing we do is to apply all the software updates and reboot the instance with the following commands:
 
-    apt-get update && apt-get dist-upgrade -y && reboot
+    sudo apt-get update && sudo apt-get dist-upgrade -y && sudo reboot
 
 We log back in and enable the automatic security updates:
 
-    dpkg-reconfigure --priority=low unattended-upgrades
+    sudo dpkg-reconfigure --priority=low unattended-upgrades
 
 Looks good so far. If you're using SSH key authentication, __and only if so__, you may also disable the SSH password authentication:
 
-    sed -i 's|PasswordAuthentication yes|PasswordAuthentication no|g' /etc/ssh/sshd_config
-    service ssh restart
+    sudo sed -i 's|PasswordAuthentication yes|PasswordAuthentication no|g' /etc/ssh/sshd_config
+    sudo service ssh restart
 
 We suggest to install [fail2ban](http://www.fail2ban.org/wiki/index.php/Main_Page) to prevent brute force SSH attacks (specifically if you're using password authentication):
 
-    apt-get install -y fail2ban
+    sudo apt-get install -y fail2ban
 
 ## Nginx Setup
 
 Now we'll take care of Nginx. We're not going to install the package from the Ubuntu repository as we require features (like HTTP/2) that can only be found in the latest "mainline" release branch. We add then the Nginx official repository using:
 
-    curl http://nginx.org/keys/nginx_signing.key | apt-key add -
-    echo "deb http://nginx.org/packages/mainline/ubuntu/ trusty nginx" > /etc/apt/sources.list.d/nginx_org_packages_mainline_ubuntu.list
-    apt-get update && apt-get install -y nginx
+    curl http://nginx.org/keys/nginx_signing.key | sudo apt-key add -
+    sudo echo "deb http://nginx.org/packages/mainline/ubuntu/ trusty nginx" > /etc/apt/sources.list.d/nginx_org_packages_mainline_ubuntu.list
+    sudo apt-get update && apt-get install -y nginx
 
 We create the target folder from where our wesite will be served:
 
-    mkdir /var/www/
+    sudo mkdir /var/www/
     wget STE demo page from github repo
     tar -xvf /var/www/
-    chown -R www-data /var/www/
+    sudo chown -R www-data /var/www/
 
 Remove Nginx default configuration:
 
-    rm /etc/nginx/conf.d/default.conf
-    touch /etc/nginx/conf.d/default.conf
+    sudo rm /etc/nginx/conf.d/default.conf
+    sudo touch /etc/nginx/conf.d/default.conf
 
 And add the following Nginx configuration block in `/etc/nginx/conf.d/default.conf`, so Let's Encrypt client can create temporary files required to authenticate the domain for which we're requesting the certificate for:
 
@@ -116,13 +116,13 @@ And add the following Nginx configuration block in `/etc/nginx/conf.d/default.co
 
 And we reload Nginx to apply our configuration change:
 
-    nginx -t && nginx -s reload
+    nginx -t && sudo nginx -s reload
 
 ## Let's Encrypt setup
 
 We're done with Nginx for the time being. Go for Let's Encrypt. We're going to clone its [GIT](https://github.com/letsencrypt/letsencrypt) repository:
 
-    apt-get install -y git
+    sudo apt-get install -y git
     git clone https://github.com/letsencrypt/letsencrypt /opt/letsencrypt
     /opt/letsencrypt/letsencrypt-auto
 
@@ -168,7 +168,7 @@ _N.B replace the server name with your domain._
 
 Let's reload nginx one more time:
 
-    nginx -t &&  nginx -s reload
+    nginx -t &&  sudo nginx -s reload
 
 Now point your web browser to https://YOURDOMAINHERE
 
@@ -190,7 +190,7 @@ This script can also be downloaded [here](https://raw.githubusercontent.com/llam
 
 We add a daily cron that trigger our script:
 
-    crontab -e
+    sudo crontab -e
 
 and add the following line:
 
@@ -237,7 +237,7 @@ _N.B replace the server name and SSL certificate paths with your domain._
 
 And reload nginx:
 
-    nginx -t && nginx -s reload
+    nginx -t && sudo nginx -s reload
 
 Let's review some important config items that we've just added:
 
@@ -347,7 +347,7 @@ And can be downloaded directly from [here](https://raw.githubusercontent.com/lla
 
 Let's reload Nginx one more time to apply our new headers:
 
-    nginx -t && nginx -s reload
+    nginx -t && sudo nginx -s reload
 
 And scan again our site using [securityheaders.io](https://securityheaders.io/):
 
