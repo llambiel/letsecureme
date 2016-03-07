@@ -20,9 +20,7 @@ Here are the steps we will go through:
 * hardening the Security Headers
 * get that shiny A+ security rating we are looking for
 
-We will use Exoscale as a cloud provider since he offers integrated DNS management, integrated firewalls and is mainly focused on security, but you can follow along using any other cloud or traditional hosting service.
-
-
+We will use [Exoscale](https://www.exoscale.ch) as a cloud provider since they offer integrated firewall and DNS management. Exoscale is mainly focused on security, but you can follow along using any other cloud or traditional hosting service.
 
 ## Let's Encrypt overview
 
@@ -43,7 +41,7 @@ The official documentation can be found [here](http://letsencrypt.readthedocs.or
 
 ## Infrastructure setup
 
-First we begin by spawning a new cloud instance. We're going to use [Exoscale](https://www.exoscale.ch) for this purpose. Exoscale is the leading Swiss cloud provider. Within their [portal](https://portal.exoscale.ch), we select our favorite Linux Ubuntu 14.04 flavor. For our demo a micro instance (512mb RAM, 1 Vcpu & 10GB disk) will be more than enough.
+First we begin by spawning a new cloud instance. Within the [portal](https://portal.exoscale.ch), we select our favorite Linux Ubuntu 14.04 flavor. For our demo a micro instance (512mb RAM, 1 Vcpu & 10GB disk) will be more than enough.
 
 Within a few seconds our instance is available and ready for use:
 
@@ -80,6 +78,8 @@ On the [firewall](https://portal.exoscale.ch/compute/firewalling) side, we allow
 * 80 (HTTP)
 * 443 (HTTPS)
 * ICMP ping (not mandatory but convenient)
+
+![alt text](static/images/firewall1.png "Firewall rules")
 
 Our firewall is now configured. We can now login using the _ubuntu_ user and our [SSH key](https://community.exoscale.ch/documentation/compute/ssh-keypairs/). This isn't mandatory but highly recommended. Standard authentication with password is also supported.
 
