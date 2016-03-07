@@ -111,6 +111,11 @@ h6 {
     max-width: 100%;
   }
 
+  a > img {
+    cursor: pointer;
+    cursor: -webkit-zoom-in;
+  }
+
   p {
     &:first-child img {
       margin-top: 0;
