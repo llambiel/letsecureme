@@ -1,7 +1,7 @@
 ---
-title: State of the art of a secure web deployment using Let's Encrypt & Nginx
-html_title: State of the art of a secure web deployment using Let's Encrypt & Nginx
-meta_desc: State of the art of a secure web deployment using Let's Encrypt & Nginx
+title: Let's Encrypt & Nginx - state of the art, secure web deployment
+html_title: Let's Encrypt & Nginx - state of the art, secure web deployment
+meta_desc: Let's Encrypt & Nginx - state of the art, secure web deployment
 intro: Securing a website is hard this why you should do, it how to do it and blah blah.
 ---
 
@@ -357,7 +357,7 @@ _N.B ensure to test using HTTPS._
 
 "A" grade, much better! Some of you may have noticied that we didn't enable HPKP (HTTP Public Key Pinning), which would have allowed us to get the A+ grade. In fact we skipped that header as it could really screw your website if the feature is not well understood and carefully planned. This header will be covered in an upcoming detailed blog post.
 
-## Conclusion (To be improved)
+## Conclusion
 
 Let's Encrypt can be easily deployed and maintained on top of Nginx. Specific SSL and browser headers hardening must be deployed in order to ensure a modern and secure web deployment.
 
