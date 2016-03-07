@@ -20,12 +20,11 @@ Here are the steps we will go through:
 * hardening the Security Headers
 * get that shiny A+ security rating we are looking for
 
-We will use Exoscale as a cloud provider since he offers integrated DNS management, integrated firewalls and is mainly focused on security, but you can follow along using any other cloud or traditional hosting service.
-
+We will use [Exoscale](https://www.exoscale.ch) as a cloud provider since they offer integrated firewall and DNS management. Exoscale is mainly focused on security, but you can follow along using any other cloud or traditional hosting service.
 
 ## Let's Encrypt overview
 
-Let's Encrypt is a new open source certificate authority (CA) providing free and automated SSL certificates. The Let's Encrypt root certificate is also well trusted by most [browsers](https://community.letsencrypt.org/t/which-browsers-and-operating-systems-support-lets-encrypt/4394).
+Let's Encrypt is a new open source certificate authority (CA) providing free and automated SSL/TLS certificates. The Let's Encrypt root certificate is also well trusted by most [browsers](https://community.letsencrypt.org/t/which-browsers-and-operating-systems-support-lets-encrypt/4394).
 
 Before starting, below are a few caveats which not everybody may be comfortable with:
 
@@ -42,7 +41,7 @@ The official documentation can be found [here](http://letsencrypt.readthedocs.or
 
 ## Infrastructure setup
 
-First we begin by spawning a new cloud instance. We're going to use [Exoscale](https://www.exoscale.ch) for this purpose. Exoscale is the leading Swiss cloud provider. Within their [portal](https://portal.exoscale.ch), we select our favorite Linux Ubuntu 14.04 flavor. For our demo a micro instance (512mb RAM, 1 Vcpu & 10GB disk) will be more than enough.
+First we begin by spawning a new cloud instance. Within the [portal](https://portal.exoscale.ch), we select our favorite Linux Ubuntu 14.04 flavor. For our demo a micro instance (512mb RAM, 1 Vcpu & 10GB disk) will be more than enough.
 
 Within a few seconds our instance is available and ready for use:
 
@@ -79,6 +78,8 @@ On the [firewall](https://portal.exoscale.ch/compute/firewalling) side, we allow
 * 80 (HTTP)
 * 443 (HTTPS)
 * ICMP ping (not mandatory but convenient)
+
+![alt text](static/images/firewall1.png "Firewall rules")
 
 Our firewall is now configured. We can now login using the _ubuntu_ user and our [SSH key](https://community.exoscale.ch/documentation/compute/ssh-keypairs/). This isn't mandatory but highly recommended. Standard authentication with password is also supported.
 
@@ -212,11 +213,11 @@ and add the following line:
 
     @daily /path/to/renewCerts.sh
 
-Now that our website is being served over HTTPS, let's check the grade we have using a default SSL configuration: [SSL analyser](https://www.ssllabs.com/ssltest/)
+Now that our website is being served over HTTPS, let's check the grade we have using a default SSL/TLS configuration: [SSL analyser](https://www.ssllabs.com/ssltest/)
 
 The result's not so good. Let's pimp a bit our Nginx config to improve our rating:
 
-## Nginx SSL hardening 
+## Nginx SSL/TLS hardening 
 
 Remove the actual config in `/etc/nginx/conf.d/default.conf` and replace it by the block below:
 
@@ -259,7 +260,7 @@ Let's review some important config items that we've just added:
 
     listen 443 ssl http2;
 
-With this directive, we tell Nginx to listen over SSL and also support the connection over the new [HTTP/2](https://en.wikipedia.org/wiki/HTTP/2) standard, if the client browser support / request it. Please note that HTTP/2 is SSL only
+With this directive, we tell Nginx to listen over SSL and also support the connection over the new [HTTP/2](https://en.wikipedia.org/wiki/HTTP/2) standard, if the client browser support / request it. Please note that HTTP/2 is SSL/TLS only
 
     ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
 
@@ -284,7 +285,7 @@ Let's re-test again our setup with [Qualys SSL](https://www.ssllabs.com/ssltest/
 
 ![alt text](static/images/qualys2.png "Qualys SSL final check")
 
-Hey, this looks much better now ! Our setup is now secured using an optimal SSL configuration, our first objective is achieved.
+Hey, this looks much better now ! Our setup is now secured using an optimal SSL/TLS configuration, our first objective is achieved.
 
 ## Security headers hardening
 
@@ -375,6 +376,6 @@ _N.B ensure to test using HTTPS._
 
 ## Conclusion
 
-Let's Encrypt can be easily deployed and maintained on top of Nginx. Specific SSL and browser headers hardening must be deployed in order to ensure a modern and secure web deployment.
+Let's Encrypt can be easily deployed and maintained on top of Nginx. Specific SSL/TLS and browser headers hardening must be deployed in order to ensure a modern and secure web deployment.
 
-There are many reasons for deploying SSL on your website. Security is, naturally, the most important and obvious one. However, it's also a trust building marker for parts of your audience. To top it all off, Google takes SSL implementation into account in the search results. There are no drawbacks to having an active certificate on your website. With a free certificate from Let's Encrypt and the directions in this blog post there is absolutely no reason to hesitate. Try it now!
+There are many reasons for deploying SSL/TLS on your website. Security is, naturally, the most important and obvious one. However, it's also a trust building marker for parts of your audience. To top it all off, Google takes SSL/TLS implementation into account in the search results. There are no drawbacks to having an active certificate on your website. With a free certificate from Let's Encrypt and the directions in this blog post there is absolutely no reason to hesitate. Try it now!
