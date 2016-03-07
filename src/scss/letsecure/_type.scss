@@ -1,4 +1,12 @@
-@import url(https://fonts.googleapis.com/css?family=Noto+Serif);
+/* noto-serif-regular - latin */
+@font-face {
+  font-family: 'Noto Serif';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Noto Serif'), local('NotoSerif'),
+       url('../fonts/noto-serif-v4-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+ */
+       url('../fonts/noto-serif-v4-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
 
 body {
   color: hsla(0, 0%, 15%, 1);

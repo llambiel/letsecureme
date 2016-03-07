@@ -5,6 +5,7 @@
   "devDependencies": {
     "breakpoint-sass": "^2.7.0",
     "gulp": "^3.9.1",
+    "gulp-copy": "0.0.2",
     "gulp-exec": "^2.1.2",
     "gulp-imagemin": "^2.4.0",
     "gulp-sass": "^2.2.0",
