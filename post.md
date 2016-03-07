@@ -88,8 +88,8 @@ We suggest to installing [fail2ban](http://www.fail2ban.org/wiki/index.php/Main_
 Now we'll take care of Nginx. We're not going to install the package from the Ubuntu repository as we require features (like HTTP/2) that can only be found in the latest "mainline" release branch. We add the Nginx official repository using:
 
     curl http://nginx.org/keys/nginx_signing.key | sudo apt-key add -
-    sudo echo "deb http://nginx.org/packages/mainline/ubuntu/ trusty nginx" > /etc/apt/sources.list.d/nginx_org_packages_mainline_ubuntu.list
-    sudo apt-get update && apt-get install -y nginx
+    echo "deb http://nginx.org/packages/mainline/ubuntu/ trusty nginx" | sudo tee --append /etc/apt/sources.list.d/nginx_org_packages_mainline_ubuntu.list
+    sudo apt-get update && sudo apt-get install -y nginx
 
 We create the target folder from where our wesite will be served:
 
@@ -100,7 +100,7 @@ We create the target folder from where our wesite will be served:
 
 Remove Nginx default configuration:
 
-    sudo rm /etc/nginx/conf.d/default.conf
+    sudo mv /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.orig
     sudo touch /etc/nginx/conf.d/default.conf
 
 And add the following Nginx configuration block in `/etc/nginx/conf.d/default.conf`, so Let's Encrypt client can create the temporary files required to authenticate the domain for which we're requesting the certificate:
@@ -116,14 +116,14 @@ And add the following Nginx configuration block in `/etc/nginx/conf.d/default.co
 
 Now we reload Nginx to apply our configuration change:
 
-    nginx -t && sudo nginx -s reload
+    sudo nginx -t && sudo nginx -s reload
 
 ## Let's Encrypt setup
 
 We're done with Nginx for the time being. Go for Let's Encrypt. We're going to clone its [GIT](https://github.com/letsencrypt/letsencrypt) repository:
 
     sudo apt-get install -y git
-    git clone https://github.com/letsencrypt/letsencrypt /opt/letsencrypt
+    sudo git clone https://github.com/letsencrypt/letsencrypt /opt/letsencrypt
     /opt/letsencrypt/letsencrypt-auto
 
 Note that the setup script is installing all the required dependencies automatically.
@@ -168,7 +168,7 @@ _N.B replace the server name with your domain._
 
 Let's reload nginx one more time:
 
-    nginx -t &&  sudo nginx -s reload
+    sudo nginx -t &&  sudo nginx -s reload
 
 Now point your web browser to https://YOURDOMAINHERE
 
@@ -196,7 +196,7 @@ and add the following line:
 
     @daily /path/to/renewCerts.sh
 
-Now that our website is being served over HTTPS, let's check the grade we have using a default SSL configuration: https://www.ssllabs.com/ssltest/
+Now that our website is being served over HTTPS, let's check the grade we have using a default SSL configuration: [SSL analyser](https://www.ssllabs.com/ssltest/)
 
 The result's not so good. Let's pimp a bit our Nginx config to improve our rating:
 
@@ -208,36 +208,36 @@ Remove the actual config in `/etc/nginx/conf.d/default.conf` and replace it by t
         listen 80;
         listen 443 ssl http2;
         server_name yourdomain.com www.yourdomain.com;
-         ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-         ssl_ciphers EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5;
-         ssl_prefer_server_ciphers On;
-         ssl_certificate /etc/letsencrypt/live/yourdomain.com/fullchain.pem;
-         ssl_certificate_key /etc/letsencrypt/live/yourdomain.com/privkey.pem;
-         ssl_session_cache shared:SSL:128m;
-         add_header Strict-Transport-Security "max-age=31557600; includeSubDomains";
-         ssl_stapling on;
-         ssl_stapling_verify on;
-         resolver 8.8.8.8;
-         root /var/www/demo;
-         index index.html;
+        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+        ssl_ciphers EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5;
+        ssl_prefer_server_ciphers On;
+        ssl_certificate /etc/letsencrypt/live/yourdomain.com/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/yourdomain.com/privkey.pem;
+        ssl_session_cache shared:SSL:128m;
+        add_header Strict-Transport-Security "max-age=31557600; includeSubDomains";
+        ssl_stapling on;
+        ssl_stapling_verify on;
+        resolver 8.8.8.8;
+        root /var/www/demo;
+        index index.html;
 
-         location '/.well-known/acme-challenge' {
-          default_type "text/plain";
+        location '/.well-known/acme-challenge' {
+            default_type "text/plain";
             root        /var/www/demo;
-          }
+        }
 
-         location / {
-                  if ($scheme = http) {
-                    return 301 https://$server_name$request_uri;
-                  }
-         }
+        location / {
+            if ($scheme = http) {
+                return 301 https://$server_name$request_uri;
+            }
+        }
     }
 
 _N.B replace the server name and SSL certificate paths with your domain._
 
 And reload nginx:
 
-    nginx -t && sudo nginx -s reload
+    sudo nginx -t && sudo nginx -s reload
 
 Let's review some important config items that we've just added:
 
@@ -347,7 +347,7 @@ And can be downloaded directly from [here](https://raw.githubusercontent.com/lla
 
 Let's reload Nginx one more time to apply our new headers:
 
-    nginx -t && sudo nginx -s reload
+    sudo nginx -t && sudo nginx -s reload
 
 And scan again our site using [securityheaders.io](https://securityheaders.io/):
 
