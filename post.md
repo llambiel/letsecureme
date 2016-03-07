@@ -5,7 +5,7 @@ meta_desc: State of the art of a secure web deployment using Let's Encrypt & Ngi
 intro: Securing a website is hard this why you should do, it how to do it and blah blah.
 ---
 
-We will detail all the steps to get the best rating (A+) on the popular [Qualys SSL](https://www.ssllabs.com/ssltest/) and [securityheaders.io](securityheaders.io) analysers using an automated Let's Encrypt certificate. All backed by Nginx, our open source webserver of choice.
+We will detail all the steps to get the best rating (A+) on the popular [Qualys SSL](https://www.ssllabs.com/ssltest/) and [securityheaders.io](https://securityheaders.io) analysers using an automated Let's Encrypt certificate. All backed by Nginx, our open source webserver of choice.
 
 ## Let's Encrypt overview
 
