@@ -5,6 +5,7 @@ var sass = require('gulp-sass');
 var imagemin = require('gulp-imagemin');
 var exec = require('child_process').exec;
 var copy = require('gulp-copy');
+var concat = require('gulp-concat');
 
 gulp.task('sass', function() {
     return gulp.src('./src/scss/style.scss')
@@ -36,6 +37,16 @@ gulp.task('fonts', function() {
         .pipe(copy('dist/static/fonts/', {prefix: 2}));
 });
 
+gulp.task('js', function() {
+    return gulp.src([
+        './node_modules/jquery/dist/jquery.slim.min.js',
+        './node_modules/magnific-popup/dist/jquery.magnific-popup.min.js',
+        './src/js/base.js',
+    ])
+    .pipe(concat('script.js'))
+    .pipe(gulp.dest('./dist/static/js/'));
+});
+
 gulp.task('render', function() {
     exec('node ./render.js', function() {});
 });
@@ -46,6 +57,6 @@ gulp.task('watch', function() {
     gulp.watch(['./src/svg/*', './src/img/*'], ['imagemin']);
 });
 
-gulp.task('default', ['render', 'sass', 'imagemin', 'fonts']);
+gulp.task('default', ['render', 'sass', 'js', 'imagemin', 'fonts']);
 
 

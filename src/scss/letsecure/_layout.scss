@@ -29,3 +29,12 @@ body {
 .row {
   @include break;
 }
+
+img:focus,
+a:focus {
+  box-shadow: 0;
+  outline: #16a085 auto 2px;
+  outline-color: #16a085;
+  outline-style: auto;
+  outline-width: 2px;
+}

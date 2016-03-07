@@ -5,10 +5,13 @@
   "devDependencies": {
     "breakpoint-sass": "^2.7.0",
     "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
     "gulp-copy": "0.0.2",
     "gulp-exec": "^2.1.2",
     "gulp-imagemin": "^2.4.0",
     "gulp-sass": "^2.2.0",
+    "jquery": "^2.2.1",
+    "magnific-popup": "^1.1.0",
     "markdown": "^0.5.0",
     "mkdirp": "^0.5.1",
     "mustache": "^2.2.1",
