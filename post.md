@@ -2,10 +2,26 @@
 title: Let's Encrypt & Nginx - state of the art, secure web deployment
 html_title: Let's Encrypt & Nginx - state of the art, secure web deployment
 meta_desc: Let's Encrypt & Nginx - state of the art, secure web deployment
-intro: Intro TBC.
+intro: |
+  Not long ago SSL encryption was still considered a nice-to-have feature, and major services secured only the log-in pages of theirs applications. Things have changed, and for the best: encryption is now must-have class, and more and more enforced everywhere. Search giant Google even takes SSL implementation into account in the search results.
+
+  In despite of the larger user-base, setting-up your secured connection can be daunting and quite time consuming. Let's encrypt disrupts the conventional workflow trying to make securing your website a piece of cake.
+
+  Combined with the powerful Nginx web server, and with some additional hardening tips, you can use it to achieve top notch security grades, rating A+ on the popular [Qualys SSL](https://www.ssllabs.com/ssltest/) and [securityheaders.io](https://securityheaders.io) analysers.
 ---
 
-We will detail all the steps to get the best rating (A+) on the popular [Qualys SSL](https://www.ssllabs.com/ssltest/) and [securityheaders.io](https://securityheaders.io) analysers using an automated Let's Encrypt certificate. All backed by Nginx, our open source webserver of choice.
+## What we will do
+Here are the steps we will go through:
+
+* spawn a cloud instance which will host our demo website.
+* do some basic hardening of our server and set up Nginx.
+* install a brand new Let's encrypt certificate and set up its automatic renewal
+* hardening of the Nginx configuration
+* hardening the Security Headers
+* get that shiny A+ security rating we are looking for
+
+We will use Exoscale as a cloud provider since he offers integrated DNS management, integrated firewalls and is mainly focused on security, but you can follow along using any other cloud or traditional hosting service.
+
 
 ## Let's Encrypt overview
 
@@ -26,7 +42,7 @@ The official documentation can be found [here](http://letsencrypt.readthedocs.or
 
 ## Infrastructure setup
 
-First we begin by spawning a new cloud instance. We're going to use [Exoscale](https://www.exoscale.ch) for this purpose. Exoscale is the leading Swiss cloud provider. Within their [portal](https://portal.exoscale.ch), we select our favorite Linux Ubuntu 14.04 flavour. For our demo a micro instance (512mb RAM, 1 Vcpu & 10GB disk) will be more than enough.
+First we begin by spawning a new cloud instance. We're going to use [Exoscale](https://www.exoscale.ch) for this purpose. Exoscale is the leading Swiss cloud provider. Within their [portal](https://portal.exoscale.ch), we select our favorite Linux Ubuntu 14.04 flavor. For our demo a micro instance (512mb RAM, 1 Vcpu & 10GB disk) will be more than enough.
 
 Within a few seconds our instance is available and ready for use:
 
@@ -40,7 +56,7 @@ We create our zone "letsecure.me".
 
 _N.B Put your own zone name here._
 
-Now we add a "A" record with the value of the ip address of our freshly spawned instance, as well as a "catch all" (wildcard) CNAME record:
+Now we add a "A" record with the value of the IP address of our freshly spawned instance, as well as a "catch all" (wildcard) CNAME record:
 
 ![alt text](static/images/dns2.png "DNS record creation")
 

@@ -12,6 +12,7 @@ var template = fs.readFileSync('./src/templates/template.html', 'utf8').toString
 var parts = content.split('---');
 var meta = yamljs.parse(parts[1]);
 meta.content = markdown.toHTML(parts[2]);
+meta.intro = markdown.toHTML(meta.intro);
 var rendered_page = mustache.render(template, meta);
 
 mkdirp('./dist', function(err) {
