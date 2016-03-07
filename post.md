@@ -9,9 +9,9 @@ We will detail all the steps to get the best rating (A+) on the popular [Qualys 
 
 ## Let's Encrypt overview
 
-Let's Encrypt is a new open source, fully automated certification authority that provides free SSL certificates. Let's Encrypt root certificate is also well trusted by most [browsers](https://community.letsencrypt.org/t/which-browsers-and-operating-systems-support-lets-encrypt/4394).
+Let's Encrypt is a new open source, fully automated service that provides free SSL certificates. The Let's Encrypt root certificate is also well trusted by most [browsers](https://community.letsencrypt.org/t/which-browsers-and-operating-systems-support-lets-encrypt/4394).
 
-Before starting, below are a few caveats for which not everybody may be comfortable with:
+Before starting, below are a few caveats which not everybody may be comfortable with:
 
 * It's still in __beta__ phase.
 * It requires root privileges.
@@ -20,7 +20,7 @@ Before starting, below are a few caveats for which not everybody may be comforta
 * Throttling is enforced so you cannot request more than 5 certificates per week for a given domain.
 * Certificate is valid for 90 days.
 
-It's possible get a certificate using [alternate lightweight and less intrusive clients](https://community.letsencrypt.org/t/list-of-client-implementations/2103) however we won't cover them in this post.
+It's possible to get a certificate using other [alternate lightweight and less intrusive clients](https://community.letsencrypt.org/t/list-of-client-implementations/2103) however we won't cover them in this post.
 
 The official documentation can be found [here](http://letsencrypt.readthedocs.org/en/latest/intro.html).
 
@@ -38,7 +38,7 @@ We take note of its IP address so we can proceed with the DNS setup. Luckily DNS
 
 We create our zone "letsecure.me".
 
-___N.B Put here your own zone name.___
+___N.B Put your own zone name here.___
 
 Now we add a "A" record with the value of the ip address of our freshly spawned instance, as well as a "catch all" (wildcard) CNAME record:
 
@@ -64,9 +64,9 @@ On the [firewall](https://portal.exoscale.ch/compute/firewalling) side, we allow
 * 443 (HTTPS)
 * ICMP ping (not mandatory but convenient)
 
-Our firewall is now configured. We can now login using the _ubuntu_ user and our [SSH key](https://community.exoscale.ch/documentation/compute/ssh-keypairs/). This isn't mandatory but highly recommended (did we said highly?). Standard authentication with password is also supported.
+Our firewall is now configured. We can now login using the _ubuntu_ user and our [SSH key](https://community.exoscale.ch/documentation/compute/ssh-keypairs/). This isn't mandatory but highly recommended. Standard authentication with password is also supported.
 
-The first thing we do is to apply all the software updates and reboot the instance with the following commands:
+The next thing we do is to apply all the software updates and reboot the instance with the following commands:
 
     sudo apt-get update && sudo apt-get dist-upgrade -y && sudo reboot
 
@@ -79,13 +79,13 @@ Looks good so far. If you're using SSH key authentication, __and only if so__, y
     sudo sed -i 's|PasswordAuthentication yes|PasswordAuthentication no|g' /etc/ssh/sshd_config
     sudo service ssh restart
 
-We suggest to install [fail2ban](http://www.fail2ban.org/wiki/index.php/Main_Page) to prevent brute force SSH attacks (specifically if you're using password authentication):
+We suggest to installing [fail2ban](http://www.fail2ban.org/wiki/index.php/Main_Page) to prevent brute force SSH attacks (specifically if you're using password authentication):
 
     sudo apt-get install -y fail2ban
 
 ## Nginx Setup
 
-Now we'll take care of Nginx. We're not going to install the package from the Ubuntu repository as we require features (like HTTP/2) that can only be found in the latest "mainline" release branch. We add then the Nginx official repository using:
+Now we'll take care of Nginx. We're not going to install the package from the Ubuntu repository as we require features (like HTTP/2) that can only be found in the latest "mainline" release branch. We add the Nginx official repository using:
 
     curl http://nginx.org/keys/nginx_signing.key | sudo apt-key add -
     sudo echo "deb http://nginx.org/packages/mainline/ubuntu/ trusty nginx" > /etc/apt/sources.list.d/nginx_org_packages_mainline_ubuntu.list
@@ -103,7 +103,7 @@ Remove Nginx default configuration:
     sudo rm /etc/nginx/conf.d/default.conf
     sudo touch /etc/nginx/conf.d/default.conf
 
-And add the following Nginx configuration block in `/etc/nginx/conf.d/default.conf`, so Let's Encrypt client can create temporary files required to authenticate the domain for which we're requesting the certificate for:
+And add the following Nginx configuration block in `/etc/nginx/conf.d/default.conf`, so Let's Encrypt client can create the temporary files required to authenticate the domain for which we're requesting the certificate:
 
     server {
         listen 80;
@@ -114,7 +114,7 @@ And add the following Nginx configuration block in `/etc/nginx/conf.d/default.co
         }
     }
 
-And we reload Nginx to apply our configuration change:
+Now we reload Nginx to apply our configuration change:
 
     nginx -t && sudo nginx -s reload
 
@@ -154,7 +154,7 @@ Our cert has been issued and installed!
 
 Let's Encrypt configuration and certificates can be found under `/etc/letsencrypt`.
 
-We add the following minimal Nginx configuration block in `/etc/nginx/conf.d/default.conf` so our website get served over HTTPS:
+We add the following minimal Nginx configuration block in `/etc/nginx/conf.d/default.conf` so our website gets served over HTTPS:
 
     server {
         listen 443 ssl;
@@ -174,7 +174,7 @@ Now point your web browser to https://YOURDOMAINHERE
 
 The homepage should display now over HTTPS. \o/ 
 
-We need to ensure that our certificate, which is valid for 90 days only, get renewed automatically. We're going to use a small script and a crontab for this purpose:
+We need to ensure that our certificate, which is valid for 90 days only, gets renewed automatically. We're going to use a small script and a crontab for this purpose:
 
     #!/bin/sh
     # This script renews all the Let's Encrypt certificates with a validity < 30 days
@@ -198,7 +198,7 @@ and add the following line:
 
 Now that our website is being served over HTTPS, let's check the grade we have using a default SSL configuration: https://www.ssllabs.com/ssltest/
 
-The result isn't so good. Let's pimp a bit our Nginx config to improve our rating:
+The result's not so good. Let's pimp a bit our Nginx config to improve our rating:
 
 ## Nginx SSL hardening 
 
@@ -243,7 +243,7 @@ Let's review some important config items that we've just added:
 
     listen 443 ssl http2;
 
-With this directive, we tell Nginx to listen over SSL and also support the connection over the new [HTTP/2](https://en.wikipedia.org/wiki/HTTP/2) standard, if the client browser support / request it. Please also note that HTTP/2 is SSL only
+With this directive, we tell Nginx to listen over SSL and also support the connection over the new [HTTP/2](https://en.wikipedia.org/wiki/HTTP/2) standard, if the client browser support / request it. Please note that HTTP/2 is SSL only
 
     ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
 
@@ -361,6 +361,4 @@ _N.B ensure to test using HTTPS._
 
 Let's Encrypt can be easily deployed and maintained on top of Nginx. Specific SSL and browser headers hardening must be deployed in order to ensure a modern and secure web deployment.
 
-## Try it yourself!
-
-Call to action ?
+There are many reasons for deploying SSL on your website. Security is, naturally, the most important and obvious one. However, it's also a trust building marker for parts of your audience. To top it all off, Google takes SSL implementation into account in the search results. There are no drawbacks to having an active certificate on your website. With a free certificate from Let's Encrypt and the directions in this blog post there is absolutely no reason to hesitate. Try it now!
