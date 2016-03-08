@@ -1,4 +1,5 @@
 body {
+  background-color: #fff;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -15,7 +16,7 @@ body {
 .footer {
   @include clearfix;
   display: block;
-  margin-top: $padding-xl;
+  margin-top: 4rem;
 }
 
 .presentation {
@@ -23,7 +24,8 @@ body {
 }
 
 .footer {
-  margin-bottom: $padding-xl;
+  margin-bottom: 4rem;
+  margin-top: 8rem;
 }
 
 .row {

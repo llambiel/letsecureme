@@ -28,8 +28,6 @@ $susy: (
   )
 );
 
-$padding-xl: 4rem;
-
 
 @mixin clearfix() {
   &:before,
@@ -50,10 +48,11 @@ $padding-xl: 4rem;
 
 
 
-@import 'letsecure/layout';
-@import 'letsecure/type';
+@import 'letsecure/footer';
 @import 'letsecure/header';
+@import 'letsecure/layout';
 @import 'letsecure/presentation';
+@import 'letsecure/type';
 
 @import 'vendors/magnific-popup';
 @import 'vendors/mfp';
