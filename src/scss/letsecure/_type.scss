@@ -1,11 +1,10 @@
-/* noto-serif-regular - latin */
 @font-face {
   font-family: 'Noto Serif';
   font-style: normal;
   font-weight: 400;
   src: local('Noto Serif'), local('NotoSerif'),
-       url('../fonts/noto-serif-v4-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+ */
-       url('../fonts/noto-serif-v4-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+       url('../fonts/noto-serif-v4-latin-regular.woff2') format('woff2'), // Chrome 26+, Opera 23+
+       url('../fonts/noto-serif-v4-latin-regular.woff') format('woff'); // Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+
 }
 
 body {
@@ -129,8 +128,8 @@ h6 {
   }
 
   img {
-    border-radius: 5px;
     border: 1px solid #78edd5;
+    border-radius: 5px;
     display: block;
     margin: 2rem auto;
     max-width: 100%;
@@ -151,7 +150,7 @@ h6 {
   pre,
   ul {
     + h2 {
-      margin-top: 5rem;
+      margin-top: 8rem;
     }
 
     + h3 {
@@ -172,7 +171,7 @@ h6 {
   }
 
   strong {
-    color: #000;
+    color: #d13821;
     font-weight: 800;
   }
 
@@ -232,11 +231,11 @@ pre {
 }
 
 .lead p {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-weight: 200;
-  font-size: 1.5rem;
-  line-height: 2rem;
   color: #16a085;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 200;
+  line-height: 2rem;
 
   @include breakpoint(800px) {
     font-size: 1.8rem;

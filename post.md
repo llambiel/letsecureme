@@ -32,7 +32,7 @@ Let's Encrypt is a new open source certificate authority (CA) providing free and
 
 But, heads-up! To be really security minded, and for information completeness, let's cite some caveats you may not be comfortable with:
 
-* It's still in __beta__ phase.
+* It's still in **beta** phase.
 * It requires root privileges.
 * The client does not yet "officially" support Nginx (but it works flawlessly).
 * It installs dependencies automatically (like [Augeas](http://augeas.net/), [gcc](https://gcc.gnu.org/), [Python](https://www.python.org/)).
@@ -90,7 +90,7 @@ You can now login via SSH using the _ubuntu_ user.
 
     ssh ubuntu@yourdomain.here
 
-Now, if you're using SSH key authentication, __and only if so__, you may disable SSH password authentication:
+Now, if you're using SSH key authentication, **and only if so**, you may disable SSH password authentication:
 
     sudo sed -i 's|PasswordAuthentication yes|PasswordAuthentication no|g' /etc/ssh/sshd_config
     sudo service ssh restart
@@ -270,30 +270,32 @@ When done, reload Nginx:
 
     sudo nginx -t && sudo nginx -s reload
 
+### Headers detail
+
 Let's review some important config items that we've just added:
 
-*   `listen 443 ssl http2;`
+    listen 443 ssl http2;
 
-    With this directive, you tell Nginx to listen over SSL and also support the connection over the new [HTTP/2](https://en.wikipedia.org/wiki/HTTP/2) standard, if the client browser support / request it. Please note that HTTP/2 is SSL/TLS only!
+With this directive, you tell Nginx to listen over SSL and also support the connection over the new [HTTP/2](https://en.wikipedia.org/wiki/HTTP/2) standard, if the client browser support / request it. Please note that HTTP/2 is SSL/TLS only!
 
-*   `ssl_protocols TLSv1 TLSv1.1 TLSv1.2;`
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+
+Disable old and weak SSLv2/SSLv3 protocols and allow only the TLS ones.
+
+    ssl_ciphers EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5;
+    ssl_prefer_server_ciphers On;
     
-    Disable old and weak SSLv2/SSLv3 protocols and allow only the TLS ones.
+This is the cipher list you tell Nginx to support. This list is in my opinion one of the most well balanced between security and support by older web browsers. Nginx will prefer those ciphers over the ones requested by the client.
 
-*    `ssl_ciphers EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5;
-    ssl_prefer_server_ciphers On;`
+    ssl_stapling on;
+    ssl_stapling_verify on;
 
-    This is the cipher list you tell Nginx to support. This list is in my opinion one of the most well balanced between security and support by older web browsers. Nginx will prefer those ciphers over the ones requested by the client.
+Enable OCSP stapling, wich is well described in details [here](https://www.maxcdn.com/one/visual-glossary/ocsp-stapling/).
 
-*       ssl_stapling on;
-        ssl_stapling_verify on;
+    add_header Strict-Transport-Security "max-age=31557600; includeSubDomains";
 
-    Enable OCSP stapling, wich is well described in details [here](https://www.maxcdn.com/one/visual-glossary/ocsp-stapling/).
-
-*   `add_header Strict-Transport-Security "max-age=31557600; includeSubDomains";`
-
-    This adds an HTTP header instructing the client browser to force a HTTPS connection to your domain and to all of its subdomains for 1 year.
-    __Warning!__ Be careful here before applying it in production, you must ensure first that __all your subdomains (if any) are being secured as well__. Your subdomains will be forced over https as well, and if not properly configured, will become unreacheable.
+This adds an HTTP header instructing the client browser to force a HTTPS connection to your domain and to all of its subdomains for 1 year.  
+**Warning!** Be careful here before applying it in production, you must ensure first that **all your subdomains (if any) are being secured as well**. Your subdomains will be forced over https as well, and if not properly configured, will become unreacheable.
 
 Let's re-test again our setup with [Qualys SSL](https://www.ssllabs.com/ssltest/):
 
@@ -325,7 +327,7 @@ The [X-Xss-Protection](https://scotthelme.co.uk/hardening-your-http-response-hea
 
     add_header Content-Security-Policy "default-src 'self'";
 
-The Content-Security-Policy header defines approved sources of content that the browser may load. It can be an effective countermeasure to Cross Site Scripting (XSS) attacks. __WARNING!__ This header must be carefully planned before deploying it on production website as it could easily break stuff and prevent a website to load it's content! Fortunately there is a "report mode" available. In the mode, the browser will only report any issue in the debug console but not actually block the content. This is really helpful to ensure a smooth deployment of this header:
+The Content-Security-Policy header defines approved sources of content that the browser may load. It can be an effective countermeasure to Cross Site Scripting (XSS) attacks. **WARNING!** This header must be carefully planned before deploying it on production website as it could easily break stuff and prevent a website to load it's content! Fortunately there is a "report mode" available. In the mode, the browser will only report any issue in the debug console but not actually block the content. This is really helpful to ensure a smooth deployment of this header:
 
 ![alt text](static/images/reportmode.png "report mode")
 
@@ -335,7 +337,7 @@ The report mode can be enabled using:
 
     Content-Security-Policy-Report-Only instead of Content-Security-Policy
 
-### Final Nginx configuration
+## Final Nginx configuration
 
 Your final Nginx configuration should look like this:
 
