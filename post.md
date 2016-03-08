@@ -98,7 +98,7 @@ Looks good so far. If you're using SSH key authentication, __and only if so__, y
     sudo sed -i 's|PasswordAuthentication yes|PasswordAuthentication no|g' /etc/ssh/sshd_config
     sudo service ssh restart
 
-We suggest to installing [fail2ban](http://www.fail2ban.org/wiki/index.php/Main_Page) to prevent brute force SSH attacks (specifically if you're using password authentication):
+We suggest to install [fail2ban](http://www.fail2ban.org/wiki/index.php/Main_Page) in order to prevent brute force SSH attacks (specifically if you're using password authentication):
 
     sudo apt-get install -y fail2ban
 
@@ -149,7 +149,7 @@ Note that the setup script is installing all the required dependencies automatic
 
 Now we can request our certificate. You'll get prompted to provide your email address for the expiring notifications and accept the Terms:
 
-    export DOMAINS="letsecure.me,www.letsecure.me"
+    export DOMAINS="yourdomain.here,www.yourdomain.here"
     export DIR=/var/www/demo
     /opt/letsencrypt/letsencrypt-auto certonly --server https://acme-v01.api.letsencrypt.org/directory -a webroot --webroot-path=$DIR -d $DOMAINS
 
@@ -177,13 +177,13 @@ We add the following minimal Nginx configuration block in `/etc/nginx/conf.d/def
 
     server {
         listen 443 ssl;
-        server_name letsecure.me www.letsecure.me;
+        server_name yourdomain.here www.yourdomain.here;
         root /var/www/demo;
-        ssl_certificate /etc/letsencrypt/live/letsecure.me/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/letsecure.me/privkey.pem;
+        ssl_certificate /etc/letsencrypt/live/yourdomain.here/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/yourdomain.here/privkey.pem;
     }
 
-_N.B replace the server name with your domain._
+_N.B replace the server name & certificate paths with your own domain._
 
 Let's reload nginx one more time:
 
@@ -215,7 +215,11 @@ and add the following line:
 
     @daily /path/to/renewCerts.sh
 
-Now that our website is being served over HTTPS, let's check the grade we have using a default SSL/TLS configuration: [SSL analyser](https://www.ssllabs.com/ssltest/)
+Don't forget to set the script executable using:
+
+    chmod +x /path/to/renewCerts.sh
+
+Now that our website is being served over HTTPS, let's check the grade we get using a default SSL/TLS configuration: [SSL analyser](https://www.ssllabs.com/ssltest/)
 
 The result's not so good. Let's pimp a bit our Nginx config to improve our rating:
 
@@ -281,7 +285,7 @@ We enable OCSP stapling. OCSP stapling is well described in details [here](https
 
     add_header Strict-Transport-Security "max-age=31557600; includeSubDomains";
 
-Here we add a HTTP header instructing the client browser to force a HTTPS connection to our domain and __all our Subdomains for 1 year__. __Warning__ be careful here before applying it in production, you must ensure first that all your subdomains are being secured as well.
+Here we add a HTTP header instructing the client browser to force a HTTPS connection to our domain and all our Subdomains for 1 year. __Warning__ be careful here before applying it in production, you must ensure first that __all your subdomains (if any) are being secured as well__.
 
 Let's re-test again our setup with [Qualys SSL](https://www.ssllabs.com/ssltest/):
 
