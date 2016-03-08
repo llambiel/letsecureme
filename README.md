@@ -1,7 +1,7 @@
 letsecure.me
 =============
 
-This is the home of the website letsecure.me, including configuration items.
+This is the home of the website [letsecure.me](https://letsecure.me), including configuration items.
 
 ## Build
 
