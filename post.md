@@ -1,7 +1,7 @@
 ---
-title: Let's Encrypt & Nginx - state of the art, secure web deployment
-html_title: Let's Encrypt & Nginx - state of the art, secure web deployment
-meta_desc: Let's Encrypt & Nginx - state of the art, secure web deployment
+title: Let's Encrypt & Nginx - state of the art of a secure web deployment
+html_title: Let's Encrypt & Nginx - state of the art of a secure web deployment
+meta_desc: Let's Encrypt & Nginx - state of the art of a secure web deployment
 intro: |
   Not long ago SSL encryption was still considered a nice-to-have feature, and major services secured only the log-in pages of theirs applications. Things have changed, and for the best: encryption is now must-have class, and more and more enforced everywhere. Search giant Google even takes SSL implementation into account in the search results.
 
