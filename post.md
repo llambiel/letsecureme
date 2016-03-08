@@ -20,8 +20,8 @@ Here are the steps we will go through:
 * Spawn a cloud instance which will host our demo website.
 * Do some basic hardening of our server and set up Nginx.
 * Install a brand new Let's encrypt certificate and set up its automatic renewal
-* Hardening the Nginx configuration
-* Hardening the Security Headers
+* Harden the Nginx configuration
+* Harden the Security Headers
 * Get that shiny A+ security rating we are looking for
 
 We will use [Exoscale](https://www.exoscale.ch) as cloud provider since they offer integrated firewall and DNS management. On top of that Exoscale has a strong focus on data safety / privacy and security. Of course you can follow along using any other cloud or traditional hosting service.
@@ -84,7 +84,7 @@ On Exoscale you mange firewalls through the interface with what is called Securi
 
 ![alt text](static/images/firewall1.png "Firewall rules")
 
-Another recommended step to hardening your machine is to grant access to it via SSH and keypairs authentication only. Most cloud providers give you this option nowdays. We already have our key deployed on Exoscale if you've followed along, but if you didn't or if your cloud provider doesn't offer you a similar workflow, it's time to upload your key. We will not go into details about that, as said we assume you know about that stuff, this is just a reminder on how much this is important.
+Another recommended step to harden your machine is to grant access to it via SSH and keypairs authentication only. Most cloud providers give you this option nowdays. We already have our key deployed on Exoscale if you've followed along, but if you didn't or if your cloud provider doesn't offer you a similar workflow, it's time to upload your key. We will not go into details about that, as said we assume you know about that stuff, this is just a reminder on how much this is important.
 
 You can now login via SSH using the _ubuntu_ user.
 
