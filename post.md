@@ -16,11 +16,11 @@ Here are the steps we will go through:
 * spawn a cloud instance which will host our demo website.
 * do some basic hardening of our server and set up Nginx.
 * install a brand new Let's encrypt certificate and set up its automatic renewal
-* hardening of the Nginx configuration
+* hardening the Nginx configuration
 * hardening the Security Headers
 * get that shiny A+ security rating we are looking for
 
-We will use [Exoscale](https://www.exoscale.ch) as a cloud provider since they offer integrated firewall and DNS management. Exoscale is mainly focused on security, but you can follow along using any other cloud or traditional hosting service.
+We will use [Exoscale](https://www.exoscale.ch) as our cloud provider since they offer integrated firewall and DNS management. Exoscale is the leading Swiss cloud provider with a strong focus on data safety / privacy and security. Off course you can follow along using any other cloud or traditional hosting service.
 
 ## Let's Encrypt overview
 
@@ -82,6 +82,8 @@ On the [firewall](https://portal.exoscale.ch/compute/firewalling) side, we allow
 ![alt text](static/images/firewall1.png "Firewall rules")
 
 Our firewall is now configured. We can now login using the _ubuntu_ user and our [SSH key](https://community.exoscale.ch/documentation/compute/ssh-keypairs/). This isn't mandatory but highly recommended. Standard authentication with password is also supported.
+
+    ssh ubuntu@yourdomain.here
 
 The next thing we do is to apply all the software updates and reboot the instance with the following commands:
 
@@ -187,7 +189,7 @@ Let's reload nginx one more time:
 
     sudo nginx -t &&  sudo nginx -s reload
 
-Now point your web browser to https://YOURDOMAINHERE
+Now point your web browser to https://yourdomain.here
 
 The homepage should display now over HTTPS. \o/ 
 
@@ -224,12 +226,12 @@ Remove the actual config in `/etc/nginx/conf.d/default.conf` and replace it by t
     server {
         listen 80;
         listen 443 ssl http2;
-        server_name yourdomain.com www.yourdomain.com;
+        server_name yourdomain.here www.yourdomain.here;
         ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
         ssl_ciphers EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5;
         ssl_prefer_server_ciphers On;
-        ssl_certificate /etc/letsencrypt/live/yourdomain.com/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/yourdomain.com/privkey.pem;
+        ssl_certificate /etc/letsencrypt/live/yourdomain.here/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/yourdomain.here/privkey.pem;
         ssl_session_cache shared:SSL:128m;
         add_header Strict-Transport-Security "max-age=31557600; includeSubDomains";
         ssl_stapling on;
