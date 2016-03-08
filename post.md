@@ -99,7 +99,7 @@ The next thing we do is to apply all the software updates and patches and reboot
 
     sudo apt-get update && sudo apt-get dist-upgrade -y && sudo reboot
 
-This will ensure that we get the latest available version of the software onborad, including recnt bug fixes and especially security patches.
+This will ensure that we get the latest available version of the software onborad, including recent bug fixes and especially security patches.
 
 Let's log back in and enable the automatic security updates:
 
