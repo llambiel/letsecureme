@@ -98,7 +98,7 @@ Looks good so far. If you're using SSH key authentication, __and only if so__, y
     sudo sed -i 's|PasswordAuthentication yes|PasswordAuthentication no|g' /etc/ssh/sshd_config
     sudo service ssh restart
 
-We suggest to installing [fail2ban](http://www.fail2ban.org/wiki/index.php/Main_Page) to prevent brute force SSH attacks (specifically if you're using password authentication):
+We suggest to install [fail2ban](http://www.fail2ban.org/wiki/index.php/Main_Page) in order to prevent brute force SSH attacks (specifically if you're using password authentication):
 
     sudo apt-get install -y fail2ban
 
@@ -149,7 +149,7 @@ Note that the setup script is installing all the required dependencies automatic
 
 Now we can request our certificate. You'll get prompted to provide your email address for the expiring notifications and accept the Terms:
 
-    export DOMAINS="letsecure.me,www.letsecure.me"
+    export DOMAINS="yourdomain.here,www.yourdomain.here"
     export DIR=/var/www/demo
     /opt/letsencrypt/letsencrypt-auto certonly --server https://acme-v01.api.letsencrypt.org/directory -a webroot --webroot-path=$DIR -d $DOMAINS
 
@@ -177,13 +177,13 @@ We add the following minimal Nginx configuration block in `/etc/nginx/conf.d/def
 
     server {
         listen 443 ssl;
-        server_name letsecure.me www.letsecure.me;
+        server_name yourdomain.here www.yourdomain.here;
         root /var/www/demo;
-        ssl_certificate /etc/letsencrypt/live/letsecure.me/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/letsecure.me/privkey.pem;
+        ssl_certificate /etc/letsencrypt/live/yourdomain.here/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/yourdomain.here/privkey.pem;
     }
 
-_N.B replace the server name with your domain._
+_N.B replace the server name & certificate paths with your own domain._
 
 Let's reload nginx one more time:
 
@@ -215,7 +215,11 @@ and add the following line:
 
     @daily /path/to/renewCerts.sh
 
-Now that our website is being served over HTTPS, let's check the grade we have using a default SSL/TLS configuration: [SSL analyser](https://www.ssllabs.com/ssltest/)
+Don't forget to set the script executable using:
+
+    chmod +x /path/to/renewCerts.sh
+
+Now that our website is being served over HTTPS, let's check the grade we get using a default SSL/TLS configuration: [SSL analyser](https://www.ssllabs.com/ssltest/)
 
 The result's not so good. Let's pimp a bit our Nginx config to improve our rating:
 
@@ -281,7 +285,7 @@ We enable OCSP stapling. OCSP stapling is well described in details [here](https
 
     add_header Strict-Transport-Security "max-age=31557600; includeSubDomains";
 
-Here we add a HTTP header instructing the client browser to force a HTTPS connection to our domain and __all our Subdomains for 1 year__. __Warning__ be careful here before applying it in production, you must ensure first that all your subdomains are being secured as well.
+Here we add a HTTP header instructing the client browser to force a HTTPS connection to our domain and all our Subdomains for 1 year. __Warning__ be careful here before applying it in production, you must ensure first that __all your subdomains (if any) are being secured as well__.
 
 Let's re-test again our setup with [Qualys SSL](https://www.ssllabs.com/ssltest/):
 
@@ -315,7 +319,7 @@ The [X-Xss-Protection](https://scotthelme.co.uk/hardening-your-http-response-hea
 
     add_header Content-Security-Policy "default-src 'self'";
 
-The Content-Security-Policy header defines approved sources of content that the browser may load. It can be an effective countermeasure to Cross Site Scripting (XSS) attacks. __WARNING__ This header must be carefully planned before deploying it on production website as it could easily break stuff and prevent a website to load it's content! Fortunately there is a "report mode" available which the browser to report any issue in the debug console but not actually block any content. This is very helpful to ensure a smooth deployment  of this header:
+The Content-Security-Policy header defines approved sources of content that the browser may load. It can be an effective countermeasure to Cross Site Scripting (XSS) attacks. __WARNING__ This header must be carefully planned before deploying it on production website as it could easily break stuff and prevent a website to load it's content! Fortunately there is a "report mode" available. In the mode, the browser will only report any issue in the debug console but not actually block the content. This is very helpful to ensure a smooth deployment of this header:
 
 ![alt text](static/images/reportmode.png "report mode")
 
@@ -332,12 +336,12 @@ Our final Nginx configuration looks like:
     server {
          listen 80;
          listen 443 ssl http2;
-         server_name mydomain.com www.mydomain.com;
+         server_name yourdomain.here www.yourdomain.here;
          ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
          ssl_ciphers EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5;
          ssl_prefer_server_ciphers On;
-         ssl_certificate /etc/letsencrypt/live/mydomain.com/fullchain.pem;
-         ssl_certificate_key /etc/letsencrypt/live/mydomain.com/privkey.pem;
+         ssl_certificate /etc/letsencrypt/live/yourdomain.here/fullchain.pem;
+         ssl_certificate_key /etc/letsencrypt/live/yourdomain.here/privkey.pem;
          ssl_session_cache shared:SSL:128m;
          add_header Strict-Transport-Security "max-age=31557600; includeSubDomains";
          add_header X-Frame-Options "SAMEORIGIN" always;
@@ -374,7 +378,7 @@ _N.B ensure to test using HTTPS._
 
 ![alt text](static/images/securityheaders2.png "securityheaders.io final check")
 
-"A" grade, much better! Some of you may have noticied that we didn't enable HPKP (HTTP Public Key Pinning), which would have allowed us to get the A+ grade. In fact we skipped that header as it could really screw your website if the feature is not well understood and carefully planned. This header will be covered in an upcoming detailed blog post.
+"A" grade, much better! Some of you guys may have noticied that we didn't enable HPKP (HTTP Public Key Pinning), which would have allowed us to get the A+ grade. In fact we skipped that header as it could really screw your website if the feature is not well understood and carefully planned. This header will be covered in an upcoming detailed blog post.
 
 ## Conclusion
 
