@@ -1,7 +1,7 @@
 ---
 title: "<span class='big'>Let's Encrypt & Nginx</span><br/><span class='small'>State of the art of a secure web deployment"
-html_title: Let's Encrypt & Nginx - state of the art of a secure web deployment
-meta_desc: Let's Encrypt & Nginx - state of the art of a secure web deployment
+html_title: "Let's Encrypt & Nginx - state of the art of a secure web deployment"
+meta_desc: "An overview of a secure web deployment with Let's Encrypt and Nginx. How to set up a valid HTTPS connection, harden it and get top security ratings."
 intro: |
   Not long ago SSL encryption was still considered a nice-to-have feature, and major services secured only log-in pages of theirs applications.
 
@@ -69,7 +69,7 @@ You should be able to do so within your domain registrar administration console.
 * `ns1.exoscale.net`
 * `ns1.exoscale.io`
 
-## Basic security hardening
+## Basic security hardening of your server
 
 You are now ready to work on our cloud instance, but before beginning to play with certificates and web services, we're going to apply a few elementary security best practices:
 
@@ -109,7 +109,7 @@ It's good practice to install [fail2ban](http://www.fail2ban.org/wiki/index.php/
 
     sudo apt-get install -y fail2ban
 
-## Nginx Setup
+## Basic Nginx Setup
 
 Now that everything is secured you may take care of Nginx. We're not going to install the package from the Ubuntu repository as we will require features (like HTTP/2) that can only be found in the latest "mainline" release branch. You can add the Nginx official repository using:
 
@@ -145,7 +145,7 @@ Reload Nginx to apply our configuration change and we're done with Nginx for the
 
     sudo nginx -t && sudo nginx -s reload
 
-## Let's Encrypt setup
+## Let's Encrypt setup, SSL certificates and Nginx HTTPS config
 
 Go for Let's Encrypt. As per [the official documnetation](https://letsencrypt.readthedocs.org/en/latest/intro.html#installation), you need to clone its [GIT](https://github.com/letsencrypt/letsencrypt) repository and launch `letsencrypt-auto`:
 
@@ -268,7 +268,7 @@ When done, reload Nginx:
 
     sudo nginx -t && sudo nginx -s reload
 
-### Headers detail
+### Detail of the SSL/TLS configuration
 
 Let's review some important config items that we've just added:
 
@@ -335,7 +335,7 @@ The report mode can be enabled using:
 
     Content-Security-Policy-Report-Only instead of Content-Security-Policy
 
-## Final Nginx configuration
+## Final secured Nginx configuration
 
 Your final Nginx configuration should look like this:
 
