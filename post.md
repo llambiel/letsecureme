@@ -28,7 +28,7 @@ We will use [Exoscale](https://www.exoscale.ch) as cloud provider since they off
 
 ## Let's Encrypt overview
 
-Let's Encrypt is a new open source certificate authority (CA) providing free and automated SSL/TLS certificates. Theyr root certificate is well trusted by most [browsers](https://community.letsencrypt.org/t/which-browsers-and-operating-systems-support-lets-encrypt/4394), and they are actively trying to reduce the painful workflow of creation - validation - signing - installation - renewal of certificates. 
+Let's Encrypt is a new open source certificate authority (CA) providing free and automated SSL/TLS certificates. Their root certificate is well trusted by most [browsers](https://community.letsencrypt.org/t/which-browsers-and-operating-systems-support-lets-encrypt/4394), and they are actively trying to reduce the painful workflow of creation - validation - signing - installation - renewal of certificates. 
 
 But, heads-up! To be really security minded, and for information completeness, let's cite some caveats you may not be comfortable with:
 
@@ -45,7 +45,7 @@ The official documentation can be found [here](http://letsencrypt.readthedocs.or
 
 ## Infrastructure setup
 
-Let's begin by spawning a new cloud instance. First of all we suggest you to have a public SSH key at hand. If you don't have your own key, or want a quick setup, Exoscale let you generate one on the fly before starting your machine Go under the SHH Keys menu and create your key. [They have a guideline](https://community.exoscale.ch/documentation/compute/ssh-keypairs/) if this stuff is new for you. This tutorial will assume you know what an SSH key is and how to use it.
+Let's begin by spawning a new cloud instance. First of all we suggest you to have a public SSH key at hand. If you don't have your own key, or want a quick setup, Exoscale let you generate one on the fly before starting your machine. Go under the SSH Keys menu and create your key. [They have a guideline](https://community.exoscale.ch/documentation/compute/ssh-keypairs/) if this stuff is new for you. This tutorial will assume you know what an SSH key is and how to use it.
 
 On the [Exoscale portal](https://portal.exoscale.ch) (or the cloud provider of your choice), we start a Linux Ubuntu 14.04. For this demo a micro instance (512mb RAM, 1 Vcpu & 10GB disk) will be more than enough. Choose your SSH key on creation and verify that the "default" Security group is checked (more on that later).
 
@@ -119,7 +119,7 @@ Now that everything is secured we may take care of Nginx. We're not going to ins
     echo "deb http://nginx.org/packages/mainline/ubuntu/ trusty nginx" | sudo tee --append /etc/apt/sources.list.d/nginx_org_packages_mainline_ubuntu.list
     sudo apt-get update && sudo apt-get install -y nginx
 
-We create the target folder from where our wesite will be served:
+We create the target folder from where our website will be served:
 
     sudo mkdir /var/www/
     # download our demo website
@@ -157,7 +157,7 @@ Go for Let's Encrypt. As per [the official documnetation](https://letsencrypt.re
 
 Note that as we said in the beginning the setup script will install all the required dependencies automatically. Although convenient, this implies that you loose some control of what is installed on your machine.
 
-We can now request a certificate for our domain. You'll get prompted to provide your email address for the expiring notifications and accept the Terms:
+We can now request a certificate for your domain. You'll get prompted to provide your email address for the expiring notifications and accept the Terms:
 
     export DOMAINS="yourdomain.here,www.yourdomain.here"
     export DIR=/var/www/demo
