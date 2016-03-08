@@ -122,9 +122,10 @@ Now that everything is secured we may take care of Nginx. We're not going to ins
 We create the target folder from where our wesite will be served:
 
     sudo mkdir /var/www/
-    wget STE demo page from github repo
-    tar -xvf /var/www/
-    sudo chown -R www-data /var/www/
+    # download our demo website
+    wget https://github.com/llambiel/letsecureme/raw/master/demo.tar.gz
+    tar zxf demo.tar.gz -C /var/www
+    sudo chown -R root:www-data /var/www/
 
 And we remove Nginx default configuration:
 
