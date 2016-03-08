@@ -1,0 +1,36 @@
+.header {
+  background-color: #40d47e;
+  background-image: url('../images/crosses.svg');
+  background-position: center center;
+  background-repeat: repeat;
+  padding-bottom: 4rem;
+  position: relative;
+
+  img {
+    display: block;
+    margin: 0 auto;
+    position: relative;
+    top: 2rem;
+    width: 100px;
+    margin-bottom: 4rem;
+  }
+
+  h1 {
+    display: block;
+    position: relative;
+  }
+
+  @include breakpoint(800px) {
+    height: 40rem;
+
+    h1 {
+      top: 16rem;
+    }
+
+    img {
+      margin-bottom: 0;
+      top: 11rem;
+      width: 150px;
+    }
+  }
+}

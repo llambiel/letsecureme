@@ -1,0 +1,42 @@
+body {
+  background-color: #fff;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 0 20px;
+}
+
+.presentation,
+.main-content,
+.footer {
+  @include clearfix;
+  display: block;
+  margin-top: 4rem;
+}
+
+.presentation {
+  margin-bottom: 6rem;
+}
+
+.footer {
+  margin-bottom: 4rem;
+  margin-top: 8rem;
+}
+
+.row {
+  @include break;
+}
+
+img:focus,
+a:focus {
+  box-shadow: 0;
+  outline: #16a085 auto 2px;
+  outline-color: #16a085;
+  outline-style: auto;
+  outline-width: 2px;
+}
