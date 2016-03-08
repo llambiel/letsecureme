@@ -347,7 +347,7 @@ Our final Nginx configuration looks like:
          add_header X-Frame-Options "SAMEORIGIN" always;
          add_header X-Content-Type-Options "nosniff" always;
          add_header X-Xss-Protection "1";
-         add_header Content-Security-Policy "default-src 'self'";
+         add_header Content-Security-Policy "default-src 'self'; script-src 'self' *.google-analytics.com";
          ssl_stapling on;
          ssl_stapling_verify on;
          resolver 8.8.8.8;
