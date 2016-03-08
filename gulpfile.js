@@ -37,6 +37,11 @@ gulp.task('fonts', function() {
         .pipe(copy('dist/static/fonts/', {prefix: 2}));
 });
 
+gulp.task('icons', function() {
+    return gulp.src('./src/icons/*')
+        .pipe(copy('dist/static/', {prefix: 2}));
+});
+
 gulp.task('ga', function() {
     return gulp.src('./src/js/ga.js')
         .pipe(copy('dist/static/js/', {prefix: 2}));
@@ -56,7 +61,7 @@ gulp.task('render', function() {
     exec('node ./render.js', function() {});
 });
 
-gulp.task('copy_demo', ['sass', 'imagemin', 'fonts', 'js'], function() {
+gulp.task('copy_demo', ['sass', 'imagemin', 'fonts', 'js', 'icons'], function() {
     gulp.src('./dist/static/css/*')
         .pipe(copy('demo/static/css/', {prefix: 3}));
     gulp.src('./dist/static/js/script.js')
@@ -65,6 +70,8 @@ gulp.task('copy_demo', ['sass', 'imagemin', 'fonts', 'js'], function() {
         .pipe(copy('demo/static/fonts', {prefix: 3}));
     gulp.src('./dist/static/images/*')
         .pipe(copy('demo/static/images', {prefix: 3}));
+    gulp.src('./dist/static/favicon.ico')
+        .pipe(copy('demo/static/', {prefix: 2}));
 });
 
 gulp.task('watch', function() {
@@ -73,4 +80,4 @@ gulp.task('watch', function() {
     gulp.watch(['./src/svg/*', './src/img/*'], ['imagemin']);
 });
 
-gulp.task('default', ['render', 'sass', 'js', 'imagemin', 'fonts', 'ga', 'copy_demo']);
+gulp.task('default', ['render', 'sass', 'js', 'imagemin', 'fonts', 'ga', 'icons', 'copy_demo']);
