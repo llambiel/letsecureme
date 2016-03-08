@@ -53,7 +53,7 @@ Within a few seconds our instance is available and ready for use. You can now no
 
 ![alt text](static/images/instance1.png "Our instance detailed view")
 
-Exoscale providing DNS zone hosting, you don't need to leave the interface. Just go under DNS and create a new zone ("letsecure.me" in this example, you'll need to use your own domain here).
+Exoscale is providing DNS zone hosting, so you don't need to leave the interface. Just go under DNS and create a new zone ("letsecure.me" in this example, you'll need to use your own domain here).
 
 ![alt text](static/images/dns1.png "DNS zone creation")
 
@@ -84,7 +84,7 @@ On Exoscale you mange firewalls through the interface with what is called Securi
 
 ![alt text](static/images/firewall1.png "Firewall rules")
 
-Another recommended step to harden your machine is to grant access to it via SSH and keypairs authentication only. Most cloud providers give you this option now days. You should already have our key deployed on Exoscale if you've followed along, but if you didn't or if your cloud provider doesn't offer you a similar workflow, it's time to upload your key. This tutorial won't go into details about that, as said it assumes you know at least a bit about that stuff, this is just a reminder on how much this is important.
+Another recommended step to harden your machine is to administer it via SSH and keypairs authentication only. Most cloud providers give you this option now days. You should already have our key deployed on Exoscale if you've followed along, but if you didn't or if your cloud provider doesn't offer you a similar workflow, it's time to upload your key. This tutorial won't go into details about that, as said it assumes you know at least a bit about that stuff, this is just a reminder on how much this is important.
 
 You can now login via SSH using the _ubuntu_ user.
 
@@ -149,7 +149,7 @@ Reload Nginx to apply our configuration change and we're done with Nginx for the
 
 ## Let's Encrypt setup
 
-Go for Let's Encrypt. As per [the official documnetation](https://letsencrypt.readthedocs.org/en/latest/intro.html#installation), you need to clone its [GIT](https://github.com/letsencrypt/letsencrypt) repository and launche `letsencrypt-auto`:
+Go for Let's Encrypt. As per [the official documnetation](https://letsencrypt.readthedocs.org/en/latest/intro.html#installation), you need to clone its [GIT](https://github.com/letsencrypt/letsencrypt) repository and launch `letsencrypt-auto`:
 
     sudo apt-get install -y git
     sudo git clone https://github.com/letsencrypt/letsencrypt /opt/letsencrypt
@@ -183,7 +183,7 @@ Our cert should now be issued and installed!
 
 Let's Encrypt keeps configuration and certificates organized under `/etc/letsencrypt`. The [Let's Encrypt documentation](https://letsencrypt.readthedocs.org/en/latest/using.html#where-are-my-certificates) will give you detailed informations about the structure and the content of the directory.
 
-To use your new certificate you need to instruct Nginx on theyr location and tell the webserver to use port 443 on ssl. You may use the following minimal configuration block in `/etc/nginx/conf.d/default.conf`.
+To use your new certificate you need to instruct Nginx on their location and tell the webserver to use port 443 on ssl. You may use the following minimal configuration block in `/etc/nginx/conf.d/default.conf`.
 
     server {
         listen 443 ssl;
