@@ -319,7 +319,7 @@ The [X-Xss-Protection](https://scotthelme.co.uk/hardening-your-http-response-hea
 
     add_header Content-Security-Policy "default-src 'self'";
 
-The Content-Security-Policy header defines approved sources of content that the browser may load. It can be an effective countermeasure to Cross Site Scripting (XSS) attacks. __WARNING__ This header must be carefully planned before deploying it on production website as it could easily break stuff and prevent a website to load it's content! Fortunately there is a "report mode" available which the browser to report any issue in the debug console but not actually block any content. This is very helpful to ensure a smooth deployment  of this header:
+The Content-Security-Policy header defines approved sources of content that the browser may load. It can be an effective countermeasure to Cross Site Scripting (XSS) attacks. __WARNING__ This header must be carefully planned before deploying it on production website as it could easily break stuff and prevent a website to load it's content! Fortunately there is a "report mode" available. In the mode, the browser will only report any issue in the debug console but not actually block the content. This is very helpful to ensure a smooth deployment of this header:
 
 ![alt text](static/images/reportmode.png "report mode")
 
@@ -336,12 +336,12 @@ Our final Nginx configuration looks like:
     server {
          listen 80;
          listen 443 ssl http2;
-         server_name mydomain.com www.mydomain.com;
+         server_name yourdomain.here www.yourdomain.here;
          ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
          ssl_ciphers EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5;
          ssl_prefer_server_ciphers On;
-         ssl_certificate /etc/letsencrypt/live/mydomain.com/fullchain.pem;
-         ssl_certificate_key /etc/letsencrypt/live/mydomain.com/privkey.pem;
+         ssl_certificate /etc/letsencrypt/live/yourdomain.here/fullchain.pem;
+         ssl_certificate_key /etc/letsencrypt/live/yourdomain.here/privkey.pem;
          ssl_session_cache shared:SSL:128m;
          add_header Strict-Transport-Security "max-age=31557600; includeSubDomains";
          add_header X-Frame-Options "SAMEORIGIN" always;
@@ -378,7 +378,7 @@ _N.B ensure to test using HTTPS._
 
 ![alt text](static/images/securityheaders2.png "securityheaders.io final check")
 
-"A" grade, much better! Some of you may have noticied that we didn't enable HPKP (HTTP Public Key Pinning), which would have allowed us to get the A+ grade. In fact we skipped that header as it could really screw your website if the feature is not well understood and carefully planned. This header will be covered in an upcoming detailed blog post.
+"A" grade, much better! Some of you guys may have noticied that we didn't enable HPKP (HTTP Public Key Pinning), which would have allowed us to get the A+ grade. In fact we skipped that header as it could really screw your website if the feature is not well understood and carefully planned. This header will be covered in an upcoming detailed blog post.
 
 ## Conclusion
 
