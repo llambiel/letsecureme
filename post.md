@@ -114,7 +114,7 @@ We create the target folder from where our wesite will be served:
 
     sudo mkdir /var/www/
     # download our demo website
-    wget STE demo page from github repo
+    wget https://github.com/llambiel/letsecureme/blob/master/demo.tar.gz
     tar zxf demo.tar.gz -C /var/www
     sudo chown -R root:www-data /var/www/
 
