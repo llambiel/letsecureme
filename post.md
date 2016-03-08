@@ -122,7 +122,7 @@ Create the target folder from where our website will be served:
     sudo mkdir /var/www/
     # download our demo website
     wget https://github.com/llambiel/letsecureme/raw/master/demo.tar.gz
-    tar zxf demo.tar.gz -C /var/www
+    sudo tar zxf demo.tar.gz -C /var/www
     sudo chown -R root:www-data /var/www/
 
 Remove the default Nginx configuration and start with a fresh blank file:
