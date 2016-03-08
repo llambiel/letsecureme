@@ -47,7 +47,7 @@ The official documentation can be found [here](http://letsencrypt.readthedocs.or
 
 Let's begin by spawning a new cloud instance. First of all you'll need a public SSH key at hand. If you don't have your own key, or want a quick setup, Exoscale let you generate one on the fly before starting your machine. Go under the SSH Keys menu and create your key. [They have a guideline](https://community.exoscale.ch/documentation/compute/ssh-keypairs/) if this stuff is new for you. This tutorial will assume you know what an SSH key is and how to use it.
 
-On the [Exoscale portal](https://portal.exoscale.ch) (or the cloud provider of your choice), start a Linux Ubuntu 14.04. For this demo a micro instance (512mb RAM, 1 Vcpu & 10GB disk) will be more than enough. Choose your SSH key on creation and verify that the "default" Security group is checked (more on that later).
+On the [Exoscale portal](https://portal.exoscale.ch) (or the cloud provider of your choice), start a Linux Ubuntu 14.04. For this demo a micro instance (512mb RAM, 1 Vcpu & 10GB disk) will be more than enough. Choose your SSH key on creation and verify that the "default" Security Group is checked (more on that later).
 
 Within a few seconds our instance is available and ready for use. You can now note down its IP address in order to proceed with the DNS setup.
 
@@ -80,7 +80,7 @@ On the firewall side you need to allow only the required traffic and deny any ot
 * 443 (HTTPS)
 * ICMP ping (not mandatory but convenient)
 
-On Exoscale you mange firewalls through the interface with what is called Security Groups. By default all incoming traffic is denied and all outgoing traffic is allowed. In the detail of your machine you should see it's affected by the "default" Security Group. You need to modifiy the "default" group with the mentioned rules. On other cloud providers you may have a similar system or you may have to install your own firewall software. A good and simple choiche on Ubuntu would be [UFW](https://help.ubuntu.com/community/UFW).
+On Exoscale you mange firewalls through the interface with what they call *Security Groups*. By default all incoming traffic is denied and all outgoing traffic is allowed. In the detail of your machine you should see it's affected by the "default" Security Group. You need to modify the "default" group with the mentioned rules. On other cloud providers you may have a similar system or you may have to install your own firewall software. A good and simple choice on Ubuntu would be [UFW](https://help.ubuntu.com/community/UFW).
 
 ![alt text](static/images/firewall1.png "Firewall rules")
 
@@ -99,13 +99,11 @@ The next thing to do is to apply all the software updates and patches and reboot
 
     sudo apt-get update && sudo apt-get dist-upgrade -y && sudo reboot
 
-This will ensure all software is up to date, including recent bug fixes and security patches.
-
-Let's log back in and enable the automatic security updates:
+This will ensure all software is up to date, including recent bug fixes and security patches. On top of that wouldn't it be nice if the system could keep-up with the latest patches? You can do so by enabling the automatic security updates:
 
     sudo dpkg-reconfigure --priority=low unattended-upgrades
 
-In this way, whenever an important security update is released the system will udate itself keeping everything secure.
+In this way, whenever an important security update is released the system will update itself keeping everything secure.
 
 It's good practice to install [fail2ban](http://www.fail2ban.org/wiki/index.php/Main_Page) in order to prevent brute force SSH attacks (specifically if you're using password authentication):
 
@@ -181,9 +179,9 @@ Our cert should now be issued and installed!
 
     Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
 
-Let's Encrypt keeps configuration and certificates organized under `/etc/letsencrypt`. The [Let's Encrypt documentation](https://letsencrypt.readthedocs.org/en/latest/using.html#where-are-my-certificates) will give you detailed informations about the structure and the content of the directory.
+Let's Encrypt keeps configuration and certificates organized under `/etc/letsencrypt`. The [Let's Encrypt documentation](https://letsencrypt.readthedocs.org/en/latest/using.html#where-are-my-certificates) will give you detailed information about the structure and the content of the directory.
 
-To use your new certificate you need to instruct Nginx on their location and tell the webserver to use port 443 on ssl. You may use the following minimal configuration block in `/etc/nginx/conf.d/default.conf`.
+To use your new certificate you need to instruct Nginx on their location and tell the web server to use port 443 on ssl. You may use the following minimal configuration block in `/etc/nginx/conf.d/default.conf`.
 
     server {
         listen 443 ssl;
@@ -218,7 +216,7 @@ A daily cron will trigger our script. To set up the crontab open it...
 
     sudo crontab -e
 
-and add a line with the `@daily` macro:
+...and add a line with the `@daily` macro:
 
     @daily /path/to/renewCerts.sh
 
@@ -226,14 +224,14 @@ Save and quit your editor. Don't forget to set the script executable using:
 
     chmod +x /path/to/renewCerts.sh
 
-Congaratulations! You can now server your content through HTTPS with a valid certificate which will renew automatically.
+Congratulations! You can now serve your content through HTTPS with a valid certificate which renews itself automatically.
 
 Still, if you check your grade get using the default SSL/TLS configuration on [SSL analyser](https://www.ssllabs.com/ssltest/), the result is not really good.
 Let's pimp a bit our Nginx config to improve our rating!
 
 ## Nginx SSL/TLS hardening 
 
-Remove the actual config in `/etc/nginx/conf.d/default.conf` and replace it by the block below. Remember to modifiy the block with your own domain name:
+Remove the actual config in `/etc/nginx/conf.d/default.conf` and replace it by the block below. Remember to modify the block with your own domain name:
 
     server {
         listen 80;
@@ -290,12 +288,12 @@ This is the cipher list you tell Nginx to support. This list is in my opinion on
     ssl_stapling on;
     ssl_stapling_verify on;
 
-Enable OCSP stapling, wich is well described in details [here](https://www.maxcdn.com/one/visual-glossary/ocsp-stapling/).
+Enable OCSP stapling, which is well described in details [here](https://www.maxcdn.com/one/visual-glossary/ocsp-stapling/).
 
     add_header Strict-Transport-Security "max-age=31557600; includeSubDomains";
 
 This adds an HTTP header instructing the client browser to force a HTTPS connection to your domain and to all of its subdomains for 1 year.  
-**Warning!** Be careful here before applying it in production, you must ensure first that **all your subdomains (if any) are being secured as well**. Your subdomains will be forced over https as well, and if not properly configured, will become unreacheable.
+**Warning!** Be careful here before applying it in production, you must ensure first that **all your subdomains (if any) are being secured as well**. Your subdomains will be forced over https as well, and if not properly configured, will become unreachable.
 
 Let's re-test again our setup with [Qualys SSL](https://www.ssllabs.com/ssltest/):
 
@@ -305,7 +303,7 @@ Hey, this looks much better now ! Our setup is now secured using an optimal SSL/
 
 ## Security headers hardening
 
-Now, what about the content / behaviour of our website? [Scott Helme](https://securityheaders.io/about/) did create a great HTTP response headers [analyser](https://securityheaders.io/) to asses the security grade of our content based on headers.
+Now, what about the content / behavior of our website? [Scott Helme](https://securityheaders.io/about/) did create a great HTTP response headers [analyser](https://securityheaders.io/) to asses the security grade of our content based on headers.
 
 If you test your current setup (ensure to test using HTTPS!) the result is, well... not so good:
 
@@ -384,7 +382,7 @@ And scan again our site using [securityheaders.io](https://securityheaders.io/)(
 
 ![alt text](static/images/securityheaders2.png "securityheaders.io final check")
 
-You should have got an "A" grade, wich sounds much better!
+You should have got an "A" grade, which sounds much better!
 
 Some of you may have noticed that we didn't enable HPKP (HTTP Public Key Pinning), which would have allowed us to get the A+ grade. In fact that header could really screw your website if the feature is not well understood and carefully planned. This subject may be developed in this page in the future, stay tuned.
 
