@@ -113,9 +113,10 @@ Now we'll take care of Nginx. We're not going to install the package from the Ub
 We create the target folder from where our wesite will be served:
 
     sudo mkdir /var/www/
+    # download our demo website
     wget STE demo page from github repo
-    tar -xvf /var/www/
-    sudo chown -R www-data /var/www/
+    tar zxf demo.tar.gz -C /var/www
+    sudo chown -R root:www-data /var/www/
 
 Remove Nginx default configuration:
 
