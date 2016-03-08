@@ -37,10 +37,35 @@ p {
 
 h1 {
   color: #fff;
-  font-size: 4rem;
+  font-size: 3rem;
   font-weight: 200;
+  line-height: 3.5rem;
   margin: 0;
   padding: 0;
+
+  > .big {
+    color: #ac4491;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+
+  > .small {
+    display: inline-block;
+    font-size: 75%;
+    line-height: 1;
+  }
+
+  @include breakpoint(800px) {
+    > .big {
+      font-size: 4.5rem;
+      margin-bottom: 20px;
+    }
+
+    > .small {
+      display: inline-block;
+      line-height: 1;
+    }
+  }
 }
 
 h2,
@@ -208,8 +233,14 @@ pre {
 
 .lead p {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 1.8rem;
-  line-height: 2.4rem;
   font-weight: 200;
+  font-size: 1.5rem;
+  line-height: 2rem;
   color: #16a085;
+
+  @include breakpoint(800px) {
+    font-size: 1.8rem;
+    line-height: 2.4rem;
+  }
+
 }

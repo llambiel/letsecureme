@@ -5,12 +5,10 @@ jQuery(document).ready(function($) {
     var lightbox_class = 'image-popup-fit-width';
 
     (function() {
-        var images = $('img');
+        var images = $('.main-content img');
         $.each(images, function(index, i) {
             var image = $(i);
             var anchor = image.attr('src');
-            console.log(image);
-            console.log(anchor);
             image.wrap('<a class="' + lightbox_class + '" href="' + anchor + '""></a>');
         });
     }());
@@ -28,7 +26,7 @@ jQuery(document).ready(function($) {
             zoom: {
                 enabled: true,
                 duration: 300, // don't foget to change the duration also in CSS
-            }
+            },
         });
     }());
 });

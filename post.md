@@ -1,5 +1,5 @@
 ---
-title: Let's Encrypt & Nginx - state of the art of a secure web deployment
+title: "<span class='big'>Let's Encrypt & Nginx</span><br/><span class='small'>State of the art of a secure web deployment"
 html_title: Let's Encrypt & Nginx - state of the art of a secure web deployment
 meta_desc: Let's Encrypt & Nginx - state of the art of a secure web deployment
 intro: |
@@ -20,7 +20,7 @@ Here are the steps we will go through:
 * hardening the Security Headers
 * get that shiny A+ security rating we are looking for
 
-We will use [Exoscale](https://www.exoscale.ch) as our cloud provider since they offer integrated firewall and DNS management. Exoscale is the leading Swiss cloud provider with a strong focus on data safety / privacy and security. Off course you can follow along using any other cloud or traditional hosting service.
+We will use [Exoscale](https://www.exoscale.ch) as our cloud provider since they offer integrated firewall and DNS management. Exoscale is the leading Swiss cloud provider with a strong focus on data safety / privacy and security. Of course you can follow along using any other cloud or traditional hosting service.
 
 ## Let's Encrypt overview
 
