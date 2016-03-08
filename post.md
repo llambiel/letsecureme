@@ -84,7 +84,7 @@ On Exoscale you mange firewalls through the interface with what they call *Secur
 
 ![alt text](static/images/firewall1.png "Firewall rules")
 
-Another recommended step to harden your machine is to administer it via SSH and keypairs authentication only. Most cloud providers give you this option now days. You should already have our key deployed on Exoscale if you've followed along, but if you didn't or if your cloud provider doesn't offer you a similar workflow, it's time to upload your key. This tutorial won't go into details about that, as said it assumes you know at least a bit about that stuff, this is just a reminder on how much this is important.
+Another recommended step to harden your machine is to administer it via SSH and keypairs authentication only. Most cloud providers give you this option now days. You should already have your key deployed on Exoscale if you've followed along, but if you didn't or if your cloud provider doesn't offer you a similar workflow, it's time to upload your key. This tutorial won't go into details about that, as said it assumes you know at least a bit about that stuff, this is just a reminder on how much this is important.
 
 You can now login via SSH using the _ubuntu_ user.
 
@@ -181,7 +181,7 @@ Our cert should now be issued and installed!
 
 Let's Encrypt keeps configuration and certificates organized under `/etc/letsencrypt`. The [Let's Encrypt documentation](https://letsencrypt.readthedocs.org/en/latest/using.html#where-are-my-certificates) will give you detailed information about the structure and the content of the directory.
 
-To use your new certificate you need to instruct Nginx on their location and tell the web server to use port 443 on ssl. You may use the following minimal configuration block in `/etc/nginx/conf.d/default.conf`.
+To use your new certificate you need to instruct Nginx to serve it and bind the port 443 on ssl. You may use the following minimal configuration block in `/etc/nginx/conf.d/default.conf`.
 
     server {
         listen 443 ssl;
