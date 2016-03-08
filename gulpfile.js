@@ -56,12 +56,21 @@ gulp.task('render', function() {
     exec('node ./render.js', function() {});
 });
 
+gulp.task('copy_demo', ['sass', 'imagemin', 'fonts', 'js'], function() {
+    gulp.src('./dist/static/css/*')
+        .pipe(copy('demo/static/css/', {prefix: 3}));
+    gulp.src('./dist/static/js/script.js')
+        .pipe(copy('demo/static/js/', {prefix: 3}));
+    gulp.src('./dist/static/fonts/*')
+        .pipe(copy('demo/static/fonts', {prefix: 3}));
+    gulp.src('./dist/static/images/*')
+        .pipe(copy('demo/static/images', {prefix: 3}));
+});
+
 gulp.task('watch', function() {
     gulp.watch('./src/scss/**/*.scss', ['sass']);
     gulp.watch('./post.md', ['render']);
     gulp.watch(['./src/svg/*', './src/img/*'], ['imagemin']);
 });
 
-gulp.task('default', ['render', 'sass', 'js', 'imagemin', 'fonts', 'ga']);
-
-
+gulp.task('default', ['render', 'sass', 'js', 'imagemin', 'fonts', 'ga', 'copy_demo']);
