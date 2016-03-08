@@ -39,7 +39,7 @@ But, heads-up! To be really security minded, and for information completeness, l
 * Throttling is enforced so you cannot request more than 5 certificates per week for a given domain.
 * Certificate is valid for 90 days.
 
-It's possible to get a certificate using other [alternate lightweight and less intrusive clients](https://community.letsencrypt.org/t/list-of-client-implementations/2103) however I won't cover them in this tutorial.
+It's possible to get a certificate using other [alternate lightweight and less intrusive clients](https://community.letsencrypt.org/t/list-of-client-implementations/2103) however this tutorial won't cover them.
 
 The official documentation can be found [here](http://letsencrypt.readthedocs.org/en/latest/intro.html), and of course is worth reading.
 
@@ -84,7 +84,7 @@ On Exoscale you mange firewalls through the interface with what is called Securi
 
 ![alt text](static/images/firewall1.png "Firewall rules")
 
-Another recommended step to harden your machine is to grant access to it via SSH and keypairs authentication only. Most cloud providers give you this option now days. You should already have our key deployed on Exoscale if you've followed along, but if you didn't or if your cloud provider doesn't offer you a similar workflow, it's time to upload your key. I will not go into details about that, as said I assume you know at least a bit about that stuff, this is just a reminder on how much this is important.
+Another recommended step to harden your machine is to grant access to it via SSH and keypairs authentication only. Most cloud providers give you this option now days. You should already have our key deployed on Exoscale if you've followed along, but if you didn't or if your cloud provider doesn't offer you a similar workflow, it's time to upload your key. This tutorial won't go into details about that, as said it assumes you know at least a bit about that stuff, this is just a reminder on how much this is important.
 
 You can now login via SSH using the _ubuntu_ user.
 
@@ -280,17 +280,17 @@ Let's review some important config items that we've just added:
     
     Disable old and weak SSLv2/SSLv3 protocols and allow only the TLS ones.
 
-*    ssl_ciphers EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5;
-    ssl_prefer_server_ciphers On;
+*    `ssl_ciphers EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5;
+    ssl_prefer_server_ciphers On;`
 
     This is the cipher list you tell Nginx to support. This list is in my opinion one of the most well balanced between security and support by older web browsers. Nginx will prefer those ciphers over the ones requested by the client.
 
-*   ssl_stapling on;
-    ssl_stapling_verify on;
+*       ssl_stapling on;
+        ssl_stapling_verify on;
 
     Enable OCSP stapling, wich is well described in details [here](https://www.maxcdn.com/one/visual-glossary/ocsp-stapling/).
 
-*   add_header Strict-Transport-Security "max-age=31557600; includeSubDomains";
+*   `add_header Strict-Transport-Security "max-age=31557600; includeSubDomains";`
 
     This adds an HTTP header instructing the client browser to force a HTTPS connection to your domain and to all of its subdomains for 1 year.
     __Warning!__ Be careful here before applying it in production, you must ensure first that __all your subdomains (if any) are being secured as well__. Your subdomains will be forced over https as well, and if not properly configured, will become unreacheable.
@@ -384,7 +384,7 @@ And scan again our site using [securityheaders.io](https://securityheaders.io/)(
 
 You should have got an "A" grade, wich sounds much better!
 
-Some of you may have noticed that we didn't enable HPKP (HTTP Public Key Pinning), which would have allowed us to get the A+ grade. In fact that header could really screw your website if the feature is not well understood and carefully planned. I may add more details on it on this page in the future, stay tuned.
+Some of you may have noticed that we didn't enable HPKP (HTTP Public Key Pinning), which would have allowed us to get the A+ grade. In fact that header could really screw your website if the feature is not well understood and carefully planned. This subject may be developed in this page in the future, stay tuned.
 
 ## Conclusion
 
