@@ -87,13 +87,6 @@ On Exoscale firewalls are managed through the interface with what is called *Sec
 
 ![alt text](static/images/firewall1.png "Firewall rules")
 
-If you're using [UFW](https://help.ubuntu.com/community/UFW), add the rules below:
-
-    sudo ufw allow out 22/tcp
-    sudo ufw allow out 80/tcp
-    sudo ufw allow out 443/tcp
-    
-
 Another recommended step to harden your machine is to administer it via SSH and keypairs authentication only. Most cloud providers give you this option nowadays. You should already have your key deployed on Exoscale if you've followed along, but if you didn't or if your cloud provider doesn't offer you a similar workflow, it's time to upload your key. This tutorial won't go into details about that, and assumes you are familiar with this.
 
 You can now login via SSH using the _ubuntu_ user.
@@ -104,6 +97,12 @@ Now, if you're using SSH key authentication, **and only if so**, you may disable
 
     sudo sed -i 's|PasswordAuthentication yes|PasswordAuthentication no|g' /etc/ssh/sshd_config
     sudo service ssh restart
+
+If you're using [UFW](https://help.ubuntu.com/community/UFW), add the rules below:
+
+    sudo ufw allow out 22/tcp
+    sudo ufw allow out 80/tcp
+    sudo ufw allow out 443/tc
 
 The next thing to do is to apply all the software updates and patches and reboot the instance:
 
