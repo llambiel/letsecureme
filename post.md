@@ -1,17 +1,20 @@
 ---
-title: "<span class='big'>Let's Encrypt & Nginx</span><br/><span class='small'>State of the art of a secure web deployment"
-html_title: "Let's Encrypt & Nginx - state of the art of a secure web deployment"
+title: "<span class='big'>Let's Encrypt & Nginx</span><br/><span class='small'>State of the art secure web deployment"
+html_title: "Let's Encrypt & Nginx - state of the art secure web deployment"
 meta_desc: "An overview of a secure web deployment with Let's Encrypt and Nginx. How to set up a valid HTTPS connection, harden it and get top security ratings."
 intro: |
   Not long ago SSL encryption was still considered a nice-to-have feature, and major services secured only log-in pages of theirs applications.
 
-  Things have changed, and for the best: encryption is now must-have class, and more and more enforced everywhere. Search giant Google even takes SSL implementation into account in search results ranking.
+  Things have changed, and for the best: encryption is now considered a must-have, and enforced by most players. Search giant Google even takes SSL implementation into account in search results ranking.
 
-  In despite of the larger user-base, setting-up your secured connection can be daunting and quite time consuming.
+  Despite the larger reach of SSL, setting-up your own secured web service is still considered daunting, time consuming, and error-prone.
 
-  Let's encrypt disrupts the conventional workflow trying to make securing your website a piece of cake.
+  A recent player in the field, [Let's encrypt](https://letsencrypt.org) promises to make SSL certificates more widely available and
+  to radically simplify the workflow of maintaining a website's security.
 
   Combined with the powerful Nginx web server, and with some additional hardening tips, you can use it to achieve top notch security grades, rating A+ on the popular [Qualys SSL](https://www.ssllabs.com/ssltest/) and [securityheaders.io](https://securityheaders.io) analysers.
+  
+  In this article, we walk through the steps needed to achieve this.
 ---
 
 ## What you will do
@@ -19,7 +22,7 @@ Here are the steps you will go through:
 
 * Spawn a cloud instance which will host our demo website.
 * Do some basic hardening of our server and set up Nginx.
-* Install a brand new Let's encrypt certificate and set up its automatic renewal
+* Install a brand new [Let's encrypt](https://letsencrypt.org) certificate and set up its automatic renewal
 * Harden the Nginx configuration
 * Harden the Security Headers
 * Get that shiny A+ security rating you are looking for
@@ -28,9 +31,9 @@ This tutorial will use [Exoscale](https://www.exoscale.ch) as cloud provider sin
 
 ## Let's Encrypt overview
 
-Let's Encrypt is a new open source certificate authority (CA) providing free and automated SSL/TLS certificates. Their root certificate is well trusted by most [browsers](https://community.letsencrypt.org/t/which-browsers-and-operating-systems-support-lets-encrypt/4394), and they are actively trying to reduce the painful workflow of creation - validation - signing - installation - renewal of certificates. 
+[Let's Encrypt](https://letsencrypt.org) is a new open source certificate authority (CA) providing free and automated SSL/TLS certificates. Their root certificate is well trusted by most [browsers](https://community.letsencrypt.org/t/which-browsers-and-operating-systems-support-lets-encrypt/4394), and they are actively trying to reduce the painful workflow of creation - validation - signing - installation - renewal of certificates. 
 
-But, heads-up! To be really security minded, and for information completeness, let's cite some caveats you may not be comfortable with:
+A word of warning before moving on, there are still a few caveats to take into account when considering [Let's encrypt](https://letsencrypt.org):
 
 * It's still in **beta** phase.
 * It requires root privileges.
@@ -45,7 +48,7 @@ The official documentation can be found [here](http://letsencrypt.readthedocs.or
 
 ## Infrastructure setup
 
-Let's begin by spawning a new cloud instance. First of all you'll need a public SSH key at hand. If you don't have your own key, or want a quick setup, Exoscale let you generate one on the fly before starting your machine. Go under the SSH Keys menu and create your key. [They have a guideline](https://community.exoscale.ch/documentation/compute/ssh-keypairs/) if this stuff is new for you. This tutorial will assume you know what an SSH key is and how to use it.
+Let's begin by spawning a new cloud instance. First of all you'll need a public SSH key at hand. If you don't have your own key, or want a quick setup, Exoscale lets you generate one on the fly before starting your machine. Go under the SSH Keys menu and create your key. [They have a guideline](https://community.exoscale.ch/documentation/compute/ssh-keypairs/) if this stuff is new for you. This tutorial will assume you know what an SSH key is and how to use it.
 
 On the [Exoscale portal](https://portal.exoscale.ch) (or the cloud provider of your choice), start a Linux Ubuntu 14.04. For this demo a micro instance (512mb RAM, 1 Vcpu & 10GB disk) will be more than enough. Choose your SSH key on creation and verify that the "default" Security Group is checked (more on that later).
 
@@ -80,11 +83,11 @@ On the firewall side you need to allow only the required traffic and deny any ot
 * 443 (HTTPS)
 * ICMP ping (not mandatory but convenient)
 
-On Exoscale you mange firewalls through the interface with what they call *Security Groups*. By default all incoming traffic is denied and all outgoing traffic is allowed. In the detail of your machine you should see it's affected by the "default" Security Group. You need to modify the "default" group with the mentioned rules. On other cloud providers you may have a similar system or you may have to install your own firewall software. A good and simple choice on Ubuntu would be [UFW](https://help.ubuntu.com/community/UFW).
+On Exoscale firewalls are managed through the interface with what is called *Security Groups*. By default all incoming traffic is denied and all outgoing traffic is allowed. In the detail of your machine you should see it has been registered in the "default" Security Group. You need to modify the "default" group with the mentioned rules. On other cloud providers you may have a similar system or you may have to install your own firewall software. A good and simple choice on Ubuntu would be [UFW](https://help.ubuntu.com/community/UFW).
 
 ![alt text](static/images/firewall1.png "Firewall rules")
 
-Another recommended step to harden your machine is to administer it via SSH and keypairs authentication only. Most cloud providers give you this option now days. You should already have your key deployed on Exoscale if you've followed along, but if you didn't or if your cloud provider doesn't offer you a similar workflow, it's time to upload your key. This tutorial won't go into details about that, as said it assumes you know at least a bit about that stuff, this is just a reminder on how much this is important.
+Another recommended step to harden your machine is to administer it via SSH and keypairs authentication only. Most cloud providers give you this option nowadays. You should already have your key deployed on Exoscale if you've followed along, but if you didn't or if your cloud provider doesn't offer you a similar workflow, it's time to upload your key. This tutorial won't go into details about that, and assumes you are familiar with this.
 
 You can now login via SSH using the _ubuntu_ user.
 
@@ -111,7 +114,7 @@ It's good practice to install [fail2ban](http://www.fail2ban.org/wiki/index.php/
 
 ## Basic Nginx Setup
 
-Now that everything is secured you may take care of Nginx. We're not going to install the package from the Ubuntu repository as we will require features (like HTTP/2) that can only be found in the latest "mainline" release branch. You can add the Nginx official repository using:
+Now that everything is secured you may take care of Nginx. We're not going to install the package from the Ubuntu repository as we will require features (like HTTP/2) that can only be found in the latest "mainline" release branch. You can add the Nginx official repository using:f
 
     curl http://nginx.org/keys/nginx_signing.key | sudo apt-key add -
     echo "deb http://nginx.org/packages/mainline/ubuntu/ trusty nginx" | sudo tee --append /etc/apt/sources.list.d/nginx_org_packages_mainline_ubuntu.list
@@ -130,7 +133,7 @@ Remove the default Nginx configuration and start with a fresh blank file:
     sudo mv /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.orig
     sudo touch /etc/nginx/conf.d/default.conf
 
-Let's Encrypt client will need to create some temporary files required to authenticate the domain for which we're requesting the certificate. To allow this you need to adjust the Nginx configuration block in `/etc/nginx/conf.d/default.conf` with the following:
+[Let's Encrypt](https://letsencrypt.org) client will need to create some temporary files required to authenticate the domain for which we're requesting the certificate. To allow this you need to adjust the Nginx configuration block in `/etc/nginx/conf.d/default.conf` with the following:
 
     server {
         listen 80;
@@ -147,13 +150,13 @@ Reload Nginx to apply our configuration change and we're done with Nginx for the
 
 ## Let's Encrypt setup, SSL certificates and Nginx HTTPS config
 
-Go for Let's Encrypt. As per [the official documnetation](https://letsencrypt.readthedocs.org/en/latest/intro.html#installation), you need to clone its [GIT](https://github.com/letsencrypt/letsencrypt) repository and launch `letsencrypt-auto`:
+Go for Let's Encrypt. As per [the official documentation](https://letsencrypt.readthedocs.org/en/latest/intro.html#installation), you need to clone its [GIT](https://github.com/letsencrypt/letsencrypt) repository and launch `letsencrypt-auto`:
 
     sudo apt-get install -y git
     sudo git clone https://github.com/letsencrypt/letsencrypt /opt/letsencrypt
     /opt/letsencrypt/letsencrypt-auto
 
-Note that as said in the beginning, the setup script will install all the required dependencies automatically. Although convenient, this implies that you loose some control of what is installed on your machine.
+Note that as said in the beginning, the setup script will install all the required dependencies automatically. Although convenient, this implies that you lose some control of what is installed on your machine.
 
 You can now request a certificate for your domain. You'll get prompted to provide your email address for the expiring notifications and accept the Terms:
 
@@ -198,7 +201,7 @@ Let's reload Nginx one more time:
 Now point your web browser to https://yourdomain.here  
 Your website homepage should now be served over HTTPS. \o/ 
 
-As said about Let's encrypt caveats, your certificate is valid 90 days only. To ensure that our certificate gets renewed automatically we're going to use a small script and a crontab.
+As previously mentioned, [Let's encrypt](https://letsencrypt.org) delivers certificates that are valid 90 days only. To ensure that our certificate gets renewed automatically we're going to use a small script and a crontab.
 
 Save the following in a file called renewCerts.sh.
 
@@ -226,7 +229,7 @@ Save and quit your editor. Don't forget to set the script executable using:
 
 Congratulations! You can now serve your content through HTTPS with a valid certificate which renews itself automatically.
 
-Still, if you check your grade get using the default SSL/TLS configuration on [SSL analyser](https://www.ssllabs.com/ssltest/), the result is not really good.
+Still, if you check your grade using the default SSL/TLS configuration on [SSL analyser](https://www.ssllabs.com/ssltest/), the result is not really good.
 Let's pimp a bit our Nginx config to improve our rating!
 
 ## Nginx SSL/TLS hardening 
@@ -303,7 +306,7 @@ Hey, this looks much better now ! Our setup is now secured using an optimal SSL/
 
 ## Security headers hardening
 
-Now, what about the content / behavior of our website? [Scott Helme](https://securityheaders.io/about/) did create a great HTTP response headers [analyser](https://securityheaders.io/) to asses the security grade of our content based on headers.
+Now, what about the content / behavior of our website? [Scott Helme](https://securityheaders.io/about/) created a great HTTP response headers [analyser](https://securityheaders.io/) to assess the security grade of our content based on headers.
 
 If you test your current setup (ensure to test using HTTPS!) the result is, well... not so good:
 
