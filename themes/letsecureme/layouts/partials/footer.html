@@ -1,0 +1,19 @@
+<div class="footer">
+    <nav class="nav">
+        <ul class="nav-list">
+            {{ with .Site.Params.twitterName }}
+            <li class="nav-item">
+                <a class="twitter" href="https://twitter.com/{{ . }}"><span>Twitter</span></a>
+            </li>
+            {{ end }}
+            {{ with .Site.Params.githubName }}
+            <li class="nav-item">
+                <a class="github" href="https://github.com/{{ . }} "><span>Github</span></a>
+            </li>
+            {{ end }}
+            <li class="nav-item">
+                <a class="rss" href="{{ .Site.BaseURL }}/index.xml"><span>rss</span></a>
+            </li>
+        </ul>
+    </nav>
+</div>

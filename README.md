@@ -5,9 +5,9 @@ This is the home of the website [letsecure.me](https://letsecure.me), including 
 
 ## Build
 
-To build the mini-site run
+To build the static website use [Hugo](https://gohugo.io/).
+To compress the images of the articles use:
 
         npm install
         gulp
 
-You can now open index.html in the `./dist` or `./demo` folders.

@@ -1,0 +1,41 @@
+.sidebar {
+  background-color: #40d47e;
+  background-image: url('../img/crosses.png');
+  background-position: top center;
+  background-repeat: repeat;
+
+  a,
+  a:hover,
+  a:active {
+    border: 0;
+  }
+
+  .header {
+    text-align: center;
+
+    @include breakpoint($break) {
+      margin: 4.5rem auto;
+      text-align: right;
+    }
+  }
+
+  .brand-title {
+    display: block;
+    font-size: 2rem;
+    margin-bottom: 10px;
+
+    > a {
+      color: #fff;
+    }
+  }
+
+  .brand-logo {
+    margin-bottom: 1.2rem;
+    width: 50px;
+  }
+
+  .brand-tagline {
+    display: block;
+    line-height: 1.4rem
+  }
+}

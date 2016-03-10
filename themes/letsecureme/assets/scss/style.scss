@@ -1,0 +1,30 @@
+@import 'breakpoint';
+
+$break: 961px;
+$sidebar: 200px;
+
+@mixin clearfix() {
+  &:before,
+  &:after {
+    content: ' '; // 1
+    display: table; // 2
+  }
+
+  &:after {
+    clear: both;
+  }
+
+  // For IE 6/7 only
+  // Include this rule to trigger hasLayout and contain floats.
+  *zoom: 1;
+}
+
+
+@import 'vendors/magnific-popup';
+@import 'vendors/mfp';
+
+@import 'letsecure/layout';
+@import 'letsecure/sidebar';
+@import 'letsecure/type';
+@import 'letsecure/footer';
+

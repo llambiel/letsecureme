@@ -1,0 +1,11 @@
+<div class="sidebar">
+    <div class="header">
+        <hgroup>
+            <a href="{{ .Site.BaseURL }}"><img class="brand-logo" src="/img/logo.png"></a>
+            <div class="brand-title">
+                <a href="{{ .Site.BaseURL }}">{{ .Site.Title }}</a>
+            </div>
+            <span class="brand-tagline">{{ with .Site.Params.description }} {{.}} {{end}}</span>
+        </hgroup>
+    </div>
+</div>

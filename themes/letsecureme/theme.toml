@@ -1,0 +1,9 @@
+name = "letsecurme"
+description = "nothing here"
+license = "MIT"
+source_repo = "none"
+min_version = 0.0
+
+[author]
+    name = "kindervelo"
+
