@@ -104,6 +104,12 @@ Now, if you're using SSH key authentication, **and only if so**, you may disable
     sudo sed -i 's|PasswordAuthentication yes|PasswordAuthentication no|g' /etc/ssh/sshd_config
     sudo service ssh restart
 
+If you're using [UFW](https://help.ubuntu.com/community/UFW), add the rules below:
+
+    sudo ufw allow out 22/tcp
+    sudo ufw allow out 80/tcp
+    sudo ufw allow out 443/tc
+
 The next thing to do is to apply all the software updates and patches and reboot the instance:
 
     sudo apt-get update && sudo apt-get dist-upgrade -y && sudo reboot
@@ -255,6 +261,7 @@ Remove the actual config in `/etc/nginx/conf.d/default.conf` and replace it by t
         add_header Strict-Transport-Security "max-age=31557600; includeSubDomains";
         ssl_stapling on;
         ssl_stapling_verify on;
+        # Your favorite resolver may be used instead of the Google one below
         resolver 8.8.8.8;
         root /var/www/demo;
         index index.html;
@@ -365,6 +372,7 @@ Your final Nginx configuration should look like this:
          add_header Content-Security-Policy "default-src 'self'; script-src 'self' *.google-analytics.com";
          ssl_stapling on;
          ssl_stapling_verify on;
+         # Your favorite resolver may be used instead of the Google one below
          resolver 8.8.8.8;
          root /var/www/demo;
          index index.html;
