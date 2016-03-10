@@ -249,6 +249,7 @@ Remove the actual config in `/etc/nginx/conf.d/default.conf` and replace it by t
         add_header Strict-Transport-Security "max-age=31557600; includeSubDomains";
         ssl_stapling on;
         ssl_stapling_verify on;
+        # Your favorite resolver may be used instead of the Google one below
         resolver 8.8.8.8;
         root /var/www/demo;
         index index.html;
@@ -359,6 +360,7 @@ Your final Nginx configuration should look like this:
          add_header Content-Security-Policy "default-src 'self'; script-src 'self' *.google-analytics.com";
          ssl_stapling on;
          ssl_stapling_verify on;
+         # Your favorite resolver may be used instead of the Google one below
          resolver 8.8.8.8;
          root /var/www/demo;
          index index.html;
