@@ -48,24 +48,20 @@ gulp.task('icons', function() {
         .pipe(copy('./static/', {prefix: 2}));
 });
 
-gulp.task('ga', function() {
-    return gulp.src('./src/js/ga.js')
-        .pipe(copy('./static/js/', {prefix: 2}));
-});
-
 gulp.task('js', function() {
+    gulp.src('./assets/js/ga.js')
+        .pipe(copy('./static/js', {prefix: 2}));
     return gulp.src([
         './node_modules/jquery/dist/jquery.slim.min.js',
         './node_modules/magnific-popup/dist/jquery.magnific-popup.min.js',
         './assets/js/base.js',
-        './assets/js/ga.js',
     ])
     .pipe(concat('all.min.js'))
-    // .pipe(uglify({mangle: false}))
+    .pipe(uglify({mangle: false}))
     .pipe(gulp.dest('./static/js/'));
 });
 
-gulp.task('default', ['sass', 'imagemin', 'fonts', 'js']);
+gulp.task('default', ['sass', 'imagemin', 'icons', 'fonts', 'js']);
 
 gulp.task('watch', function() {
     gulp.watch('./gulpfile.js', ['default']);
