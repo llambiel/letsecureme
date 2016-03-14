@@ -1,6 +1,6 @@
 ---
-date: "2016-03-10T10:15:15+01:00"
-draft: true
+date: "2016-03-14T10:43:30+01:00"
+draft: false
 title: "Let's Encrypt & Nginx"
 subtitle: "State of the art secure web deployment"
 slug: "secure-web-deployment-with-lets-encrypt-and-nginx"
