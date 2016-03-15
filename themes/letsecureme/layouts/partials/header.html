@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="x-ua-compatible" content="ie=edge,chrome=1">
+    <meta http-equiv="Content-Language" content="en">
+    <title>{{ .Title }} &middot; {{ .Site.Title }}</title>
+
+    <meta name="description" content="{{ if .IsNode }}{{ with .Site.Params.description }}{{ . }}{{ end }}{{ else }}{{ with .Description }}{{ . }}{{ end }}{{ end }}">
+
+    {{.Hugo.Generator}}
+    <meta name="twitter:card" content="summary">
+    {{ with .Site.Params.twitter }}<meta name="twitter:site" content="{{ . }}" />{{ end }}
+    <meta name="twitter:title" content="{{ .Title }} &middot; {{ .Site.Title }}">
+    <meta name="twitter:description" content="{{ if .IsNode }}{{ with .Site.Params.description }}{{ . }}{{ end }}{{ else }}{{ with .Description }}{{ . }}{{ end }}{{ end }}">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="{{ .Title }} &middot; {{ .Site.Title }}">
+    <meta property="og:description" content="{{ if .IsNode }}{{ with .Site.Params.description }}{{ . }}{{ end }}{{ else }}{{ with .Description }}{{ . }}{{ end }}{{ end }}">
+
+    <link rel="stylesheet" href="{{ .Site.BaseURL }}/css/all.min.css">
+    <link rel="shortcut icon" href="{{ .Site.BaseURL }}/favicon.ico">
+    <link rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" href="{{ .Site.BaseURL }}/index.xml" />
+    <script src="{{ .Site.BaseURL }}/js/ga.js"></script>
+</head>
+<body>

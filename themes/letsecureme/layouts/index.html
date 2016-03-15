@@ -1,0 +1,31 @@
+{{ partial "header.html" . }}
+
+<div class="container container-index">
+    {{ partial "sidebar.html" . }}
+
+    <div class="content">
+        <div>
+            <!-- A wrapper for all the blog posts -->
+            <div class="posts">
+                {{ range .Paginator.Pages }}
+                <section class="post">
+                    <header class="post-header">
+                        <time class="time">{{ .Date.Format "02 Jan 2006, 15:04" }}</time>
+                        <h1 class="post-title"><a href="{{ .Permalink }}" class="post-title"><span class="big">{{ .Title }}</span><span class="small">{{ .Params.subtitle }}</span></a></h1>
+                    </header>
+
+                    <div class="post-description">
+                        {{ .Params.intro | markdownify  }}
+                    </div>
+                </section>
+                {{ end }}
+            </div>
+            {{ partial "pagination.html" . }}
+            {{ partial "footer.html" . }}
+        </div>
+    </div>
+</div>
+
+<script src="{{ .Site.BaseURL }}/js/all.min.js"></script>
+</body>
+</html>

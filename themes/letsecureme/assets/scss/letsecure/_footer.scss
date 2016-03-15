@@ -1,0 +1,66 @@
+.footer {
+  border-top: 1px solid #16a085;
+
+  .copy {
+    color: #ccc;
+    display: block;
+    font-size: .8rem;
+    margin-top: 10px;
+    text-align: center;
+  }
+
+  .nav {
+    padding: 1rem;
+    text-align: center;
+  }
+
+  ul {
+    display: inline-block;
+    list-style: none;
+    padding: 0;
+
+    > li {
+      display: inline-block;
+    }
+  }
+
+  a,
+  a:hover {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    border: 0;
+    display: inline-block;
+    height: 40px;
+    width: 40px;
+
+    > span {
+      display: none;
+    }
+
+    &:first-child {
+      margin-right: 20px;
+    }
+  }
+
+  a {
+    opacity: .3;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  a.github {
+    background-image: url('../img/github.svg');
+  }
+
+  a.twitter {
+    background-image: url('../img/twitter.svg');
+  }
+
+  a.rss {
+    background-image: url('../img/rss.svg');
+  }
+}
+

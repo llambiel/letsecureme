@@ -1,0 +1,78 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #fff;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+
+  > .container {
+    min-height: 100%;
+  }
+}
+
+.container {
+  .sidebar {
+    width: 100%;
+  }
+
+  .content,
+  .sidebar {
+    display: block;
+    padding: 2em 1em;
+  }
+
+  @include breakpoint($break) {
+    align-content: stretch;
+    align-items: stretch;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+
+    .content {
+      flex-grow: 1;
+      max-width: 1000px;
+      padding: 4rem 4rem 0;
+      width: calc(100% - 300px);
+    }
+
+    .sidebar {
+      flex-basis: 300px;
+      min-width: 300px;
+    }
+  }
+}
+
+
+.container-index .post-description {
+  margin-top: 3rem;
+}
+
+.footer {
+  @include clearfix();
+  display: block;
+  margin: 8rem 0 2rem;
+}
+
+.post .lead {
+  display: block;
+  margin-bottom: 6rem;
+}
+
+img:focus,
+a:focus {
+  box-shadow: 0;
+  outline: #16a085 auto 2px;
+  outline-color: #16a085;
+  outline-style: auto;
+  outline-width: 2px;
+}

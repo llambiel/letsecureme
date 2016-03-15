@@ -1,0 +1,11 @@
+baseurl = "https://letsecure.me/"
+languageCode = "en-us"
+title = "Let's Secure Me"
+theme = "letsecureme"
+Paginate = 10
+
+[params]
+  hideShareOptions = true
+  twitterName = "loiclambiel"
+  githubName = "llambiel"
+  description = "Best practices and tips to secure your infrastructure."

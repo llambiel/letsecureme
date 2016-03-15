@@ -1,0 +1,53 @@
+{{ partial "header.html" . }}
+
+<div class="container">
+    {{ partial "sidebar.html" . }}
+
+    <div class="content">
+        <div>
+            <!-- A wrapper for all the blog posts -->
+            <div class="posts">
+                <section class="post">
+                    <header class="post-header">
+                        <time class="time">{{ .Date.Format "02 Jan 2006, 15:04" }}</time>
+
+                        <h1 class="post-title"><span class="big">{{ .Title }}</span><span class="small">{{ .Params.subtitle }}</span></h1>
+
+                        <p class="post-meta">
+                            {{ with .Params.author }}
+                                By <strong class="post-author">{{ . }}</strong>
+                            {{ end }}
+                            {{ if isset .Params "categories" }}
+                                under
+                                {{ $baseUrl := .Site.BaseURL }}
+                                {{ range .Params.categories }}<a class="post-category post-category-{{ . }}" href="{{ $baseUrl }}/categories/{{ . | urlize }}">{{ . }}</a>{{ end }}
+                            {{ end }}
+                        </p>
+                    </header>
+                    {{ if not .Site.Params.hideShareOptions }}
+                    <div class="post-share">
+                        <div class="post-share-links">
+                            <h4 style="">Share</h4>
+                            <a href="#" data-type="facebook" data-url="{{ .Permalink }}" data-title="{{ .Title }}" data-description="{{ .Description }}" data-media="" class="prettySocial fa fa-facebook"></a>
+                            <a href="#" data-type="googleplus" data-url="{{ .Permalink }}" data-description="{{ .Description }}" class="prettySocial fa fa-google-plus"></a>
+                            {{ if isset .Site.Params "twitter" }}
+                            <a href="#" data-type="twitter" data-url="{{ .Permalink }}" data-description="{{ .Description }}" data-via="{{ .Site.Params.twitter }}" class="prettySocial fa fa-twitter"></a>
+                            {{ end }}
+                        </div>
+                    </div>
+                    {{ end }}
+                    <div>
+                        <div class="lead">{{ replace .Params.intro "+" "" | markdownify }}</div>
+                        <div class="markdown">{{ .Content }}</div>
+                    </div>
+                    {{ template "_internal/disqus.html" . }}
+                </section>
+            </div>
+            {{ partial "footer.html" . }}
+        </div>
+    </div>
+</div>
+
+<script src="{{ .Site.BaseURL }}/js/all.min.js"></script>
+</body>
+</html>
