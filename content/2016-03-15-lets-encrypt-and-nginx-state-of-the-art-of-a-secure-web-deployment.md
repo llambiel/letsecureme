@@ -107,7 +107,7 @@ If you're using [UFW](https://help.ubuntu.com/community/UFW), add the rules belo
 
     sudo ufw allow out 22/tcp
     sudo ufw allow out 80/tcp
-    sudo ufw allow out 443/tc
+    sudo ufw allow out 443/tcp
 
 The next thing to do is to apply all the software updates and patches and reboot the instance:
 
