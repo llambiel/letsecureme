@@ -150,9 +150,6 @@ Remove the default Nginx configuration and start with a fresh blank file:
         listen 80;
         server_name default_server;
         root /var/www/demo;
-        location /.well-known/acme-challenge {
-            default_type "text/plain";
-        }
     }
 
 Reload Nginx to apply our configuration change and we're done with Nginx for the time being.
@@ -266,7 +263,6 @@ Remove the actual config in `/etc/nginx/conf.d/default.conf` and replace it by t
         index index.html;
 
         location '/.well-known/acme-challenge' {
-            default_type "text/plain";
             root        /var/www/demo;
         }
 
@@ -377,7 +373,6 @@ Your final Nginx configuration should look like this:
          index index.html;
 
          location '/.well-known/acme-challenge' {
-          default_type "text/plain";
             root        /var/www/demo;
           }
 
