@@ -129,7 +129,7 @@ Now that everything is secured you may take care of Nginx. We're not going to in
 
     # Sadly the key is being served over http, so you need to check it's sha256 hash to ensure that it hasn't been somehow compromised
     wget --quiet http://nginx.org/keys/nginx_signing.key -O nginx_signing.key | sha256sum
-    # At the time of writing the sha256sum is "dcc2ed613d67b277a7e7c87b12907485652286e199c1061fb4b3af91f201be39"
+    # At the time of writing the sha256sum is "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     # Please ensure that you get the same result before proceeding further
     sudo apt-key add nginx_signing.key
     echo "deb http://nginx.org/packages/mainline/ubuntu/ trusty nginx" | sudo tee --append /etc/apt/sources.list.d/nginx_org_packages_mainline_ubuntu.list
