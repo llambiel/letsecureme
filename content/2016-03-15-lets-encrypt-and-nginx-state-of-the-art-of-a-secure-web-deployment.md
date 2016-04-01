@@ -128,8 +128,8 @@ It's good practice to install [fail2ban](http://www.fail2ban.org/wiki/index.php/
 Now that everything is secured you may take care of Nginx. We're not going to install the package from the Ubuntu repository as we will require features (like HTTP/2) that can only be found in the latest "mainline" release branch. You can add the Nginx official repository using:
 
     # Sadly the key is being served over http, so you need to check it's sha256 hash to ensure that it hasn't been somehow compromised
-    wget --quiet http://nginx.org/keys/nginx_signing.key -O nginx_signing.key | sha256sum
-    # At the time of writing the sha256sum is "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    wget --quiet http://nginx.org/keys/nginx_signing.key -O nginx_signing.key && sha256sum nginx_signing.key
+    # At the time of writing the sha256sum is "dcc2ed613d67b277a7e7c87b12907485652286e199c1061fb4b3af91f201be39"
     # Please ensure that you get the same result before proceeding further
     sudo apt-key add nginx_signing.key
     echo "deb http://nginx.org/packages/mainline/ubuntu/ trusty nginx" | sudo tee --append /etc/apt/sources.list.d/nginx_org_packages_mainline_ubuntu.list
