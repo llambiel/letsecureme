@@ -407,7 +407,6 @@ There are many reasons for deploying SSL/TLS on your website. Security is, natur
 
 Let's Encrypt can be easily deployed and maintained on top of Nginx, and with Specific SSL/TLS and browser headers hardening you can achieve a modern and secure web deployment.
 
-Source files of this project can be downloaded directly from [GitHub](https://
-raw.githubusercontent.com/llambiel/letsecureme/).
+Source files of this project can be downloaded directly from [GitHub](https://github.com/llambiel/letsecureme).
 
 This project will be expanded and kept updated to follow the future releases and improvements of Let's Encrypt and Nginx, not to mention the future best practices of a state of the art secure web deployment.
