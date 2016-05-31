@@ -34,6 +34,8 @@ Here are the steps you will go through:
 
 This tutorial will use [Exoscale](https://www.exoscale.ch) as cloud provider since they offer integrated firewall and DNS management. On top of that Exoscale has a strong focus on data safety / privacy and security. Of course you can follow along using any other cloud or traditional hosting service.
 
+UPDATE 1: This post has been updated on 2016-06-01 to reflect Let's encrypt evolution (out of beta, new Certbot client), and deployed on Ubuntu 16.04 instead of 14.04. The changes can be tracked [here](https://github.com/llambiel/letsecureme/pull/1)
+
 ## Let's Encrypt overview
 
 [Let's Encrypt](https://letsencrypt.org) is a new open source certificate authority (CA) providing free and automated SSL/TLS certificates. Their root certificate is well trusted by most [browsers](https://community.letsencrypt.org/t/which-browsers-and-operating-systems-support-lets-encrypt/4394), and they are actively trying to reduce the painful workflow of creation - validation - signing - installation - renewal of certificates. 
