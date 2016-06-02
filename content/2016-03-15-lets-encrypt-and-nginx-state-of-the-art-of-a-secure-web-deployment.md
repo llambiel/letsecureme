@@ -34,7 +34,7 @@ Here are the steps you will go through:
 
 This tutorial will use [Exoscale](https://www.exoscale.ch) as cloud provider since they offer integrated firewall and DNS management. On top of that Exoscale has a strong focus on data safety / privacy and security. Of course you can follow along using any other cloud or traditional hosting service.
 
-UPDATE 1: This post has been updated on 2016-06-01 to reflect Let's encrypt evolution (out of beta, new Certbot client), and deployed on Ubuntu 16.04 instead of 14.04. The changes can be tracked [here](https://github.com/llambiel/letsecureme/pull/1)
+**UPDATE 1**: This post has been updated on 2016-06-02 to reflect Let's encrypt evolution (out of beta, new Certbot client), and now deployed on the new Ubuntu 16.04 LTS instead of 14.04. The changes can be tracked [here](https://github.com/llambiel/letsecureme/pull/1)
 
 ## Let's Encrypt overview
 
@@ -173,22 +173,22 @@ You need of course to use your own domain name in the `DOMAINS` list.
 
 Our cert should now be issued and installed!
 
-   IMPORTANT NOTES:
-   - If you lose your account credentials, you can recover through
-     e-mails sent to xxx@xxx.xx.
-   - Congratulations! Your certificate and chain have been saved at
-     /etc/letsencrypt/live/letsecure.me/fullchain.pem. Your cert will
-     expire on 201X-XX-XX. To obtain a new version of the certificate in
-     the future, simply run Let's Encrypt again.
-   - Your account credentials have been saved in your Let's Encrypt
-     configuration directory at /etc/letsencrypt. You should make a
-     secure backup of this folder now. This configuration directory will
-     also contain certificates and private keys obtained by Let's
-     Encrypt so making regular backups of this folder is ideal.
-   - If you like Let's Encrypt, please consider supporting our work by:
+    IMPORTANT NOTES:
+    - If you lose your account credentials, you can recover through
+      e-mails sent to xxx@xxx.xx.
+    - Congratulations! Your certificate and chain have been saved at
+      /etc/letsencrypt/live/letsecure.me/fullchain.pem. Your cert will
+      expire on 201X-XX-XX. To obtain a new version of the certificate in
+      the future, simply run Let's Encrypt again.
+    - Your account credentials have been saved in your Let's Encrypt
+      configuration directory at /etc/letsencrypt. You should make a
+      secure backup of this folder now. This configuration directory will
+      also contain certificates and private keys obtained by Let's
+      Encrypt so making regular backups of this folder is ideal.
+    - If you like Let's Encrypt, please consider supporting our work by:
 
-   Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
-   Donating to EFF:                    https://eff.org/donate-le 
+    Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
+    Donating to EFF:                    https://eff.org/donate-le 
 
 Certbot keeps configuration and certificates organized under `/etc/letsencrypt`. The [Certbot documentation](https://certbot.eff.org/docs/using.html#where-are-my-certificates) will give you detailed information about the structure and the content of the directory.
 
