@@ -44,7 +44,7 @@ A word of warning before moving on, there are still a few caveats to take into a
 
 * It requires root privileges.
 * The client does not yet "officially" support Nginx (but it works flawlessly).
-* It requires a few dependencies ([Python](https://www.python.org/)).
+* It requires a few dependencies (ex. [Python](https://www.python.org/)).
 * Throttling is enforced so you cannot request more than 5 certificates per week for a given domain.
 * Certificate is valid for 90 days.
 
