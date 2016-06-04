@@ -1,5 +1,5 @@
 ---
-date: "2016-03-15T10:43:30+01:00"
+date: "2016-06-03T10:43:30+01:00"
 draft: false
 title: "Let's Encrypt & Nginx"
 subtitle: "State of the art secure web deployment"
@@ -34,16 +34,17 @@ Here are the steps you will go through:
 
 This tutorial will use [Exoscale](https://www.exoscale.ch) as cloud provider since they offer integrated firewall and DNS management. On top of that Exoscale has a strong focus on data safety / privacy and security. Of course you can follow along using any other cloud or traditional hosting service.
 
+**UPDATE 1**: This post has been updated on 2016-06-03 to reflect Let's encrypt evolution (out of beta, new Certbot client), and now deployed on the new Ubuntu 16.04 LTS instead of 14.04. The changes can be tracked [here](https://github.com/llambiel/letsecureme/pull/1)
+
 ## Let's Encrypt overview
 
 [Let's Encrypt](https://letsencrypt.org) is a new open source certificate authority (CA) providing free and automated SSL/TLS certificates. Their root certificate is well trusted by most [browsers](https://community.letsencrypt.org/t/which-browsers-and-operating-systems-support-lets-encrypt/4394), and they are actively trying to reduce the painful workflow of creation - validation - signing - installation - renewal of certificates. 
 
-A word of warning before moving on, there are still a few caveats to take into account when considering [Let's encrypt](https://letsencrypt.org):
+A word of warning before moving on, there are still a few caveats to take into account when considering [Let's encrypt](https://letsencrypt.org) and it's [Certbot](https://certbot.eff.org/) client:
 
-* It's still in **beta** phase.
 * It requires root privileges.
 * The client does not yet "officially" support Nginx (but it works flawlessly).
-* It installs dependencies automatically (like [Augeas](http://augeas.net/), [gcc](https://gcc.gnu.org/), [Python](https://www.python.org/)).
+* It requires a few dependencies (ex. [Python](https://www.python.org/)).
 * Throttling is enforced so you cannot request more than 5 certificates per week for a given domain.
 * Certificate is valid for 90 days.
 
@@ -55,7 +56,7 @@ The official documentation can be found [here](http://letsencrypt.readthedocs.or
 
 Let's begin by spawning a new cloud instance. First of all you'll need a public SSH key at hand. If you don't have your own key, or want a quick setup, Exoscale lets you generate one on the fly before starting your machine. Go under the SSH Keys menu and create your key. [They have a guideline](https://community.exoscale.ch/documentation/compute/ssh-keypairs/) if this stuff is new for you. This tutorial will assume you know what an SSH key is and how to use it.
 
-On the [Exoscale portal](https://portal.exoscale.ch) (or the cloud provider of your choice), start a Linux Ubuntu 14.04. For this demo a micro instance (512mb RAM, 1 Vcpu & 10GB disk) will be more than enough. Choose your SSH key on creation and verify that the "default" Security Group is checked (more on that later).
+On the [Exoscale portal](https://portal.exoscale.ch) (or the cloud provider of your choice), start a Linux Ubuntu 16.04. For this demo a micro instance (512mb RAM, 1 Vcpu & 10GB disk) will be more than enough. Choose your SSH key on creation and verify that the "default" Security Group is checked (more on that later).
 
 Within a few seconds our instance is available and ready for use. You can now note down its IP address in order to proceed with the DNS setup.
 
@@ -125,15 +126,9 @@ It's good practice to install [fail2ban](http://www.fail2ban.org/wiki/index.php/
 
 ## Basic Nginx Setup
 
-Now that everything is secured you may take care of Nginx. We're not going to install the package from the Ubuntu repository as we will require features (like HTTP/2) that can only be found in the latest "mainline" release branch. You can add the Nginx official repository using:
+Now that everything is secured you may take care of Nginx. We're going to install the package from the Ubuntu repository:
 
-    # Sadly the key is being served over http, so you need to check it's sha256 hash to ensure that it hasn't been somehow compromised
-    wget --quiet http://nginx.org/keys/nginx_signing.key -O nginx_signing.key && sha256sum nginx_signing.key
-    # At the time of writing the sha256sum is "dcc2ed613d67b277a7e7c87b12907485652286e199c1061fb4b3af91f201be39"
-    # Please ensure that you get the same result before proceeding further
-    sudo apt-key add nginx_signing.key
-    echo "deb http://nginx.org/packages/mainline/ubuntu/ trusty nginx" | sudo tee --append /etc/apt/sources.list.d/nginx_org_packages_mainline_ubuntu.list
-    sudo apt-get update && sudo apt-get install -y nginx
+    sudo apt-get install -y nginx
 
 Create the target folder from where our website will be served:
 
@@ -145,10 +140,10 @@ Create the target folder from where our website will be served:
 
 Remove the default Nginx configuration and start with a fresh blank file:
 
-    sudo mv /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.orig
-    sudo touch /etc/nginx/conf.d/default.conf
+    sudo rm /etc/nginx/sites-enabled/default
+    sudo touch /etc/nginx/sites-enabled/default.conf
 
-[Let's Encrypt](https://letsencrypt.org) client will need to create some temporary files required to authenticate the domain for which we're requesting the certificate. To allow this you need to adjust the Nginx configuration block in `/etc/nginx/conf.d/default.conf` with the following:
+[Certbot](https://certbot.eff.org/) client will need to create some temporary files required to authenticate the domain for which we're requesting the certificate. To allow this you need to adjust the Nginx configuration block in `/etc/nginx/sites-enabled/default.conf` with the following:
 
     server {
         listen 80;
@@ -162,28 +157,28 @@ Reload Nginx to apply our configuration change and we're done with Nginx for the
 
 ## Let's Encrypt setup, SSL certificates and Nginx HTTPS config
 
-Go for Let's Encrypt. As per [the official documentation](https://letsencrypt.readthedocs.org/en/latest/intro.html#installation), you need to clone its [GIT](https://github.com/letsencrypt/letsencrypt) repository and launch `letsencrypt-auto`:
+Go for Let's Encrypt. As per [the official documentation](https://certbot.eff.org/#ubuntuxenial-nginx), Certbot (Let's Encrypt client) can be installed using APT:
 
-    sudo apt-get install -y git
-    sudo git clone https://github.com/letsencrypt/letsencrypt /opt/letsencrypt
-    /opt/letsencrypt/letsencrypt-auto
+    sudo apt-get -y install letsencrypt
 
-Note that as said in the beginning, the setup script will install all the required dependencies automatically. Although convenient, this implies that you lose some control of what is installed on your machine.
+Note that as said in the beginning, the client requires a few dependencies.
 
 You can now request a certificate for your domain. You'll get prompted to provide your email address for the expiring notifications and accept the Terms:
 
     export DOMAINS="yourdomain.here,www.yourdomain.here"
     export DIR=/var/www/demo
-    /opt/letsencrypt/letsencrypt-auto certonly --server https://acme-v01.api.letsencrypt.org/directory -a webroot --webroot-path=$DIR -d $DOMAINS
+    sudo letsencrypt certonly -a webroot --webroot-path=$DIR -d $DOMAINS
 
 You need of course to use your own domain name in the `DOMAINS` list.
 
 Our cert should now be issued and installed!
 
     IMPORTANT NOTES:
+    - If you lose your account credentials, you can recover through
+      e-mails sent to xxx@xxx.xx.
     - Congratulations! Your certificate and chain have been saved at
       /etc/letsencrypt/live/letsecure.me/fullchain.pem. Your cert will
-      expire on 2016-XX-XX. To obtain a new version of the certificate in
+      expire on 201X-XX-XX. To obtain a new version of the certificate in
       the future, simply run Let's Encrypt again.
     - Your account credentials have been saved in your Let's Encrypt
       configuration directory at /etc/letsencrypt. You should make a
@@ -193,10 +188,11 @@ Our cert should now be issued and installed!
     - If you like Let's Encrypt, please consider supporting our work by:
 
     Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
+    Donating to EFF:                    https://eff.org/donate-le 
 
-Let's Encrypt keeps configuration and certificates organized under `/etc/letsencrypt`. The [Let's Encrypt documentation](https://letsencrypt.readthedocs.org/en/latest/using.html#where-are-my-certificates) will give you detailed information about the structure and the content of the directory.
+Certbot keeps configuration and certificates organized under `/etc/letsencrypt`. The [Certbot documentation](https://certbot.eff.org/docs/using.html#where-are-my-certificates) will give you detailed information about the structure and the content of the directory.
 
-To use your new certificate you need to instruct Nginx to serve it and bind the port 443 on ssl. You may use the following minimal configuration block in `/etc/nginx/conf.d/default.conf`.
+To use your new certificate you need to instruct Nginx to serve it and bind the port 443 on ssl. You may use the following minimal configuration block in `/etc/nginx/sites-enabled/default.conf`.
 
     server {
         listen 443 ssl;
@@ -220,7 +216,7 @@ Save the following in a file called renewCerts.sh.
     #!/bin/sh
     # This script renews all the Let's Encrypt certificates with a validity < 30 days
 
-    if ! /opt/letsencrypt/letsencrypt-auto renew > /var/log/letsencrypt/renew.log 2>&1 ; then
+    if ! letsencrypt renew > /var/log/letsencrypt/renew.log 2>&1 ; then
         echo Automated renewal failed:
         cat /var/log/letsencrypt/renew.log
         exit 1
@@ -246,13 +242,13 @@ Let's pimp our Nginx config a bit to improve our rating!
 
 ## Nginx SSL/TLS hardening 
 
-Remove the actual config in `/etc/nginx/conf.d/default.conf` and replace it by the block below. Remember to modify the block with your own domain name:
+Remove the actual config in `/etc/nginx/sites-enabled/default.conf` and replace it by the block below. Remember to modify the block with your own domain name:
 
     server {
         listen 80;
         listen 443 ssl http2;
         server_name yourdomain.here www.yourdomain.here;
-        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+        ssl_protocols TLSv1.2;
         ssl_ciphers EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5;
         ssl_prefer_server_ciphers On;
         ssl_certificate /etc/letsencrypt/live/yourdomain.here/fullchain.pem;
@@ -291,9 +287,13 @@ Let's review some important config items that we've just added:
 
 With this directive, you tell Nginx to listen over SSL and also support the connection over the new [HTTP/2](https://en.wikipedia.org/wiki/HTTP/2) standard, if the client browser support / request it. Please note that HTTP/2 is SSL/TLS only!
 
+    ssl_protocols TLSv1.2;
+
+Disable old and weak SSLv2/SSLv3 & early TLS protocols, and allow only the TLSv1.2. Such configuration will prevent older clients to connect to your website (ex. IE10 and older, Android 4.3 and older, Java6 & 7). So depending on your website target audience, you may choose to keep older TLS protocols using the configuration below. 
+
     ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
 
-Disable old and weak SSLv2/SSLv3 protocols and allow only the TLS ones.
+You may take into account that the old and weak TLSv1.0 will be end of life on 30 June 2018 for [PCI](http://blog.pcisecuritystandards.org/migrating-from-ssl-and-early-tls). You can found the browser support list [here](https://en.wikipedia.org/wiki/Template:TLS/SSL_support_history_of_web_browsers)
 
     ssl_ciphers EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5;
     ssl_prefer_server_ciphers On;
@@ -358,7 +358,7 @@ Your final Nginx configuration should look like this:
          listen 80;
          listen 443 ssl http2;
          server_name yourdomain.here www.yourdomain.here;
-         ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+         ssl_protocols TLSv1.2;
          ssl_ciphers EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5;
          ssl_prefer_server_ciphers On;
          ssl_certificate /etc/letsencrypt/live/yourdomain.here/fullchain.pem;
