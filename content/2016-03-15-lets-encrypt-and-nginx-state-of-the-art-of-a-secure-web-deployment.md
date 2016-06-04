@@ -1,5 +1,5 @@
 ---
-date: "2016-03-15T10:43:30+01:00"
+date: "2016-06-03T10:43:30+01:00"
 draft: false
 title: "Let's Encrypt & Nginx"
 subtitle: "State of the art secure web deployment"
