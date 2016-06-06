@@ -253,6 +253,7 @@ Remove the actual config in `/etc/nginx/sites-enabled/default.conf` and replace 
         ssl_prefer_server_ciphers On;
         ssl_certificate /etc/letsencrypt/live/yourdomain.here/fullchain.pem;
         ssl_certificate_key /etc/letsencrypt/live/yourdomain.here/privkey.pem;
+        ssl_trusted_certificate /etc/letsencrypt/live/yourdomain.here/chain.pem;
         ssl_session_cache shared:SSL:128m;
         add_header Strict-Transport-Security "max-age=31557600; includeSubDomains";
         ssl_stapling on;
@@ -300,6 +301,7 @@ You may take into account that the old and weak TLSv1.0 will be end of life on 3
     
 This is the cipher list you tell Nginx to support. This list is in my opinion one of the most well balanced between security and support by older web browsers. Nginx will prefer those ciphers over the ones requested by the client.
 
+    ssl_trusted_certificate /etc/letsencrypt/live/yourdomain.here/chain.pem;
     ssl_stapling on;
     ssl_stapling_verify on;
 
@@ -363,6 +365,7 @@ Your final Nginx configuration should look like this:
          ssl_prefer_server_ciphers On;
          ssl_certificate /etc/letsencrypt/live/yourdomain.here/fullchain.pem;
          ssl_certificate_key /etc/letsencrypt/live/yourdomain.here/privkey.pem;
+         ssl_trusted_certificate /etc/letsencrypt/live/yourdomain.here/chain.pem;
          ssl_session_cache shared:SSL:128m;
          add_header Strict-Transport-Security "max-age=31557600; includeSubDomains";
          add_header X-Frame-Options "SAMEORIGIN" always;
