@@ -6,4 +6,4 @@ if ! letsencrypt renew > /var/log/letsencrypt/renew.log 2>&1 ; then
     cat /var/log/letsencrypt/renew.log
     exit 1
 fi
-nginx -t && nginx -s reload
+/usr/sbin/nginx -t && /usr/sbin/nginx -s reload

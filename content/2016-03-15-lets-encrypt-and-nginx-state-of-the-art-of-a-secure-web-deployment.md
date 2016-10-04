@@ -221,7 +221,7 @@ Save the following in a file called renewCerts.sh.
         cat /var/log/letsencrypt/renew.log
         exit 1
     fi
-    nginx -t && nginx -s reload
+    /usr/sbin/nginx -t && /usr/sbin/nginx -s reload
 
 A daily cron will trigger our script. To set up the crontab open it...
 
