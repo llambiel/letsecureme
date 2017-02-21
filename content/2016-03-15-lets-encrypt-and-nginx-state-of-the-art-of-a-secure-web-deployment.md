@@ -36,7 +36,7 @@ This tutorial will use [Exoscale](https://www.exoscale.ch) as cloud provider sin
 
 **UPDATE 1**: This post has been updated on 2016-06-03 to reflect Let's encrypt evolution (out of beta, new Certbot client), and now deployed on the new Ubuntu 16.04 LTS instead of 14.04. The changes can be tracked [here](https://github.com/llambiel/letsecureme/pull/9)
 
-**UPDATE 2**: SSL/TLS Ciphers list updated to remove outdated 3DES 
+**UPDATE 2**: SSL/TLS Ciphers list updated to remove outdated 3DES and switch to Mozilla recommanded list. 
 
 ## Let's Encrypt overview
 
@@ -251,7 +251,7 @@ Remove the actual config in `/etc/nginx/sites-enabled/default.conf` and replace 
         listen 443 ssl http2;
         server_name yourdomain.here www.yourdomain.here;
         ssl_protocols TLSv1.2;
-        ssl_ciphers EECDH+AES256:RSA+AES256:EECDH+AES128:RSA+AES128:!MD5;
+        ssl_ciphers 'ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256';
         ssl_prefer_server_ciphers On;
         ssl_certificate /etc/letsencrypt/live/yourdomain.here/fullchain.pem;
         ssl_certificate_key /etc/letsencrypt/live/yourdomain.here/privkey.pem;
@@ -298,7 +298,7 @@ Disable old and weak SSLv2/SSLv3 & early TLS protocols, and allow only the TLSv1
 
 You may take into account that the old and weak TLSv1.0 will be end of life on 30 June 2018 for [PCI](http://blog.pcisecuritystandards.org/migrating-from-ssl-and-early-tls). You can found the browser support list [here](https://en.wikipedia.org/wiki/Template:TLS/SSL_support_history_of_web_browsers)
 
-    ssl_ciphers EECDH+AES256:RSA+AES256:EECDH+AES128:RSA+AES128:!MD5;
+    ssl_ciphers 'ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256';
     ssl_prefer_server_ciphers On;
     
 This is the cipher list you tell Nginx to support. This list is in my opinion one of the most well balanced between security and support by older web browsers. Nginx will prefer those ciphers over the ones requested by the client.
@@ -363,7 +363,7 @@ Your final Nginx configuration should look like this:
          listen 443 ssl http2;
          server_name yourdomain.here www.yourdomain.here;
          ssl_protocols TLSv1.2;
-         ssl_ciphers EECDH+AES256:RSA+AES256:EECDH+AES128:RSA+AES128:!MD5;
+         ssl_ciphers 'ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256';
          ssl_prefer_server_ciphers On;
          ssl_certificate /etc/letsencrypt/live/yourdomain.here/fullchain.pem;
          ssl_certificate_key /etc/letsencrypt/live/yourdomain.here/privkey.pem;
