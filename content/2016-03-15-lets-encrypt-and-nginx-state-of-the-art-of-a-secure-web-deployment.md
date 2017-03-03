@@ -311,7 +311,8 @@ Enable OCSP stapling, which is well described in details [here](https://www.maxc
 
     add_header Strict-Transport-Security "max-age=31557600; includeSubDomains";
 
-This adds an HTTP header instructing the client browser to force a HTTPS connection to your domain and to all of its subdomains for 1 year.  
+This adds an HTTP header instructing the client browser to force a HTTPS connection to your domain and to all of its subdomains for 1 year.
+
 **Warning!** Be careful here before applying it in production, you must ensure first that **all your subdomains (if any) are being secured as well**. Your subdomains will be forced over https as well, and if not properly configured, will become unreachable.
 
 Let's re-test again our setup with [Qualys SSL](https://www.ssllabs.com/ssltest/):
@@ -354,6 +355,12 @@ The report mode can be enabled using:
 
     Content-Security-Policy-Report-Only instead of Content-Security-Policy
 
+The [Referrer-Policy](https://scotthelme.co.uk/a-new-security-header-referrer-policy/) header configures how much information is sent to a site about the origin the user came from.
+
+    add_header Referrer-Policy origin-when-cross-origin;
+
+Referrer Policy is a new header that allows a site to control how much information the browser includes with navigations away from a document.
+
 ## Final secured Nginx configuration
 
 Your final Nginx configuration should look like this:
@@ -374,6 +381,7 @@ Your final Nginx configuration should look like this:
          add_header X-Content-Type-Options "nosniff" always;
          add_header X-Xss-Protection "1";
          add_header Content-Security-Policy "default-src 'self'; script-src 'self' *.google-analytics.com";
+         add_header Referrer-Policy origin-when-cross-origin;
          ssl_stapling on;
          ssl_stapling_verify on;
          # Your favorite resolver may be used instead of the Google one below
