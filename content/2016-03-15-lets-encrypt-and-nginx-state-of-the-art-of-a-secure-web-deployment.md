@@ -36,7 +36,9 @@ This tutorial will use [Exoscale](https://www.exoscale.ch) as cloud provider sin
 
 **UPDATE 1**: This post has been updated on 2016-06-03 to reflect Let's encrypt evolution (out of beta, new Certbot client), and now deployed on the new Ubuntu 16.04 LTS instead of 14.04. The changes can be tracked [here](https://github.com/llambiel/letsecureme/pull/9)
 
-**UPDATE 2**: SSL/TLS Ciphers list updated to remove outdated 3DES and switch to Mozilla recommanded list. 
+**UPDATE 2**: SSL/TLS Ciphers list updated to remove outdated 3DES and switch to Mozilla recommanded list.
+
+**UPDATE 3 2017/03/03**: Added the new Referrer-Policy support  
 
 ## Let's Encrypt overview
 
