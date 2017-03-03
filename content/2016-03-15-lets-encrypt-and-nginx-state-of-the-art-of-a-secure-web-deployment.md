@@ -169,9 +169,7 @@ Note that as said in the beginning, the client requires a few dependencies.
 
 You can now request a certificate for your domain. You'll get prompted to provide your email address for the expiring notifications and accept the Terms:
 
-    export DOMAINS="yourdomain.here,www.yourdomain.here"
-    export DIR=/var/www/demo
-    sudo letsencrypt certonly -a webroot --webroot-path=$DIR -d $DOMAINS
+    sudo letsencrypt certonly -a webroot --webroot-path=/var/www/demo -d yourdomain.here -d www.yourdomain.here
 
 You need of course to use your own domain name in the `DOMAINS` list.
 
