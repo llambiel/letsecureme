@@ -38,7 +38,9 @@ This tutorial will use [Exoscale](https://www.exoscale.ch) as cloud provider sin
 
 **UPDATE 2**: SSL/TLS Ciphers list updated to remove outdated 3DES and switch to Mozilla recommanded list.
 
-**UPDATE 3 2017/03/03**: Added the new Referrer-Policy support  
+**UPDATE 3 2017/03/03**: Added the new Referrer-Policy support
+
+**UPDATE 4 2017/06/07**: Switch to new Certbot client package
 
 ## Let's Encrypt overview
 
@@ -163,13 +165,15 @@ Reload Nginx to apply our configuration change and we're done with Nginx for the
 
 Go for Let's Encrypt. As per [the official documentation](https://certbot.eff.org/#ubuntuxenial-nginx), Certbot (Let's Encrypt client) can be installed using APT:
 
-    sudo apt-get -y install letsencrypt
+    sudo add-apt-repository ppa:certbot/certbot
+    sudo apt-get update
+    sudo apt-get install certbot
 
 Note that as said in the beginning, the client requires a few dependencies.
 
 You can now request a certificate for your domain. You'll get prompted to provide your email address for the expiring notifications and accept the Terms:
 
-    sudo letsencrypt certonly -a webroot --webroot-path=/var/www/demo -d yourdomain.here -d www.yourdomain.here
+    sudo certbot certonly -a webroot --webroot-path=/var/www/demo -d yourdomain.here -d www.yourdomain.here
 
 You need of course to use your own domain name in the `DOMAINS` list.
 
@@ -218,7 +222,7 @@ Save the following in a file called renewCerts.sh.
     #!/bin/sh
     # This script renews all the Let's Encrypt certificates with a validity < 30 days
 
-    if ! letsencrypt renew > /var/log/letsencrypt/renew.log 2>&1 ; then
+    if ! certbot renew > /var/log/letsencrypt/renew.log 2>&1 ; then
         echo Automated renewal failed:
         cat /var/log/letsencrypt/renew.log
         exit 1
