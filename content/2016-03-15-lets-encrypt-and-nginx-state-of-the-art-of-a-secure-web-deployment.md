@@ -140,7 +140,7 @@ Create the target folder from where our website will be served:
 
     sudo mkdir /var/www/
     # download our demo website
-    wget https://github.com/llambiel/letsecureme/releases/download/1.0.0/demo.tar.gz
+    wget https://github.com/llambiel/letsecureme/releases/download/1.1.0/demo.tar.gz
     sudo tar zxf demo.tar.gz -C /var/www
     sudo chown -R root:www-data /var/www/
 
