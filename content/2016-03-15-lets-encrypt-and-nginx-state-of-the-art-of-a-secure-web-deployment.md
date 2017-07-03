@@ -42,6 +42,8 @@ This tutorial will use [Exoscale](https://www.exoscale.ch) as cloud provider sin
 
 **UPDATE 4 2017/06/07**: Switch to new Certbot client package
 
+**UPDATE 5 2017/07/03**: Updated the link to new demo.tar.gz release. Added link to Ansible playbook
+
 ## Let's Encrypt overview
 
 [Let's Encrypt](https://letsencrypt.org) is a new open source certificate authority (CA) providing free and automated SSL/TLS certificates. Their root certificate is well trusted by most [browsers](https://community.letsencrypt.org/t/which-browsers-and-operating-systems-support-lets-encrypt/4394), and they are actively trying to reduce the painful workflow of creation - validation - signing - installation - renewal of certificates. 
@@ -417,6 +419,10 @@ And scan again our site using [securityheaders.io](https://securityheaders.io/)(
 You should have got an "A" grade, which sounds much better!
 
 Some of you may have noticed that we didn't enable HPKP (HTTP Public Key Pinning), which would have allowed us to get the A+ grade. In fact that header could really screw your website if the feature is not well understood and carefully planned. This subject may be developed in this page in the future, stay tuned.
+
+## Setup automation
+
+Thanks to [@marcaurele](https://twitter.com/marcaurele) who contributed with an [Ansible playbook](https://github.com/marcaurele/letsecureme-ansible) to automate above setup.
 
 ## Conclusion
 
