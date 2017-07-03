@@ -422,7 +422,7 @@ Some of you may have noticed that we didn't enable HPKP (HTTP Public Key Pinning
 
 ## Setup automation
 
-Thanks to [@marcaurele](https://twitter.com/marcaurele) who contributed with an [Ansible playbook](https://github.com/marcaurele/letsecureme-ansible) to automate above setup.
+Thanks to [@marcaurele](https://twitter.com/marcaurele) who contributed with an [Ansible playbook](https://github.com/marcaurele/letsecureme-ansible) to automate the above setup.
 
 ## Conclusion
 
